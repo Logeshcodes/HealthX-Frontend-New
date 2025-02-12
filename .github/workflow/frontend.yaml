@@ -2,8 +2,8 @@ name: dockerhub-client
 
 on:
   push:
-    branches: [ "main" ]
-    paths: ["**"]  # Trigger workflow on any change in the repo
+    branches: [ "master" ]
+    paths: ["**"]  
 
 jobs:
   build:
