@@ -7,6 +7,7 @@ interface UserData {
   username: string;
   isBlocked: string;
   createdAt: string;
+  profilePicture : string ;
 }
 
 const AccountStatus = () => {
@@ -16,9 +17,13 @@ const AccountStatus = () => {
     username: "",
     isBlocked: "",
     createdAt: "",
+    profilePicture : "",
   });
 
   const [loading, setLoading] = useState<boolean>(true);
+
+
+  
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -47,6 +52,19 @@ const AccountStatus = () => {
     fetchUsers();
   }, []);
 
+
+  
+  const [imgSrc, setImgSrc] = useState(
+    users.profilePicture || "../../../profile.jpg"
+  );
+
+  useEffect(() => {
+    if (users?.profilePicture) {
+      setImgSrc(users.profilePicture);
+      console.log(users.profilePicture , "pic")
+    }
+  }, [users.profilePicture]);
+
   return (
     <div className="bg-white rounded-lg p-6 shadow-lg">
       {loading ? (
@@ -55,10 +73,11 @@ const AccountStatus = () => {
         <div className="bg-white rounded-lg p-6 shadow-lg">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">Account Status</h2>
           <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg">
-            <img
-              src="../../../profile.jpg"
+          <img
+              src={imgSrc}
               alt="Profile"
-              className="w-32 h-32 rounded-full object-cover mb-4"
+              className="w-28 h-28 rounded-full object-cover border-blue-100"
+              onError={(e) => (e.currentTarget.src = "../../../profile.jpg")}
             />
             <h3 className="text-xl font-medium text-gray-800 mb-2">{users.username}</h3>
     

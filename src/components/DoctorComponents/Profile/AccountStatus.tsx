@@ -9,6 +9,7 @@ interface UserData {
   isVerified: string;
   createdAt: string;
   status : string ;
+  profilePicture : string
 }
 
 const AccountStatus = () => {
@@ -20,9 +21,21 @@ const AccountStatus = () => {
     isVerified: "",
     createdAt: "",
     status : "",
+    profilePicture: ""
   });
 
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [imgSrc, setImgSrc] = useState(
+    doctors.profilePicture || "../../../profile.jpg"
+  );
+
+  useEffect(() => {
+    if (doctors?.profilePicture) {
+      setImgSrc(doctors.profilePicture);
+      console.log(doctors.profilePicture , "pic")
+    }
+  }, [doctors.profilePicture]);
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -59,10 +72,11 @@ const AccountStatus = () => {
         <div className="bg-white rounded-lg p-6 shadow-lg">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">Account Status</h2>
           <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg">
-            <img
-              src="../../../profile.jpg"
+          <img
+              src={imgSrc}
               alt="Profile"
-              className="w-32 h-32 rounded-full object-cover mb-4"
+              className="w-28 h-28 rounded-full object-cover border-blue-100"
+              onError={(e) => (e.currentTarget.src = "../../../profile.jpg")}
             />
             <h3 className="text-xl font-medium text-gray-800 mb-2">{doctors.name}</h3>
             <p className="text-gray-500 mb-6">{doctors.department}</p>

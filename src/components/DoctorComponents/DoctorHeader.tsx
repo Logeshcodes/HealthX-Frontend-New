@@ -23,7 +23,13 @@ export default function DoctorHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
 
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState<{
+    name?: string;
+    email?: string;
+    role?: string;
+    profilePicture?: string;
+  } | null>(null);
+  
 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -45,8 +51,8 @@ export default function DoctorHeader() {
               name: doctorData.name,
               email: doctorData.email,
               role: doctorData.role,
-              profilePicture: doctorData.profilePicture,
-            })
+              profilePicture: doctorData?.profilePicture || "/default-avatar.png",
+            })  
           );
         }
       } catch (error) {
@@ -54,6 +60,8 @@ export default function DoctorHeader() {
       }
     }
   }, [dispatch]);
+
+
 
   useEffect(() => {
     const currentPath = window.location.pathname;
@@ -121,11 +129,13 @@ export default function DoctorHeader() {
                 onClick={toggleDropdown}
                 className="flex items-center space-x-2 p-2 rounded-lg"
               >
-                <img
-                  src="../../../default-avatar.png" 
+               <img
+                  src={userId?.profilePicture || "/default-avatar.png"}
                   alt="Profile"
                   className="w-12 h-12 rounded-full object-cover"
+                  onError={(e) => (e.currentTarget.src = "/default-avatar.png")}
                 />
+
                 <ChevronDown size={24} className='mt-8' />
                 {/* <span className="text-gray-700">Doctor</span> */}
               </button>

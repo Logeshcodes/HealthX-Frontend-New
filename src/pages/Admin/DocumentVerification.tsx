@@ -305,7 +305,7 @@ const DocumentVerification = () => {
         <Card>
           <CardFooter className="flex justify-end gap-4 p-6">
             {doctor.status === 'rejected' ? (
-              <p className="text-red-600 font-medium">Your documents are rejected.</p>
+              <p className="text-red-600 font-medium">Already these documents are rejected.</p>
             ) : (
               !showRejectReason ? (
                 <>

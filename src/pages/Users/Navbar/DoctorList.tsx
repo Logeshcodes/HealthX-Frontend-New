@@ -138,7 +138,7 @@ const DoctorListingPage = () => {
           ) : filteredDoctors && filteredDoctors.length > 0 ? (
             filteredDoctors.map((doctor: any) => (
               <div
-                key={doctor.id}
+                key={doctor.email}
                 className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
               >
                 <DoctorCard doctor={doctor} />

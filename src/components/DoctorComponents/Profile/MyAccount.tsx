@@ -17,6 +17,7 @@ interface UserData {
   consultationFee: string;
   isVerified: string;
   createdAt: string;
+  profilePicture: string
 }
 
 const MyAccount = () => {
@@ -35,8 +36,21 @@ const MyAccount = () => {
     consultationFee: '',
     isVerified: '',
     createdAt: '',
+    profilePicture :""
   });
   const [loading, setLoading] = useState<boolean>(true);
+
+
+  const [imgSrc, setImgSrc] = useState(
+    doctors.profilePicture || "../../../profile.jpg"
+  );
+
+  useEffect(() => {
+    if (doctors?.profilePicture) {
+      setImgSrc(doctors.profilePicture);
+      console.log(doctors.profilePicture , "pic")
+    }
+  }, [doctors.profilePicture]);
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -147,11 +161,12 @@ const MyAccount = () => {
           {/* Right Section */}
           <div className="lg:w-1/3 bg-gray-50 rounded-lg p-6">
             <div className="flex flex-col items-center">
-              <img
-                src="../../../profile.jpg"
-                alt="Profile"
-                className="w-32 h-32 rounded-full object-cover mb-4"
-              />
+            <img
+              src={imgSrc}
+              alt="Profile"
+              className="w-28 h-28 rounded-full object-cover border-blue-100"
+              onError={(e) => (e.currentTarget.src = "../../../profile.jpg")}
+            />
               <h3 className="font-medium text-gray-800">{doctors.name}</h3>
               <p className="text-gray-500">{doctors.department}</p>
 

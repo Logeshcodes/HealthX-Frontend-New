@@ -26,6 +26,7 @@ interface Doctor{
   education : string ;
   description : string ;
   consultationType : string ;
+  profilePicture : string ;
 
 }
 
@@ -78,7 +79,12 @@ const DoctorProfile = () => {
                 <div className="flex flex-col items-center">
                   <div className="relative mb-6 group">
                     <div className="w-48 h-48 rounded-full bg-white flex items-center justify-center overflow-hidden transform transition-transform group-hover:scale-105">
-                      <User className="w-32 h-32 text-blue-600" />
+                    <img
+                        src={doctor?.profilePicture || "/default-avatar.png"}
+                        alt="Profile"
+                        className="max-w-36  h-36 rounded-full object-cover"
+                        onError={(e) => (e.currentTarget.src = "/default-avatar.png")}
+                      />
                     </div>
 
                     <div className="absolute -bottom-0 right-7 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white border-2 border-white">
