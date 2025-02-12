@@ -7,7 +7,7 @@ const DoctorBanner = () => {
   const banners = [
     {
       id: 1,
-      title: "Logesh Services",
+      title: "OMKV",
       description: "Get the best medical care from our expert doctors",
       image: "/api/placeholder/1200/600"  // Increased image height
     },
