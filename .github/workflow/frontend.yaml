@@ -1,0 +1,21 @@
+name: dockerhub-client
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: ["**"]  # Trigger workflow on any change in the repo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: docker build -t logeshc12/frontend:latest .  # Build from root folder
+
+      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - run: docker push logeshc12/frontend:latest  # Push to Docker Hub
