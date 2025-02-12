@@ -1,9 +1,11 @@
-name: dockerhub-client
+name: frontend-ci-cd
 
 on:
   push:
-    branches: [ "master" ]
-    paths: ["**"]  
+    branches:
+      - "master"  # Use "main" if that's your default branch
+    paths:
+      - "**"  # Trigger on any change in the repository
 
 jobs:
   build:
@@ -11,11 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: docker build -t logeshc12/frontend:latest .  
+      - run: docker build -t logeshc12/frontend:latest .
 
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-      - run: docker push logeshc12/frontend:latest  
+      - run: docker push logeshc12/frontend:latest

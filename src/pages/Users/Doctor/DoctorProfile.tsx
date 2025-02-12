@@ -231,7 +231,7 @@ const DoctorProfile = () => {
               hover:from-green-600 hover:to-green-700 transition-all duration-200 
               shadow-md hover:shadow-lg transform hover:-translate-y-0.5
               flex items-center gap-2 font-medium">
-                  Confirm
+                  Book Appointment
               </Button>
              
 
