@@ -5,7 +5,7 @@ import { CheckCircle } from 'lucide-react';
 import { Button } from "../../../components/AdminComponents/common/Button";
 
 import { 
-  User, Mail, Phone, Award, BookOpen, Clock, FileText, 
+   Mail, Phone, Award, BookOpen, Clock, FileText, 
   Check,Building,
   Stethoscope, GraduationCap, Globe  , 
 } from 'lucide-react';

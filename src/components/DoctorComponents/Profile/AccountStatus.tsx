@@ -116,7 +116,7 @@ const AccountStatus = () => {
                       return (
                         <div className="flex items-center text-gray-500">
                           <AlertCircle size={24} />
-                          <span className="font-medium">Unknown Status</span>
+                          <span className="px-2 font-medium">Not yet verified</span>
                         </div>
                       );
                   }

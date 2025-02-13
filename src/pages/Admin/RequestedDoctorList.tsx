@@ -16,7 +16,7 @@ const RequestedDoctorList: React.FC<UserProps> = ({ isDarkMode }) => {
 
 
         const filteredDoctors = response.filter(
-          (doctor: any) => doctor.status === 'pending' || doctor.status === 'rejected' || doctor.status === 'registered'
+          (doctor: any) => doctor.status === 'pending' || doctor.status === 'rejected' || doctor.status === 'requested'
         );
 
         setDoctors(filteredDoctors)
