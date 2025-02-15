@@ -1,6 +1,6 @@
-import  { useState } from 'react';
-import { Card , CardContent } from "../../../components/AdminComponents/common/Card";
-import { Button } from '../../../components/AdminComponents/common/Button';
+import { useState } from 'react';
+import { CardContent , Card } from '../../../components/DoctorComponents/Appointments/card';
+import { Button } from '../../../components/DoctorComponents/Appointments/button';
 import { Calendar, Clock, X } from 'lucide-react';
 
 const SlotBooking = () => {
@@ -36,7 +36,7 @@ const SlotBooking = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-8 mt-32">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-8 mt-40">
       <div className="max-w-4xl mx-auto space-y-8">
         <Card className="bg-white shadow-lg">
           <CardContent className="p-6">
@@ -67,7 +67,7 @@ const SlotBooking = () => {
                   {days.map((day) => (
                     <Button
                       key={day}
-                     
+                      variant={selectedDay === day ? "default" : "outline"}
                       className={`${
                         selectedDay === day 
                           ? "bg-blue-500 text-white" 
@@ -92,7 +92,7 @@ const SlotBooking = () => {
                 {timeSlots.map((slot) => (
                   <Button
                     key={slot}
-                  
+                    variant={selectedTimeSlot === slot ? "default" : "outline"}
                     className={`${
                       selectedTimeSlot === slot
                         ? "bg-blue-500 text-white"
@@ -133,7 +133,8 @@ const SlotBooking = () => {
                       # Slot No: {slot.id}
                     </span>
                     <Button 
-                     
+                      variant="destructive"
+                      size="sm"
                       className="bg-red-500 hover:bg-red-600"
                     >
                       <X className="w-4 h-4" />

@@ -30,6 +30,20 @@ export const updateProfile = async (formData: FormData): Promise<any> => {
   }
 };
 
+export const appointmentBooking = async (formData: FormData): Promise<any> => {
+  try {
+    console.log("Inside updateProfile API call");
+
+    const response = await API.post(DoctorRoutes.appointmentBooking, formData, {
+      withCredentials: true,
+    });
+    console.log(response.data.user, "appointmentBooking response");
+    return response?.data;
+  } catch (error) {
+    console.error("Error in updateProfile API call:", error);
+  }
+};
+
 
 
 export const updatePassword = async ( data: any): Promise<any> => {

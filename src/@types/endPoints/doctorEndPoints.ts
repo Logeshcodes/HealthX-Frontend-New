@@ -9,6 +9,8 @@ const DoctorRoutes={
     //verification
     sendVerification:'/verification/doctor/verificationRequest',
 
-    sendReVerifyRequest : '/verification/reVerifyRequest'
+    sendReVerifyRequest : '/verification/reVerifyRequest',
+
+    appointmentBooking : '/booking/doctor/slotBooking'
 }
 export default DoctorRoutes 
