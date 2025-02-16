@@ -35,6 +35,8 @@ const SlotBooking = () => {
     }
   ];
 
+  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-8 mt-40">
       <div className="max-w-4xl mx-auto space-y-8">

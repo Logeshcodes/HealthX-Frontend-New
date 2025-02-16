@@ -20,7 +20,7 @@ import AccountStatus from '../components/DoctorComponents/Profile/AccountStatus'
 import EditProfile from '../components/DoctorComponents/Profile/EditProfile';
 import VerifyProfile from '../components/DoctorComponents/Profile/VerifyProfile';
 
-import AppointmentBooking from '../pages/Doctors/Menu/App';
+import SlotBooking from '../pages/Doctors/Menu/SlotBooking';
 
 
 
@@ -48,7 +48,7 @@ const DoctorRouter =() => {
         <Route path="/" element={<DoctorLayout />}>
           <Route path="" element={<DoctorHome />} />
           <Route element={<PrivateRoute />}>
-              <Route path="/appointments" element={<AppointmentBooking  />} />
+              <Route path="/appointments/:email" element={<SlotBooking/>} />
             <Route path="/profile" element={<ProfileManagement />}>
               <Route path="my-account" element={<MyAccount  />} />
               <Route path="change-password" element={<ChangePassword />} />

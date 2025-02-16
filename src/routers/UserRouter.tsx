@@ -55,7 +55,7 @@ const UserRouter = () => {
           <Route element={<PrivateRoute />}>
             <Route path="/user/doctor_list" element={<DoctorListingPage />} />
             <Route path="/user/doctor_details/:email" element={<DoctorDetailPage />} />
-            <Route path="/user/slot" element={<Slot/>} />
+            <Route path="/user/slot/:email" element={<Slot/>} />
            
             
             <Route path="/user/about" element={<About />} />

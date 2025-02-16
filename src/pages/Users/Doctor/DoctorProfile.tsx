@@ -60,7 +60,9 @@ const DoctorProfile = () => {
   const navigate = useNavigate()
 
   const bookSlot = ()=>{
-      navigate(`/user/slot`)
+      navigate(`/user/slot:${doctor.email}`)
+
+
   }
 
 

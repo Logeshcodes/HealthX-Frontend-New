@@ -11,13 +11,7 @@ import { logout } from '../../api/auth/DoctorAuthentication';
 
 import { setDoctor, clearDoctorDetials } from "../../redux/slices/DoctorSlice";
 
-const navigation = [
-  { name: "Home", href: "/doctor", id: "home", icon: Home },
-  { name: "Patients", href: "/doctor/patient_list", id: "patients", icon: Users },
-  { name: "Appointments", href: "/doctor/appointments", id: "appointments", icon: Calendar },
-  { name: "Service", href: "/doctor/services", id: "services", icon: Grid },
-  { name: "About Us", href: "/doctor/about", id: "about", icon: Info },
-];
+
 
 export default function DoctorHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -60,6 +54,15 @@ export default function DoctorHeader() {
       }
     }
   }, [dispatch]);
+
+
+  const navigation = [
+    { name: "Home", href: "/doctor", id: "home", icon: Home },
+    { name: "Patients", href: "/doctor/patient_list", id: "patients", icon: Users },
+    { name: "Appointments", href: `/doctor/appointments/${userId?.email}`, id: "appointments", icon: Calendar }, // i want get email here
+    { name: "Service", href: "/doctor/services", id: "services", icon: Grid },
+    { name: "About Us", href: "/doctor/about", id: "about", icon: Info },
+  ];
 
 
 

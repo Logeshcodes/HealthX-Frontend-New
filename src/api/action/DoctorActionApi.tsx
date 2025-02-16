@@ -30,19 +30,39 @@ export const updateProfile = async (formData: FormData): Promise<any> => {
   }
 };
 
-export const appointmentBooking = async (formData: FormData): Promise<any> => {
+
+
+export const slotBooking = async (formData: FormData): Promise<any> => {
   try {
     console.log("Inside updateProfile API call");
 
-    const response = await API.post(DoctorRoutes.appointmentBooking, formData, {
+    const response = await API.post(DoctorRoutes.SlotBooking, formData, {
       withCredentials: true,
     });
-    console.log(response.data.user, "appointmentBooking response");
+    console.log(response.data.user, "slotBooking response");
     return response?.data;
   } catch (error) {
     console.error("Error in updateProfile API call:", error);
   }
 };
+
+export const getSlotDetails = async (email: string | null): Promise<any> => {
+  try {
+    console.log("Inside updateProfile API call");
+
+    const response = await API.get(`${DoctorRoutes.getDoctorSlotData}/${email}`);
+
+    console.log(response.data, "get slotBooking response");
+    return response?.data;
+
+   
+  } catch (error) {
+    console.error("Error in updateProfile API call:", error);
+  }
+};
+
+
+
 
 
 

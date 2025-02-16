@@ -6,7 +6,8 @@ import { Calendar, Clock, X } from 'lucide-react';
 import { toast } from "react-toastify";
 
 
-import { appointmentBooking } from '../../../api/action/DoctorActionApi';
+import { slotBooking , getSlotDetails } from '../../../api/action/DoctorActionApi';
+import { useEffect, useState } from "react";
 
 interface AppointmentData {
     date: string;
@@ -59,42 +60,60 @@ const SlotBooking = () => {
         }
     ];
 
+    const [slots , setSlots] =  useState<any []>([]);
+
+
+
+    useEffect(() => {
+        const fetchSlots = async () => {
+          const doctorDataString = localStorage.getItem("doctor");
+          if (doctorDataString) {
+            const doctorData = JSON.parse(doctorDataString);
+            let email = doctorData.email;
+            const slot = await getSlotDetails(email);
+            console.log("coming....", slot.data);
+            setSlots(slot.data); // Assuming `setSlots` is your state setter
+          }
+        };
+      
+        fetchSlots();  // Call the function here, outside the definition block
+      }, []);
+      
+
+   
+
+
+
     const handleSubmit = async (values: AppointmentData, { setSubmitting }: any) => {
         try {
-
-           const formData = new FormData();
+          
+            
+            const formData = new FormData();
             const doctorDataString = localStorage.getItem("doctor");
             if (doctorDataString) {
                 const doctorData = JSON.parse(doctorDataString);
-
                 formData.append('name', doctorData.name);
                 formData.append('email', doctorData.email);
             }
-
-           
-
+    
             Object.entries(values).forEach(([key, value]) => {
                 formData.append(key, value);
             });
-
-           console.log("clicked formdata:", [...formData.entries()]);
-
-
-            
-            // appointmentBooking is imported
-            const response = await appointmentBooking(formData);
+    
+            console.log("clicked formdata:", [...formData.entries()]);
+    
+            const response = await slotBooking(formData);
             if (response.success) {
                 toast.success("Slot booked successfully");
-            } else {
-                toast.error("Failed to book slot");
-            }
-            
+               
+            } 
         } catch (error) {
             toast.error("An unexpected error occurred");
         } finally {
             setSubmitting(false);
         }
     };
+    
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-8 mt-32">
@@ -220,14 +239,14 @@ const SlotBooking = () => {
 
                                     <div className="mt-6 flex justify-center">
                                      
-                                            <Button
-                                                type="submit"
-                                                className="bg-blue-600 hover:bg-blue-700 text-white px-8"
-                                                disabled={isSubmitting}
-                                                onClick={() => handleSubmit(values, { setSubmitting: () => {} })}
-                                            >
-                                                {isSubmitting ? 'Booking...' : 'Save Slots'}
-                                            </Button>
+                                    <Button
+                                        type="submit"
+                                        className="bg-blue-600 hover:bg-blue-700 text-white px-8"
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? 'Booking...' : 'Save Slots'}
+                                    </Button>
+
                                        
                                     </div>
                                 </Form>
@@ -242,7 +261,7 @@ const SlotBooking = () => {
                         Available Slots
                     </h2>
                     <div className="grid md:grid-cols-2 gap-4">
-                        {availableSlots.map((slot) => (
+                        {slots.map((slot , index) => (
                             <Card 
                                 key={slot.id}
                                 className="bg-gradient-to-r from-blue-50 to-indigo-50 hover:shadow-md transition-shadow"
@@ -250,7 +269,7 @@ const SlotBooking = () => {
                                 <CardContent className="p-4">
                                     <div className="flex justify-between items-start mb-4">
                                         <span className="text-sm font-medium text-gray-500">
-                                            # Slot No: {slot.id}
+                                            # Slot No: {index + 1}
                                         </span>
                                         <Button 
                                             variant="destructive"
@@ -262,21 +281,24 @@ const SlotBooking = () => {
                                     </div>
                                     
                                     <div className="space-y-2">
-                                        <div className="flex justify-between">
-                                            <span className="text-sm text-gray-600">Schedule Date:</span>
-                                            <span className="text-sm font-medium">{slot.scheduleDate}</span>
+                                    <div className="flex justify-between">
+                                        <span className="text-sm text-gray-600">Schedule Date:</span>
+                                        <span className="text-sm font-medium">
+                                            {new Date(slot.date).toLocaleDateString('en-GB')}
+                                        </span>
                                         </div>
+
                                         <div className="flex justify-between">
                                             <span className="text-sm text-gray-600">Schedule Day:</span>
-                                            <span className="text-sm font-medium">{slot.scheduleDay}</span>
+                                            <span className="text-sm font-medium">{slot.day}</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-sm text-gray-600">Slot Timing:</span>
-                                            <span className="text-sm font-medium">{slot.slotTiming}</span>
+                                            <span className="text-sm font-medium">{slot.timeSlot}</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-sm text-gray-600">Slot mode:</span>
-                                            <span className="text-sm font-medium">{slot.Mode}</span>
+                                            <span className="text-sm font-medium">{slot.mode}</span>
                                         </div>
                                     </div>
                                 </CardContent>
