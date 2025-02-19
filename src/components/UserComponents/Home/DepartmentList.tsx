@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card } from '../../Common/card/Card.tsx';
-import { Building2, Stethoscope, Heart, ActivitySquare, TestTube, Shield, Hospital, Bone } from 'lucide-react';
+import { Building2, Stethoscope, Heart, ActivitySquare, TestTube, ShieldPlus, Hospital, Bone , Ribbon , HeartPulse , ClipboardPlus, Waypoints , Scissors , ShieldCheck , Syringe} from 'lucide-react';
 import { motion } from "framer-motion";
 import { getDepartmentData } from "../../../api/action/UserActionApi";
 
@@ -27,18 +27,23 @@ const Departments = () => {
 
   // Icon mapping for departments
   const departmentIconMap: { [key: string]: any } = {
-    'General Medicine': Building2,
+    'General Medicine': ShieldPlus,
     'Primary Care': Stethoscope,
-    'Cardiology': Heart,
+    'Cardiologist': HeartPulse,
     'Radiologist': ActivitySquare,
     'Hematologist': TestTube,
-    'Psychologist': Shield,
     'Homeopathic': Hospital,
     'Orthopedist': Bone,
-    'Neurologist': Building2,
+    'Neurologist': Waypoints,
     'Dermatologist': Stethoscope,
-    'Pediatrician': Heart,
     'ENT Specialist': ActivitySquare,
+    "Physiologist" :  Building2,
+    "Piscologist" : Ribbon,
+    "Orthologist" : ClipboardPlus,
+    "Orthopedic Surgeon" : Scissors ,
+    "Dentist" : ShieldCheck,
+    "Pediatrician" : Syringe ,
+
   };
 
   // Create specialists dynamically based on department data

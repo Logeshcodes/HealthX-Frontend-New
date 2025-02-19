@@ -9,6 +9,8 @@ import DoctorForgotPassword from '../pages/Doctors/Auth/DoctorForgotPassword';
 import DoctorResetVerificationOTP from '../pages/Doctors/Auth/DoctorResetVerifyOTP';
 import DoctorResetPassword from '../pages/Doctors/Auth/DoctorResetPassword';
 
+import DoctorSessionRoute from '../Protecter/DoctorSessionRouter';
+
 import DoctorLayout from '../layouts/DoctorLayout';
 import PrivateRoute from '../Protecter/DoctorPrivateRoute';
 import NotFoundPage from '../pages/Doctors/NotFoundPage';
@@ -36,7 +38,7 @@ const DoctorRouter =() => {
         {/* Auth Routes */}
         <Route path="register" element={<DoctorSignup />} />
         <Route path="verify_otp" element={<DoctorVerificationOTP />} />
-        <Route path="login" element={<DoctorLogin />} />
+        <Route path="login" element={<DoctorSessionRoute><DoctorLogin/></DoctorSessionRoute>} />
         <Route path="verifyEmail" element={<DoctorForgotPassword />} />
         <Route path="forgot-password-otp" element={<DoctorResetVerificationOTP />} />
         <Route path="resetPassword" element={<DoctorResetPassword />} />

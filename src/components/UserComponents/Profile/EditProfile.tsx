@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 interface UserData {
   username: string;
   email: string;
-  MobileNumber: string;
+  mobileNumber: string;
   profilePicture: string;
   isBlocked: string;
   createdAt: string;
@@ -43,7 +43,7 @@ const EditProfile = () => {
   const [users, setUsers] = useState<UserData>({
     username: "",
     email: "",
-    MobileNumber: "",
+    mobileNumber: "",
     profilePicture: "",
     isBlocked: "",
     createdAt: "",
@@ -65,7 +65,7 @@ const EditProfile = () => {
       .email("Invalid email format")
       .required("Email is required"),
 
-    MobileNumber: Yup.string()
+    mobileNumber: Yup.string()
       .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits")
       .required("Mobile number is required"),
 
@@ -121,7 +121,7 @@ const EditProfile = () => {
   const initialValues = {
     username: users?.username || "",
     email: users?.email || "",
-    MobileNumber: users?.MobileNumber || "",
+    mobileNumber: users?.mobileNumber || "",
     profilePicture: users?.profilePicture || "",
     isBlocked: users?.isBlocked || "",
     createdAt: users?.createdAt || "",
@@ -301,7 +301,7 @@ const EditProfile = () => {
                     {/* Mobile Number Field */}
                     <div>
                       <label
-                        htmlFor="MobileNumber"
+                        htmlFor="mobileNumber"
                         className="text-sm text-gray-600"
                       >
                         Mobile Number
@@ -309,19 +309,19 @@ const EditProfile = () => {
                       <div className="flex items-center space-x-2">
                         <Phone size={20} className="text-blue-500" />
                         <Field
-                          name="MobileNumber"
+                          name="mobileNumber"
                           type="text"
                           placeholder="Mobile Number"
                           className={`w-full px-4 py-3 bg-gray-50 rounded-lg focus:outline-none focus:ring-2 ${
-                            errors.MobileNumber && touched.MobileNumber
+                            errors.mobileNumber && touched.mobileNumber
                               ? "focus:ring-red-500"
                               : "focus:ring-purple-500"
                           }`}
                         />
                       </div>
-                      {errors.MobileNumber && touched.MobileNumber && (
+                      {errors.mobileNumber && touched.mobileNumber && (
                         <div className="text-red-500 text-sm mt-1">
-                          {errors.MobileNumber}
+                          {errors.mobileNumber}
                         </div>
                       )}
                     </div>

@@ -4,8 +4,9 @@ import * as Yup from "yup";
 
 import Loader from '../../../components/Common/Fallbacks/Loader';
 import PasswordField from '../../../components/UserComponents/common/passwordField';
+import InputField from '../../../components/UserComponents/common/inputField';
 
-import { Formik, Form , Field } from "formik";
+import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -18,12 +19,23 @@ import { motion } from "framer-motion";
 
 // Validation Schema
 const signupSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  username: Yup.string()
+    .min(3, "Username must be at least 3 characters")
+    .required("Username is required"),
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
+  mobileNumber: Yup.string()
+    .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
+    .required("Mobile number is required"),
   password: Yup.string()
-  .matches(/^\S*$/, "Password must not contain spaces")
-  .min(6, "Password must be at least 6 characters")
-  .required("Password is required")
-})
+    .matches(/^\S*$/, "Password must not contain spaces")
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], "Passwords must match")
+    .required("Confirm password is required"),
+});
 
 
 const SignupPage = () => {
@@ -60,12 +72,12 @@ const SignupPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-500 to-cyan-400 p-4 flex items-center justify-center">
 
 
-< motion.div
+        < motion.div
 
-initial={{opacity:0 , x:200}}
-animate={{opacity:100,x:0}}
-transition={{duration:1 , ease:'easeInOut'}}
->
+        initial={{opacity:0 , x:200}}
+        animate={{opacity:100,x:0}}
+        transition={{duration:1 , ease:'easeInOut'}}
+        >
       <Card className="w-full max-w-6xl grid md:grid-cols-2 overflow-hidden bg-white rounded-xl shadow-xl">
 
      
@@ -85,45 +97,71 @@ transition={{duration:1 , ease:'easeInOut'}}
           <div className="mb-8">
             
             <h2 className="text-2xl font-bold mb-2">Welcome to HealthX</h2>
-            <h3 className="text-xl font-semibold text-gray-700 mb-6">
+            {/* <h3 className="text-xl font-semibold text-gray-700 mb-6">
               Get started with your email
               <br />
               & set your Password
-            </h3>
+            </h3> */}
           </div>
 
 
           <Formik
-              initialValues={{ email: '', password: '' }} 
-              validationSchema={signupSchema}
-              onSubmit={handleSubmit}
-            >
-              {({ errors, touched }) => (
-                <Form className="space-y-6">
-                  <div className="rounded-lg bg-gray-100 p-4">
-                    <Field
-                      name="email"
-                      type="text"
-                      className="w-full bg-transparent border-none focus:outline-none text-gray-800"
-                      placeholder="Email"
-                    />
-                    
-                  </div>
-                  {errors.email && touched.email && (
-                      <div className="text-red-500 text-sm">{errors.email}</div>
-                    )}
-                  <div className="rounded-lg bg-gray-100 p-4">
-                    <PasswordField
-                      name="password"
-                     
-                      
-                      placeholder="Password"
-                    />
-                    
-                  </div>
+            initialValues={{
+              username: '',
+              email: '',
+              mobileNumber: 0,
+              password: '',
+              confirmPassword: '',
+            }}
+            validationSchema={signupSchema}
+            onSubmit={handleSubmit}
+          >
+            {({  }) => (
+              <Form className="space-y-6">
+                <div className="bg-gray-100">
+                  <InputField
+                    name="username"
+                    type="text"
+                    label={'username'} 
+                    placeholder="Username"
+                  />
+                 
+                </div>
+              
+
+                <div className="bg-gray-100">
+                  <InputField
+                    name="email"
+                    type="text"
+                    label={'Email'} 
+                    placeholder="Email"
+                  />
                 
-                  {!loader ? (
-                <button
+                </div>
+
+            
+
+                <div className="bg-gray-100">
+                  <InputField
+                      name="mobileNumber"
+                      type="text"
+
+                      placeholder="Mobile Number" label={'Mobile Number'}                  />
+                 
+                </div>
+
+                <div className="rounded-lg">
+                  <PasswordField name="password" placeholder="Password" />
+                 
+                </div>
+
+                <div className="rounded-lg">
+                  <PasswordField name="confirmPassword" placeholder="Confirm Password" />
+                 
+                </div>
+
+                {!loader ? (
+                  <button
                     type="submit"
                     className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
                   >
@@ -132,11 +170,10 @@ transition={{duration:1 , ease:'easeInOut'}}
                 ) : (
                   <Loader />
                 )}
+              </Form>
+            )}
+          </Formik>
 
-                  
-                </Form>
-              )}
-           </Formik>
 
 
 
@@ -165,14 +202,14 @@ transition={{duration:1 , ease:'easeInOut'}}
         </div>
 
         {/* Right Section */}
-        <div className="hidden md:block relative bg-gradient-to-br from-purple-600 to-blue-500 p-8">
+        <div className="hidden md:block relative bg-gradient-to-br from-purple-600 to-blue-500 p-10">
           <div className="text-center text-white">
             <h2 className="text-3xl font-bold mb-8">Patient Signup</h2>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-10 ml-16 max-w-sm">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-10 ml-16 max-w-sm w-96">
               <img
                 src="../../../Login-template.png"
                 alt="Healthcare professional"
-                className="rounded-lg mb-4"
+                className="rounded-lg m-10 w-96"
               />
               <div className="absolute bottom-8 right-8">
                 <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">

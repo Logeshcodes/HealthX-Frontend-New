@@ -115,6 +115,7 @@ const DoctorCarousel = () => {
         {/* Doctors Carousel */}
         <div className="flex justify-center items-center gap-4 overflow-hidden">
           {getVisibleDoctors().map((doctor, idx) => (
+            
             <DoctorCard key={idx} doctor={doctor} position={doctor.position} />
           ))}
         </div>

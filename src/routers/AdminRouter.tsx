@@ -11,7 +11,7 @@ import DoctorsListTable from "../pages/Admin/VerifiedDoctorList";
 import RequestedDoctorList from "../pages/Admin/RequestedDoctorList";
 import BannerManagement from "../pages/Admin/Banner";
 import BannerForm from "../pages/Admin/AddBanner";
-
+import AdminSessionRoute from "../Protecter/AdminSessionRoute";
 import DocumentVerification from "../pages/Admin/DocumentVerification";
 
 import AdminLayout from "../layouts/AdminLayout";
@@ -25,7 +25,7 @@ const AdminRouter = () => {
     <Suspense fallback={<BrickLoader />}>
       <Routes>
         {/* Unprotected Route */}
-        <Route path="login" element={<AdminLogin />} />
+        <Route path="login" element={<AdminSessionRoute><AdminLogin/></AdminSessionRoute>} />
         
         {/* Protected Routes */}
         <Route element={<PrivateRoute />}>

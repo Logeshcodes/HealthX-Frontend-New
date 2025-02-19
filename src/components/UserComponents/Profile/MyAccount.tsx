@@ -5,7 +5,7 @@ import { getUserData } from '../../../api/action/UserActionApi';
 interface UserData {
   username : string;
   email: string;
-  MobileNumber: string;
+  mobileNumber: string;
   profilePicture: string;
   isBlocked: string;
   createdAt: string;
@@ -22,7 +22,7 @@ const MyAccount = () => {
   const [users, setUsers] = useState<UserData>({
     username: '',
     email: '',
-    MobileNumber: '',
+    mobileNumber: '',
     profilePicture : "",
     isBlocked: '',
     createdAt: '',
@@ -102,7 +102,7 @@ const MyAccount = () => {
                 <label className="text-sm text-gray-600">Phone Number</label>
                 <div className="flex items-center space-x-3 p-3 bg-gray-200 rounded-lg">
                   <Phone size={20} className="text-blue-500" />
-                  <span>{users.MobileNumber}</span>
+                  <span>{users.mobileNumber}</span>
                 </div>
               </div>
 

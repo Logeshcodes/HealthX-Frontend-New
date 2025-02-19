@@ -22,6 +22,17 @@ import UserRouters from "../../@types/endPoints/userEndPoints";
     try {
       const response = await API.get(`${UserRouters.getDoctorDetails}${email}`,{ withCredentials : true });
       console.log(response,"datA")
+      return response?.data ;
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  export const getSlotDetailsById = async (id: string | null): Promise<any> => {
+    try {
+      const response = await API.get(`${UserRouters.getSlotDetailsById}${id}`,{ withCredentials : true });
+      console.log(response,"data by id..")
       return response?.data;
 
     } catch (error) {
@@ -72,7 +83,9 @@ export const getDepartmentData = async (): Promise<any> => {
     }
   };
 
-  // Show all doctor data in userSide
+
+
+  // Show all doctor data in userSide Home DoctorCarousel 
  
 
   export const getDoctorData = async (): Promise<any> => {
@@ -85,6 +98,50 @@ export const getDepartmentData = async (): Promise<any> => {
   };
 
  
+  // get slots userside 
+
+  export const getSlotDetails = async (email: string | null, page: number = 1, limit: number = 4): Promise<any> => {
+    try {
+      console.log("Fetching slot details with pagination");
+  
+      const response = await API.get(`${UserRouters.getDoctorSlotData}/${email}?page=${page}&limit=${limit}`);
+
+  
+      console.log(response.data, "get slotBooking response");
+      console.log(response, "resp-1");
+  
+      return response?.data;
+  
+    } catch (error) {
+      console.error("Error in getSlotDetails API call:", error);
+    }
+  };
+
+
+
+  // get appointment - payment success userside 
+
+  export const getAppointmentDetails = async (txnid: string | null): Promise<any> => {
+    try {
+        if (!txnid) {
+            throw new Error("Transaction ID is required");
+        }
+
+        console.log("Fetching appointment details...", txnid);
+
+        const response = await API.get(`${UserRouters.getAppointmentDetails}/${txnid}`);
+
+        console.log(response, "Fetched appointment details");
+
+        return response; 
+    } catch (error) {
+        console.error("Error in getAppointmentDetails API call:", error);
+        throw error; // Properly propagate errors
+    }
+};
+
+
+
   
  
   

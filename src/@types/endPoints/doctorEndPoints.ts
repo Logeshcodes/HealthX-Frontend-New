@@ -13,6 +13,7 @@ const DoctorRoutes={
     // Booking
 
     SlotBooking : '/booking/doctor/slotBooking' ,
-    getDoctorSlotData: '/booking/doctor/slotBooking'
+    getDoctorSlotData: '/booking/doctor/slotBooking',
+    deleteSlot : 'booking/doctor/slotBooking'
 }
 export default DoctorRoutes 

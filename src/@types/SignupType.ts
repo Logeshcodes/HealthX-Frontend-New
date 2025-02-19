@@ -1,5 +1,7 @@
 export  type signUp = {
+    username : string ,
     email: string;
-    password: string;
-    
+    mobileNumber : number ,
+    password: string,
+    confirmPassword : string
   };

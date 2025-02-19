@@ -22,7 +22,20 @@ const UserRouters = {
 
     getDoctorDetails:"/user/patient/doctor_details/",
 
+   
 
+    // slots 
+
+    getDoctorSlotData: '/booking/patient/slotBooking',
+
+     // For Slot details 
+
+     getSlotDetailsById : '/booking/patient/slotDetails/' ,
+
+
+    // payment -success
+
+    getAppointmentDetails : '/user/patient/payment-success'
    
 }
 

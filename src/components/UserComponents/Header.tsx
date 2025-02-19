@@ -18,7 +18,7 @@ import { setUser , clearUserDetials } from "../../redux/slices/userSlice";
 
 const navigation = [
   { name: 'Home', href: '/', id: 'home', icon: Home },
-  { name: 'Doctors', href: '/user/doctor_list', id: 'doctors', icon: Users },
+  { name: 'Doctors', href: '/user/doctor_list' , id: 'doctors', icon: Users },
   { name: 'Appointments', href: '/user/appointments', id: 'appointments', icon: Calendar },
   { name: 'Service', href: '/user/services', id: 'services', icon: Grid },
   { name: 'About Us', href: '/user/about', id: 'about', icon: Info },
@@ -79,21 +79,19 @@ export default function Header() {
   
 
 
-
-
- 
-
-  
-
   useEffect(() => {
-
-
     const currentPath = window.location.pathname;
-    const activeNavItem = navigation.find((item) => item.href === currentPath);
+  
+    // Check if current path includes any navigation href
+    const activeNavItem = navigation.find((item) => 
+      currentPath === item.href || currentPath.startsWith(item.href.replace('/list', ''))
+    );
+  
     if (activeNavItem) {
       setActiveTab(activeNavItem.id);
     }
   }, []);
+  
 
   const handleNavigation = (href: string, id: string) => {
     setActiveTab(id);
@@ -171,75 +169,10 @@ export default function Header() {
             ))}
           </div>
 
-          {/* <div className="hidden lg:flex lg:flex-1 lg:justify-end ">
-            {userId ? (
-              
-
-              <div className="flex items-center gap-2 mr-14">
-              <img
-                src="../../../profile.jpg" 
-                alt="Profile"
-                className="h-12 w-12 rounded-full border-2 border-white object-cover cursor-pointer"
-              />
-               <button
-                onClick={toggleDropdown}
-                className="flex items-center justify-center p-1 mt-8 rounded-md  focus:outline-none"
-                >
-                <ChevronDown size={24} />
-              </button>
-              {isDropdownOpen && (
-                <div
-                  className={`absolute right-0  mt-56 w-48 bg-white shadow-lg rounded-lg ${
-                    isDropdownOpen ? "block" : "hidden"
-                  }`}
-                >
-                  <ul className="text-gray-700">
-                    <li
-                      className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
-                      onClick={() => (window.location.href = "/user/profile")}
-                    >
-                      <User size={18} />
-                      Profile
-                    </li>
-                    <li
-                      className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
-                      onClick={() => (window.location.href = "/user/chat")}
-                    >
-                      <MessageSquare size={18} />
-                      Chat
-                    </li>
-                    <li
-                      className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
-                      onClick={() => (window.location.href = "/user/wallet")}
-                    >
-                      <Wallet size={18} />
-                      Wallet
-                    </li>
-                    <li
-                      className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100 text-red-500"
-                      onClick={handleLogout}
-                    >
-                      <LogOut size={18} />
-                      Logout
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
-            ) : (
-              <a href="/user/login">
-                <button
-                  type="button"
-                  className="mr-3 inline-block px-6 py-3 font-bold text-center bg-gradient-to-tl from-blue-600 to-cyan-400 uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs text-white"
-                >
-                  Login
-                </button>
-              </a>
-            )}
-          </div> */}
+        
 
 
-<div className="hidden lg:flex lg:flex-1 lg:justify-end ">
+            <div className="hidden lg:flex lg:flex-1 lg:justify-end ">
             {userId ? (
               
 

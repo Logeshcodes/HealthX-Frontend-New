@@ -11,6 +11,7 @@ const DoctorCard = ({ doctor, position }: any) => {
           : 'scale-50 opacity-40'
       }`}
     >
+      <a href={`/user/doctor_details/${doctor.email}`}>
       <div className="bg-white rounded-lg shadow-lg p-4 w-64">
         {doctor.profilePicture ? (
           <img
@@ -30,6 +31,7 @@ const DoctorCard = ({ doctor, position }: any) => {
           {doctor.department || 'Specialty Not Provided'}
         </p>
       </div>
+      </a>
     </div>
   );
 };

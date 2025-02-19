@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import BrickLoader from '../components/Common/Fallbacks/BrickLoader';
+
 
 import Home from '../pages/Users/Home';
 import SignupPage from '../pages/Users/Auth/Signup';
@@ -14,6 +15,7 @@ import About from '../pages/Users/Navbar/About';
 
 import Layout from '../layouts/Layout';
 import PrivateRoute from '../Protecter/UserPrivateRoute';
+import UserSessionRoute from '../Protecter/UserSessionRoute';
 import NotFoundPage from '../pages/Users/NotFoundPage';
 
 
@@ -27,7 +29,11 @@ import AccountStatus from '../components/UserComponents/Profile/AccountStatus';
 
 import DoctorDetailPage from '../pages/Users/Navbar/DoctorDetailsPage';
 import Slot from '../pages/Users/Doctor/Slot';
+import SlotDetailsPage from '../pages/Users/Doctor/SlotDetailsPage';
+import AppointmentsPage from '../pages/Users/Navbar/Appointment';
 
+import PaymentSuccess from '../pages/Users/Payment/Success';
+import PaymentFailurePage from '../pages/Users/Payment/Failed';
 
 const UserRouter = () => {
   return (
@@ -35,10 +41,17 @@ const UserRouter = () => {
       <Routes>
 
         {/* auth - Unprotected Route  */}
+
+        <Route element={<PrivateRoute />}>
+         
+        </Route>
         
         <Route path="/user/signup" element={  <SignupPage />  } />
+          
+        <Route path="/user/login" element={<UserSessionRoute><LoginPage /></UserSessionRoute>} />
+          
+
         <Route path="/user/verify_otp" element={  <OTPVerification /> } />
-        <Route path="/user/login" element={ <LoginPage /> } />
         <Route path="/user/verifyEmail" element={  <ForgotPassword />  } />
         <Route path="/user/forgot-password-otp" element={ <ResetVerificationOTP />  } />
         <Route path="/user/resetPassword" element={ <ResetPassword /> } />
@@ -56,6 +69,13 @@ const UserRouter = () => {
             <Route path="/user/doctor_list" element={<DoctorListingPage />} />
             <Route path="/user/doctor_details/:email" element={<DoctorDetailPage />} />
             <Route path="/user/slot/:email" element={<Slot/>} />
+            <Route path="/user/slotDetails/:id" element={<SlotDetailsPage/>} />
+            <Route path="/user/appointments" element={<AppointmentsPage/>} />
+
+
+            <Route path="/user/patient/payment-success/:txnid" element={<PaymentSuccess />} />
+            <Route path="/user/patient/payment-failure" element={<PaymentFailurePage />} />
+
            
             
             <Route path="/user/about" element={<About />} />
@@ -79,7 +99,7 @@ const UserRouter = () => {
 
 
        
-
+        
 
         {/* Catch-all Route for 404 */}
         <Route path="*" element={<NotFoundPage />} />

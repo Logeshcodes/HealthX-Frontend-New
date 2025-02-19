@@ -2,12 +2,17 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 import { Card , CardContent} from '../../../components/DoctorComponents/Appointments/card';
 import { Button } from '../../../components/DoctorComponents/Appointments/button';
-import { Calendar, Clock, X } from 'lucide-react';
+import { Calendar, Clock, X , UserRound , CircleCheckBig } from 'lucide-react';
 import { toast } from "react-toastify";
+import { format } from 'date-fns';
+
+import AlertDialog2 from "../../../components/UserComponents/common/AlertDialogBox2";
 
 
-import { slotBooking , getSlotDetails } from '../../../api/action/DoctorActionApi';
+import { slotBooking , getSlotDetails , deleteSlot } from '../../../api/action/DoctorActionApi';
 import { useEffect, useState } from "react";
+
+
 
 interface AppointmentData {
     date: string;
@@ -23,6 +28,8 @@ const validationSchema = Yup.object({
     mode: Yup.string().required('Mode is required'),
 });
 
+
+
 const initialValues: AppointmentData = {
     date: '',
     day: '',
@@ -31,11 +38,7 @@ const initialValues: AppointmentData = {
 };
 
 const SlotBooking = () => {
-    const days = [
-        'Sunday', 'Monday', 'Tuesday', 'Wednesday',
-        'Thursday', 'Friday', 'Saturday'
-    ];
-
+    
     const timeSlots = [
         '09:00 - 10:00 am', '10:00 - 11:00 am', '11:00 - 12:00 pm',
         '01:00 - 02:00 pm', '02:00 - 03:00 pm', '03:00 - 04:00 pm',
@@ -43,22 +46,7 @@ const SlotBooking = () => {
         '07:00 - 08:00 pm', '08:00 - 09:00 pm'
     ];
 
-    const availableSlots = [
-        {
-            id: '01',
-            scheduleDate: '30-12-2024',
-            scheduleDay: 'Monday',
-            slotTiming: '04:00 - 05:00 pm',
-            Mode : "Online"
-        },
-        {
-            id: '02',
-            scheduleDate: '01-01-2025',
-            scheduleDay: 'Wednesday',
-            slotTiming: '04:00 - 05:00 pm',
-            Mode : "Offline"
-        }
-    ];
+   
 
     const [slots , setSlots] =  useState<any []>([]);
 
@@ -72,15 +60,36 @@ const SlotBooking = () => {
             let email = doctorData.email;
             const slot = await getSlotDetails(email);
             console.log("coming....", slot.data);
-            setSlots(slot.data); // Assuming `setSlots` is your state setter
+            setSlots(slot.data); 
           }
         };
       
-        fetchSlots();  // Call the function here, outside the definition block
+        fetchSlots();  
       }, []);
       
 
-   
+      
+
+      const handleDelete = async (slotId: string) => {
+        try {
+          console.log(slotId, "id");
+      
+          const response = await deleteSlot(slotId);
+          console.log(response, "res");
+      
+          if (response) {
+            toast.success('Slot deleted successfully');
+            
+          
+            setSlots((prevSlots) => prevSlots.filter((slot) => slot._id !== slotId));
+          } else {
+            toast.error('Slot not deleted successfully');
+          }
+        } catch (error) {
+          toast.error('Failed to delete the slot');
+        }
+      };
+      
 
 
 
@@ -105,7 +114,9 @@ const SlotBooking = () => {
             const response = await slotBooking(formData);
             if (response.success) {
                 toast.success("Slot booked successfully");
-               
+                console.log(response,"resp1________________________")
+                //setSlots(...slots, response.data); 
+                setSlots((prevSlots) => [...prevSlots, response.data]);
             } 
         } catch (error) {
             toast.error("An unexpected error occurred");
@@ -113,7 +124,7 @@ const SlotBooking = () => {
             setSubmitting(false);
         }
     };
-    
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-8 mt-32">
@@ -131,56 +142,32 @@ const SlotBooking = () => {
                         >
                             {({ isSubmitting, setFieldValue, values }) => (
                                 <Form className="space-y-6">
-                                    {/* Date Selection */}
+                                     {/* Date Selection */}
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                                            <Calendar className="w-4 h-4 text-blue-500" />
+                                        <label className="text-sm font-medium text-gray-700 flex items-center gap-2 mb-5">
+                                            <Calendar className="w-5 h-5 text-blue-500" />
                                             Slot Schedule Date:
                                         </label>
                                         <Field
                                             type="date"
                                             name="date"
                                             className="w-full px-4 py-2 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                const selectedDate = new Date(e.target.value);
+                                                const dayName = format(selectedDate, 'EEEE');
+                                                setFieldValue('date', e.target.value);
+                                                setFieldValue('day', dayName);
+                                            }}
                                         />
-                                        <ErrorMessage
-                                            name="date"
-                                            component="div"
-                                            className="text-red-500 text-sm mt-1"
-                                        />
-                                    </div>
-
-                                    {/* Day Selection */}
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-medium text-gray-700">
-                                            Slot Schedule Day:
-                                        </label>
-                                        <div className="grid grid-cols-4 gap-2">
-                                            {days.map((day) => (
-                                                <Button
-                                                    key={day}
-                                                    type="button"
-                                                    variant={values.day === day ? "default" : "outline"}
-                                                    className={`${
-                                                        values.day === day 
-                                                            ? "bg-blue-500 text-white" 
-                                                            : "border-gray-200 text-gray-700 hover:bg-blue-50"
-                                                    } text-xs md:text-sm`}
-                                                    onClick={() => setFieldValue('day', day)}
-                                                >
-                                                    {day.slice(0, 3)}
-                                                </Button>
-                                            ))}
-                                        </div>
-                                        <ErrorMessage
-                                            name="day"
-                                            component="div"
-                                            className="text-red-500 text-sm mt-1"
-                                        />
+                                        <ErrorMessage name="date" component="div" className="text-red-500 text-sm mt-1" />
+                                        {values.date && (
+                                            <div className="text-sm text-gray-700 mt-1">Day: {format(new Date(values.date), 'EEEE')}</div>
+                                        )}
                                     </div>
 
                                     {/* Time Slot Selection */}
                                     <div className="space-y-4">
-                                        <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                                        <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2 mb-5">
                                             <Clock className="w-5 h-5 text-blue-500" />
                                             Select Time Slot:
                                         </h2>
@@ -210,7 +197,8 @@ const SlotBooking = () => {
 
                                     {/* Mode Selection */}
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium text-gray-700">
+                                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2 mb-5">
+                                            <UserRound className="w-5 h-5  text-blue-500" />
                                             Consultation Mode:
                                         </label>
                                         <div className="grid grid-cols-3 gap-3">
@@ -271,13 +259,38 @@ const SlotBooking = () => {
                                         <span className="text-sm font-medium text-gray-500">
                                             # Slot No: {index + 1}
                                         </span>
-                                        <Button 
-                                            variant="destructive"
-                                            size="sm"
-                                            className="bg-red-500 hover:bg-red-600"
+                                        
+                                        {!slot.avaliable ? (
+                                             <Button 
+                                             variant="destructive"
+                                             size="sm"
+                                             className="bg-green-500 hover:bg-green-600"
+                                         >
+
+                                            
+                                            <CircleCheckBig className="w-4 h-4 mr-2" />
+                                            <p>Slot Booked </p>
+                                           
+
+
+                                            </Button>
+                                        )
+                                        :(
+                                            <AlertDialog2
+                                            title="Confirm Delete"
+                                            alert="Are you sure you want to delte your slot?"
+                                            onConfirm={() => handleDelete(slot._id)}  //{slot._id}
                                         >
-                                            <X className="w-4 h-4" />
-                                        </Button>
+                                            <Button 
+                                                variant="destructive"
+                                                size="sm"
+                                                className="bg-red-500 hover:bg-red-600"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </Button>
+                                        </AlertDialog2>
+                                        )}
+                                     
                                     </div>
                                     
                                     <div className="space-y-2">

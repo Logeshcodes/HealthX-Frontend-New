@@ -46,6 +46,19 @@ export const slotBooking = async (formData: FormData): Promise<any> => {
   }
 };
 
+export const deleteSlot = async (_id: string): Promise<any> => {
+  try {
+    console.log("Inside deleteSlot API call");
+
+    const response = await API.delete(`${DoctorRoutes.deleteSlot}/${_id}`);
+    console.log(response.data, "deleteSlot response");
+    return response?.data;
+  } catch (error) {
+    console.error("Error in deleteSlot API call:", error);
+  }
+};
+
+
 export const getSlotDetails = async (email: string | null): Promise<any> => {
   try {
     console.log("Inside updateProfile API call");
