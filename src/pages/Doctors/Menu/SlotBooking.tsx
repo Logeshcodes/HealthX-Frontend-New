@@ -93,12 +93,11 @@ const SlotBooking = () => {
 
 
 
-    const handleSubmit = async (values: AppointmentData, { setSubmitting }: any) => {
+      const handleSubmit = async (values: AppointmentData, { setSubmitting }: any) => {
         try {
-          
-            
             const formData = new FormData();
             const doctorDataString = localStorage.getItem("doctor");
+    
             if (doctorDataString) {
                 const doctorData = JSON.parse(doctorDataString);
                 formData.append('name', doctorData.name);
@@ -112,18 +111,21 @@ const SlotBooking = () => {
             console.log("clicked formdata:", [...formData.entries()]);
     
             const response = await slotBooking(formData);
+    
             if (response.success) {
                 toast.success("Slot booked successfully");
-                console.log(response,"resp1________________________")
-                //setSlots(...slots, response.data); 
                 setSlots((prevSlots) => [...prevSlots, response.data]);
-            } 
+            } else {
+                toast.error(response.message);  
+            }
         } catch (error) {
             toast.error("An unexpected error occurred");
         } finally {
             setSubmitting(false);
         }
     };
+    
+    
 
 
     return (

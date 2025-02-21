@@ -28,6 +28,12 @@ const UserRouters = {
 
     getDoctorSlotData: '/booking/patient/slotBooking',
 
+    // Appointment 
+
+    getUserAppointmentData: '/user/patient/appointments',
+    
+    getAppointment : '/user/patient/appointmentData',
+
      // For Slot details 
 
      getSlotDetailsById : '/booking/patient/slotDetails/' ,
@@ -35,7 +41,7 @@ const UserRouters = {
 
     // payment -success
 
-    getAppointmentDetails : '/user/patient/payment-success'
+    getAppointmentDetails : '/user/patient/payment-success/'
    
 }
 

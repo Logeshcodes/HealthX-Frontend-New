@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Pencil, Trash2, Plus } from 'lucide-react';
-import { Card , CardContent , CardHeader ,CardTitle } from '../../components/AdminComponents/common/Card';
+import { Card , CardContent , CardHeader } from '../../components/AdminComponents/common/Card';
 import { Button } from '../../components/AdminComponents/common/Button';
 
 const BannerManagement = () => {
@@ -28,9 +28,10 @@ const BannerManagement = () => {
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Banners</CardTitle>
+    <Card className="w-full ">
+      <div className='bg-slate-800 text-white rounded-lg'>
+      <CardHeader >
+      <h1 className="text-2xl font-bold text-blue-500">Banner List</h1>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -45,9 +46,9 @@ const BannerManagement = () => {
                 <th className="p-4 text-left">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-700">
               {banners.map((banner) => (
-                <tr key={banner.id} className="hover:bg-gray-700">
+                <tr key={banner.id} className="hover:bg-gray-700 bg-slate-800 text-white">
                   <td className="p-4">
                     <img
                       src={banner.image}
@@ -103,10 +104,10 @@ const BannerManagement = () => {
         </div>
 
         <footer className="mt-8 text-sm text-gray-500 flex justify-between">
-          <p>2025 © Health-X - HealthCare Application</p>
-          <p>All rights reserved</p>
+          
         </footer>
       </CardContent>
+      </div>
     </Card>
   );
 };

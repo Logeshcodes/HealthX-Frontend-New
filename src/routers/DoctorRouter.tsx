@@ -24,7 +24,7 @@ import VerifyProfile from '../components/DoctorComponents/Profile/VerifyProfile'
 
 import SlotBooking from '../pages/Doctors/Menu/SlotBooking';
 
-
+import DoctorAppointmentDashboard from '../components/DoctorComponents/Appointments/AppointmentPage';
 
 const DoctorRouter =() => {
 
@@ -51,6 +51,7 @@ const DoctorRouter =() => {
           <Route path="" element={<DoctorHome />} />
           <Route element={<PrivateRoute />}>
               <Route path="/appointments/:email" element={<SlotBooking/>} />
+              <Route path="/bookedAppointments" element={<DoctorAppointmentDashboard/>} />
             <Route path="/profile" element={<ProfileManagement />}>
               <Route path="my-account" element={<MyAccount  />} />
               <Route path="change-password" element={<ChangePassword />} />

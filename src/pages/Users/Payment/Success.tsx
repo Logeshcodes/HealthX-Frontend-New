@@ -5,6 +5,8 @@ import { Button } from '../../../components/DoctorComponents/Appointments/button
 
 import { getAppointmentDetails } from '../../../api/action/UserActionApi';
 
+
+
 interface Appointment{
 
   paymentId : string ,
@@ -22,11 +24,15 @@ const PaymentSuccessPage = () => {
     const txnid = decodeURI(location.pathname.split('/').pop() || '');
     const [appointment, setAppointment] = useState<Appointment>();
     const [showAnimation, setShowAnimation] = useState(false);
+    
 
     useEffect(() => {
         if (txnid) {
             const fetchAppointment = async () => {
                 try {
+
+                   
+                    
                     const response = await getAppointmentDetails(txnid);
                     setAppointment(response.data);
                     setShowAnimation(true);
@@ -47,7 +53,7 @@ const PaymentSuccessPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-green-200 flex items-center justify-center p-4 mt-32">
+        <div className="min-h-screen bg-green-200 flex items-center justify-center p-4 mt-28">
             <div className="max-w-2xl w-full space-y-8">
                 {/* Success Animation */}
                 <div className="flex justify-center">
@@ -153,14 +159,14 @@ const PaymentSuccessPage = () => {
                          <div className="flex justify-center pt-6 space-x-4">
                             <Button 
                                 className="bg-green-600 hover:bg-green-700 text-white"
-                                onClick={() => window.location.href = '/dashboard'}
+                                onClick={() => window.location.href = '/'}
                             >
-                                Go to Dashboard
+                                Go to Home page
                             </Button>
                             <Button 
                                 variant="outline"
                                 className="border-green-600 text-green-600 hover:bg-green-50"
-                                onClick={() => window.location.href = '/appointments'}
+                                onClick={() => window.location.href = '/user/appointments'}
                             >
                                 View All Appointments
                             </Button>

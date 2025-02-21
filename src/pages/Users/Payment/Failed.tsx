@@ -10,13 +10,13 @@ const PaymentFailurePage = () => {
 
    console.log(setShowAnimation)
 
-    const handleRetryPayment = () => {
-        // Implement retry payment logic
-        console.log("Retrying payment...");
-    };
+    // const handleRetryPayment = () => {
+    //     // Implement retry payment logic
+    //     console.log("Retrying payment...");
+    // };
 
     const handleContactSupport = () => {
-        window.location.href = '/support';
+        window.location.href = '/user/about';
     };
 
     
@@ -57,13 +57,13 @@ const PaymentFailurePage = () => {
 
                         {/* Action Buttons */}
                         <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
-                            <Button 
+                            {/* <Button 
                                 className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2"
                                 onClick={handleRetryPayment}
                             >
                                 <RefreshCcw className="w-4 h-4" />
                                 Retry Payment
-                            </Button>
+                            </Button> */}
                             <Button 
                                 variant="outline"
                                 className="border-red-600 text-red-600 hover:bg-red-50 flex items-center gap-2"
@@ -75,7 +75,7 @@ const PaymentFailurePage = () => {
                             <Button 
                                 variant="outline"
                                 className="border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                                onClick={() => window.location.href = '/appointments'}
+                                onClick={() => window.location.href = '/user/appointments'}
                             >
                                 <ArrowLeft className="w-4 h-4" />
                                 Back to Appointments

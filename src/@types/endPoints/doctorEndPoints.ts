@@ -14,6 +14,9 @@ const DoctorRoutes={
 
     SlotBooking : '/booking/doctor/slotBooking' ,
     getDoctorSlotData: '/booking/doctor/slotBooking',
-    deleteSlot : 'booking/doctor/slotBooking'
+    deleteSlot : 'booking/doctor/slotBooking',
+
+
+    getDoctorAppointmentData: '/user/doctor/appointments',
 }
 export default DoctorRoutes 

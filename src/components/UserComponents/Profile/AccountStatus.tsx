@@ -22,9 +22,6 @@ const AccountStatus = () => {
 
   const [loading, setLoading] = useState<boolean>(true);
 
-
-  
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {

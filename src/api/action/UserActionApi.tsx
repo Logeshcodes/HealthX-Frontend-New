@@ -118,6 +118,44 @@ export const getDepartmentData = async (): Promise<any> => {
   };
 
 
+  export const getAllAppointmentDetails = async (email: string | null, page: number, limit: number ): Promise<any> => {
+    try {
+      console.log("Fetching Appointment details with pagination" , email);
+  
+      const response = await API.get(`${UserRouters.getUserAppointmentData}/${email}?page=${page}&limit=${limit}`);
+
+  
+      console.log(response.data, "get Appointment response");
+      console.log(response, "resp-1");
+  
+      return response?.data;
+  
+    } catch (error) {
+      console.error("Error in Appointment API call:", error);
+    }
+  };
+
+ 
+
+
+  export const getAppointment = async (email: string): Promise<any> => {
+    try {
+      console.log("Fetching Appointment details with pagination" , email);
+  
+      const response = await API.get(`${UserRouters.getAppointment}/${email}`);
+
+  
+      console.log(response.data, "get Appointment response");
+      console.log(response, "resp-2222222222222222");
+  
+      return response?.data;
+  
+    } catch (error) {
+      console.error("Error in Appointment API call:", error);
+    }
+  };
+
+
 
   // get appointment - payment success userside 
 
@@ -129,7 +167,10 @@ export const getDepartmentData = async (): Promise<any> => {
 
         console.log("Fetching appointment details...", txnid);
 
-        const response = await API.get(`${UserRouters.getAppointmentDetails}/${txnid}`);
+        console.log("Requesting:", `${UserRouters.getAppointmentDetails}/${txnid}`);
+
+
+        const response = await API.get(`${UserRouters.getAppointmentDetails}${txnid}`);
 
         console.log(response, "Fetched appointment details");
 

@@ -30,7 +30,7 @@ import AccountStatus from '../components/UserComponents/Profile/AccountStatus';
 import DoctorDetailPage from '../pages/Users/Navbar/DoctorDetailsPage';
 import Slot from '../pages/Users/Doctor/Slot';
 import SlotDetailsPage from '../pages/Users/Doctor/SlotDetailsPage';
-import AppointmentsPage from '../pages/Users/Navbar/Appointment';
+import AppointmentDashboard from '../pages/Users/Navbar/Appoint';
 
 import PaymentSuccess from '../pages/Users/Payment/Success';
 import PaymentFailurePage from '../pages/Users/Payment/Failed';
@@ -70,7 +70,7 @@ const UserRouter = () => {
             <Route path="/user/doctor_details/:email" element={<DoctorDetailPage />} />
             <Route path="/user/slot/:email" element={<Slot/>} />
             <Route path="/user/slotDetails/:id" element={<SlotDetailsPage/>} />
-            <Route path="/user/appointments" element={<AppointmentsPage/>} />
+            <Route path="/user/appointments" element={<AppointmentDashboard/>} />
 
 
             <Route path="/user/patient/payment-success/:txnid" element={<PaymentSuccess />} />

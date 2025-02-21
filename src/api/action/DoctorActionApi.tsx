@@ -118,3 +118,18 @@ export const reVerifyRequest=async (formData:FormData)=>{
       console.log(error)
   }
 }
+
+
+export const getAllDoctorAppointmentDetails = async (email: string | null, page: number, limit: number ): Promise<any> => {
+  try {
+    console.log("Fetching Appointment details with pagination" , email);
+
+    const response = await API.get(`${DoctorRoutes.getDoctorAppointmentData}/${email}?page=${page}&limit=${limit}`);
+
+
+    return response?.data;
+
+  } catch (error) {
+    console.error("Error in Appointment API call:", error);
+  }
+};

@@ -38,8 +38,8 @@ const BannerForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-800 p-4 md:p-6 lg:p-8">
-      <Card className="max-w-2xl mx-auto bg-slate-900">
+    <Card className="w-full mx-auto bg-slate-900">
+        <div className="min-h-screen bg-slate-800 p-4 md:p-6 lg:p-8 rounded-lg">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-white">Add New Banner</CardTitle>
         </CardHeader>
@@ -50,7 +50,7 @@ const BannerForm = () => {
             onSubmit={handleSubmit}
           >
             {/* {({ errors, touched, setFieldValue }) => ( */}
-            {({ errors, touched }) => (
+            {({ errors, touched , setFieldValue , isSubmitting }) => (
               <Form className="space-y-6">
                 <div>
                   <label htmlFor="bannerTitle" className="block text-sm font-medium text-gray-200  mb-1">
@@ -96,9 +96,12 @@ const BannerForm = () => {
                       Start Date
                     </label>
                     <Field
-                      type="date"
                       id="startDate"
+                      type="date"
                       name="startDate"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          setFieldValue('startDate', e.target.value);
+                      }}
                       className={`w-full px-3 py-2 rounded-md border bg-slate-800 text-white ${
                         errors.startDate && touched.startDate
                           ? 'border-red-500'
@@ -118,6 +121,9 @@ const BannerForm = () => {
                       type="date"
                       id="endDate"
                       name="endDate"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setFieldValue('endDate', e.target.value);
+                    }}
                       className={`w-full px-3 py-2 rounded-md border bg-slate-800 text-white ${
                         errors.endDate && touched.endDate
                           ? 'border-red-500'
@@ -137,6 +143,7 @@ const BannerForm = () => {
                   <Field
                     id="link"
                     name="link"
+                    
                     className={`w-full px-3 py-2 rounded-md border bg-slate-800 text-white ${
                       errors.link && touched.link
                         ? 'border-red-500'
@@ -148,7 +155,7 @@ const BannerForm = () => {
                   )}
                 </div>
 
-                {/* <div>
+                <div>
                   <label htmlFor="bannerImage" className="block text-sm font-medium text-gray-200 mb-1">
                     Choose Banner Image
                   </label>
@@ -158,7 +165,7 @@ const BannerForm = () => {
                     name="bannerImage"
                     accept="image/*"
                     onChange={(event) => {
-                      setFieldValue('bannerImage', event.currentTarget.files[0]);
+                      setFieldValue('bannerImage', event.currentTarget.files);
                     }}
                     className={`w-full px-3 py-2 rounded-md border bg-slate-800 text-white ${
                       errors.bannerImage && touched.bannerImage
@@ -169,23 +176,29 @@ const BannerForm = () => {
                   {errors.bannerImage && touched.bannerImage && (
                     <div className="text-red-400 text-sm mt-1">{errors.bannerImage}</div>
                   )}
-                </div> */}
+                </div>
 
-                <Button 
-                  type="submit"
-                  className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-black rounded-lg
-            hover:from-blue-600 hover:to-blue-700 transition-all duration-200 
-            shadow-md hover:shadow-lg transform hover:-translate-y-0.5
-            flex items-center gap-2 font-medium"
-                >
-                  Publish
-                </Button>
+                <div className="col-span-full mt-4">
+                    
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className={`w-full bg-blue-500 text-white py-3 rounded-lg ${
+                            isSubmitting
+                              ? "opacity-50 cursor-not-allowed"
+                              : "hover:bg-blue-600"
+                          }`}
+                        >
+                          {isSubmitting ? "Saving..." : "Save Changes"}
+                        </button>
+                      
+                    </div>
               </Form>
             )}
           </Formik>
         </CardContent>
-      </Card>
     </div>
+      </Card>
   );
 };
 
