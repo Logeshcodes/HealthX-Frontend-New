@@ -3,7 +3,7 @@ import { API } from "../../service/axios";
 import AdminRoutes from "../../@types/endPoints/adminEndPoints";
 
 import { deptData } from "../../@types/DeptDataType";
-
+import { BannerData } from "../../@types/BannerDataType";
 
 
   // Admin Side - UserList
@@ -162,6 +162,24 @@ export const getDepartmentByName = async (departmentName: string): Promise<any> 
   }
 };
 
+
+
+export const getBannerById = async (bannerId: string): Promise<any> => {
+  try {
+    console.log("_________", bannerId)
+    const response = await API.get(`${AdminRoutes.adminGetBannerById}/${bannerId}`,{
+      withCredentials:true
+    });
+    console.log(".....",response.data)
+    return response;
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      throw new Error('bannerId not found');
+    }
+    throw error;
+  }
+};
+
 export const getDoctorByEmail = async (email: string): Promise<any> => {
   try {
     console.log("_________", email)
@@ -194,6 +212,68 @@ export const updateDepartment = async (departmentName: string, deptData: { depar
   }
 };
 
+export const updateBanner = async (bannerId: string, bannerData : BannerData ): Promise<any> => {
+  try {
+    const response = await API.put( `${AdminRoutes.adminUpdateBanner}/${bannerId}`, {bannerData },{
+      withCredentials:true
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      throw new Error('bannerId not found');
+    }
+    throw error;
+  }
+};
 
 
+
+export const addBanner = async (formData: FormData): Promise<any> => {
+  try {
+    console.log("Inside addBanner API call       " , formData);
+
+    const response = await API.post(AdminRoutes.addBanner, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
+    });
+    console.log(response.data, "addBanner response");
+    return response?.data;
+  } catch (error) {
+    console.error("Error in addBanner API call:", error);
+  }
+};
+
+
+export const getAllBanner = async (): Promise<any> => {
+  try {
+   
+
+    const response = await API.get(AdminRoutes.getAllBanner, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
+    });
+    console.log(response.data, "getBannerData response");
+    return response?.data;
+  } catch (error) {
+    console.error("Error in getBannerData API call:", error);
+  }
+};
+
+
+
+
+  
+export const toggleBannerStatus = async (id: string | null): Promise<any> => {
+  try {
+    const response = await API.get(`${AdminRoutes.adminListBanner}/${id}`,{
+      headers:{ "Content-Type":"application/json"},
+      withCredentials:true
+    });
+    console.log(`Calling API with URL: ${AdminRoutes.adminListBanner}/${id}`);
+    return response?.data;
+  } catch (error) {
+    console.log('Error list / unlist banner:', error);
+    throw error;
+  }
+};
 

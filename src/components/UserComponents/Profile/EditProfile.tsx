@@ -15,10 +15,9 @@ import {
 } from "lucide-react";
 import { updateProfile, getUserData } from "../../../api/action/UserActionApi";
 
-
 import { toast } from "react-toastify";
 
-import { Formik, Form, Field} from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
@@ -106,14 +105,11 @@ const EditProfile = () => {
         "Invalid blood group"
       )
       .required("Blood group is required"),
-
-
-      
   });
 
   const [loading, setLoading] = useState<boolean>(true);
 
-  console.log(loading)
+  console.log(loading);
 
   //   const [initialValues, setInitialValues] = useState(users);
   // useEffect(() => setInitialValues(users), [users]);
@@ -132,7 +128,6 @@ const EditProfile = () => {
     weight: users?.weight || "",
     bloodGroup: users?.bloodGroup || "",
   };
-  
 
   const [imgSrc, setImgSrc] = useState(
     users.profilePicture || "../../../profile.jpg"
@@ -141,10 +136,9 @@ const EditProfile = () => {
   useEffect(() => {
     if (users?.profilePicture) {
       setImgSrc(users.profilePicture);
-      console.log(users.profilePicture , "pic")
+      console.log(users.profilePicture, "pic");
     }
   }, [users.profilePicture]);
-  
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -159,8 +153,7 @@ const EditProfile = () => {
             setUsers(data);
           }
 
-
-          console.log("user photo ----" ,users.profilePicture )
+          console.log("user photo ----", users.profilePicture);
         }
       } catch (error) {
         console.log("Error fetching users:", error);
@@ -176,29 +169,28 @@ const EditProfile = () => {
     try {
       console.log("clicked...", data);
 
-     
       const formData = new FormData();
-  
+
       // Check if profilePicture is an instance of File
       if (data?.profilePicture) {
         formData.append("profilePicture", data.profilePicture);
       }
-  
+
       // Append other form fields
       Object.entries(data).forEach(([key, value]) => {
         if (key !== "profilePicture") {
           formData.append(key, value);
         }
       });
-  
+
       // Log form data for debugging
       for (const [key, value] of formData.entries()) {
         console.log(`${key}:`, value);
       }
-  
+
       // Send the request to the backend
       const response = await updateProfile(formData);
-  
+
       if (response.success) {
         toast.success("Profile updated successfully");
         navigate(`/user/profile/my-account`);
@@ -210,39 +202,41 @@ const EditProfile = () => {
       toast.error("An unexpected error occurred");
     }
   };
-  
-  
 
   const handleImageUpload = (event: any) => {
     const file = event.target.files[0];
     if (file) {
       setUsers((prev) => ({
         ...prev,
-        profilePicture: file, // Store the file itself, not the base64 string
+        profilePicture: file,
       }));
     }
   };
-  
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-lg">
+      <Formik
+        initialValues={initialValues}
+        enableReinitialize
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({
+          isSubmitting,
+          values,
+          handleChange,
+          handleBlur,
+          errors,
+          touched,
+        }) => (
+          <Form>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <div className="space-y-6">
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Edit Profile
+                  </h2>
 
-<Formik initialValues={initialValues} enableReinitialize validationSchema={validationSchema} onSubmit={handleSubmit}>
-              {({
-                isSubmitting,values,handleChange,handleBlur,errors,touched,
-  
-              }) => (
-                <Form>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">
-              Edit Profile
-            </h2>
-
-           
-
-                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Username Field */}
                     <div>
@@ -486,103 +480,95 @@ const EditProfile = () => {
                         </div>
                       )}
                     </div>
-
-                    
                   </div>
-               
-          </div>
-        </div>
+                </div>
+              </div>
 
-        {/* Right Section */}
-        <div className="lg:w-1/1  rounded-lg p-6 bg-gray-200">
-          <div className="flex flex-col items-center">
-            {/* Show uploaded profile picture or default */}
-            <img
-              src={imgSrc}
-              alt="Profile"
-              className="w-28 h-28 rounded-full object-cover border-blue-100"
-              onError={(e) => (e.currentTarget.src = "../../../profile.jpg")}
-            />
+              {/* Right Section */}
+              <div className="lg:w-1/1  rounded-lg p-6 bg-gray-200">
+                <div className="flex flex-col items-center">
+                  {/* Show uploaded profile picture or default */}
+                  <img
+                    src={imgSrc}
+                    alt="Profile"
+                    className="w-28 h-28 rounded-full object-cover border-blue-100"
+                    onError={(e) =>
+                      (e.currentTarget.src = "../../../profile.jpg")
+                    }
+                  />
 
+                  <h3 className="font-medium text-gray-800">
+                    {users.username}
+                  </h3>
 
-            <h3 className="font-medium text-gray-800">{users.username}</h3>
-
-            <div className="w-full mt-6 space-y-6">
-              {/* Profile picture upload */}
-              <label className="block text-sm font-medium text-gray-700">
-                Upload Profile Picture
-              </label>
-              <input
-                type="file"
-                name="profilePicture"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+                  <div className="w-full mt-6 space-y-6">
+                    {/* Profile picture upload */}
+                    <label className="block text-sm font-medium text-gray-700">
+                      Upload Profile Picture
+                    </label>
+                    <input
+                      type="file"
+                      name="profilePicture"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
           file:rounded-full file:border-0 file:text-sm file:font-semibold
           file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
-               
+                    />
 
-
-              <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <Aperture size={20} className="text-blue-500" />
-                  <span className="text-sm">Status</span>
-                </div>
-                <CircleDot size={20} className="text-green-500 ml-48" />
-                {users.isBlocked === "true" ? (
-                  <span>Blocked</span>
-                ) : (
-                  <span className="text-green-500 relative">Active</span>
-                )}
-              </div>
-
-              <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <Store size={20} className="text-blue-500" />
-                  <span className="text-sm">Joined</span>
-                </div>
-                <span className="text-sm text-gray-600 pl-12">
-                  {new Date(users.createdAt).toLocaleDateString("en-GB")}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <Calendar size={20} className="text-blue-500" />
-                  <span className="text-sm">Update</span>
-                </div>
-                <span className="text-sm text-gray-600 pl-12">
-                  {new Date(users.updatedAt).toLocaleDateString("en-GB")}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div className="col-span-full mt-4">
-                    
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className={`w-full bg-blue-500 text-white py-3 rounded-lg ${
-                            isSubmitting
-                              ? "opacity-50 cursor-not-allowed"
-                              : "hover:bg-blue-600"
-                          }`}
-                        >
-                          {isSubmitting ? "Saving..." : "Save Changes"}
-                        </button>
-                      
+                    <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <Aperture size={20} className="text-blue-500" />
+                        <span className="text-sm">Status</span>
+                      </div>
+                      <CircleDot size={20} className="text-green-500 ml-48" />
+                      {users.isBlocked === "true" ? (
+                        <span>Blocked</span>
+                      ) : (
+                        <span className="text-green-500 relative">Active</span>
+                      )}
                     </div>
 
-        
-      </div>
+                    <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <Store size={20} className="text-blue-500" />
+                        <span className="text-sm">Joined</span>
+                      </div>
+                      <span className="text-sm text-gray-600 pl-12">
+                        {new Date(users.createdAt).toLocaleDateString("en-GB")}
+                      </span>
+                    </div>
 
-      </Form>
-              )}
-            </Formik>
+                    <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <Calendar size={20} className="text-blue-500" />
+                        <span className="text-sm">Update</span>
+                      </div>
+                      <span className="text-sm text-gray-600 pl-12">
+                        {new Date(users.updatedAt).toLocaleDateString("en-GB")}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-full mt-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full bg-blue-500 text-white py-3 rounded-lg ${
+                    isSubmitting
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-blue-600"
+                  }`}
+                >
+                  {isSubmitting ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

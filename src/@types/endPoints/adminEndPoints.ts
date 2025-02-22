@@ -20,8 +20,13 @@ const AdminRoutes = {
     adminGetDepartmentByName: '/user/admin/editDepartment',
     adminUpdateDepartment: '/user/admin/editDepartment',
 
-    adminGetDoctorByEmail : '/user/admin/getDoctorByEmail'
+    adminGetDoctorByEmail : '/user/admin/getDoctorByEmail',
 
+    addBanner : '/user/admin/banner',
+    getAllBanner : '/user/admin/banner',
+    adminGetBannerById : '/user/admin/editBanner',
+    adminUpdateBanner : '/user/admin/editBanner',
+    adminListBanner : '/user/admin/listBanner'
 }
 
 export default AdminRoutes ;

@@ -16,6 +16,8 @@ interface DepartmentFormValues {
 }
 
 const EditDepartmentForm: React.FC<EditDepartmentFormProps> = ({ isDarkMode }) => {
+
+  
   const [loader, setLoader] = useState(false);
   const { departmentName } = useParams<{ departmentName: string }>();
   const navigate = useNavigate();
