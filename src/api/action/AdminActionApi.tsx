@@ -215,6 +215,7 @@ export const updateDepartment = async (departmentName: string, deptData: { depar
 export const updateBanner = async (bannerId: string, bannerData : BannerData ): Promise<any> => {
   try {
     const response = await API.put( `${AdminRoutes.adminUpdateBanner}/${bannerId}`, {bannerData },{
+      headers: { "Content-Type": "multipart/form-data" },
       withCredentials:true
     });
     return response.data;

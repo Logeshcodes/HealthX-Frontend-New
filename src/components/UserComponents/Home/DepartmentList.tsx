@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card } from '../../Common/card/Card.tsx';
-import { Building2, Stethoscope, Heart, ActivitySquare, TestTube, ShieldPlus, Hospital, Bone , Ribbon , HeartPulse , ClipboardPlus, Waypoints , Scissors , ShieldCheck , Syringe} from 'lucide-react';
+import { Building2, Stethoscope, ActivitySquare, TestTube, ShieldPlus, Hospital, Bone , Ribbon , HeartPulse , ClipboardPlus, Waypoints , Scissors , ShieldCheck , Syringe} from 'lucide-react';
 import { motion } from "framer-motion";
 import { getDepartmentData } from "../../../api/action/UserActionApi";
 

@@ -2,6 +2,8 @@ const UserRouters = {
 
     GetDoctorsList :'/user/patient/getDoctors',
 
+    
+
 
     // profile
 
@@ -15,6 +17,8 @@ const UserRouters = {
     Get_All_Department : '/user/patient/department_list',
 
     getAllDoctors : '/user/patient/doctor_list',
+
+    getAllBanner : '/user/patient/banner_list',
 
    
 

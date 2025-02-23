@@ -182,7 +182,17 @@ export const getDepartmentData = async (): Promise<any> => {
 };
 
 
+export const getAllBanner = async (): Promise<any> => {
+  try {
+   
 
-  
- 
-  
+    const response = await API.get(UserRouters.getAllBanner, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
+    });
+    console.log(response.data, "getBannerData response");
+    return response?.data;
+  } catch (error) {
+    console.error("Error in getBannerData API call:", error);
+  }
+};
