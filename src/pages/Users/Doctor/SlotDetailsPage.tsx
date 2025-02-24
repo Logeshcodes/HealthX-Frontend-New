@@ -1,5 +1,5 @@
 import { Card , CardContent, CardHeader } from '../../../components/AdminComponents/common/Card';
-import { Calendar, Clock, Phone, Mail, Award, Languages, CheckCircle, AlertCircle } from 'lucide-react';
+import { Calendar, Clock, Phone, Mail, Languages, CheckCircle, AlertCircle, MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import CryptoJS from 'crypto-js';
@@ -17,6 +17,7 @@ interface Doctor {
   experience: string;
   role: string;
   education: string;
+  location: string;
   description: string;
   consultationType: string;
   profilePicture: string;
@@ -230,7 +231,7 @@ const SlotDetailsPage = () => {
                 </div>
               <div>
                 <h2 className="text-2xl font-semibold">Mr .{doctor.name}</h2>
-                <p className="text-blue-100 mt-2">{doctor?.department}</p>
+                <p className="text-blue-100 mt-2">{doctor?.department} ( {doctor.experience} Years experience)</p>
                 <div className="flex items-center mt-2">
                   <span className="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
                     ⭐ Fees : {doctor.consultationFee} Rupees
@@ -255,13 +256,18 @@ const SlotDetailsPage = () => {
                 <Phone className="text-indigo-600" size={20} />
                 <span className="text-gray-700">+91 - {doctor.Mobile}</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
+              {/* <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
                 <Award className="text-purple-600" size={20} />
                 <span className="text-gray-700">{doctor.education} • {doctor.experience} Years experience</span>
-              </div>
+              </div> */}
+             
               <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
                 <Languages className="text-blue-600" size={20} />
                 <span className="text-gray-700">{doctorDetails.languages.join(", ")}</span>
+              </div>
+              <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
+                <MapPin className="text-purple-600" size={20} />
+                <span className="text-gray-700">{doctor.location}</span>
               </div>
             </div>
           </CardContent>
@@ -305,6 +311,7 @@ const SlotDetailsPage = () => {
                   <span className="text-green-700">Available</span>
                 </div>
               </div>
+              
             </div>
 
             <div className="p-6 pt-0">

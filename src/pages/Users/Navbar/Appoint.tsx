@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { 
   Calendar, Clock, User, MapPin, FileText, 
-  ChevronRight, Search, Filter, Bell, Download,
+  ChevronRight, Search, Filter, Video, Download,
   CheckCircle2, XCircle, Clock3 , PlusCircle
 } from 'lucide-react';
 import dayjs from "dayjs";
@@ -29,17 +29,18 @@ interface Appointment{
     appointmentDate : string ,
     department : string ,
     mode : string ,
+    location : string ,
     status : string ,
     patientEmail : string ,
   
   }
 
 const AppointmentDashboard = () => {
-    const [activeTab, setActiveTab] = useState('cancelled');
+    const [activeTab, setActiveTab] = useState('upcoming');
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalAppointments, setTotalAppointments] = useState(0);
-    const slotsPerPage = 10;
+    const slotsPerPage = 5;
 
     const [upcomingCount, setUpcomingCount] = useState(0);
     const [completedCount, setCompletedCount] = useState(0);
@@ -58,7 +59,13 @@ const AppointmentDashboard = () => {
             const email = user?.email;
   
             if (email) {
-              const response = await getAllAppointmentDetails(email, currentPage, slotsPerPage );
+
+              console.log("datas.." , email, currentPage, slotsPerPage , activeTab )
+
+
+
+
+              const response = await getAllAppointmentDetails(email, currentPage, slotsPerPage , activeTab  );
               setAppointments(response.data);
               setTotalAppointments(response.total);
 
@@ -84,25 +91,25 @@ const AppointmentDashboard = () => {
       };
   
       fetchAppointments();
-    }, [currentPage]);
+    }, [currentPage , activeTab]);
   
-    const filteredAppointments = appointments.filter((appointment) => {
-      const appointmentDate = new Date(appointment.appointmentDate);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+    // const filteredAppointments = appointments.filter((appointment) => {
+    //   const appointmentDate = new Date(appointment.appointmentDate);
+    //   const today = new Date();
+    //   today.setHours(0, 0, 0, 0);
   
-      if (activeTab === 'upcoming') {
-        return appointmentDate >= today && appointment.status !== 'cancelled';
-      } else if (activeTab === 'past') {
-        return appointmentDate < today && appointment.status !== 'cancelled';
-      } 
+    //   if (activeTab === 'upcoming') {
+    //     return appointmentDate >= today && appointment.status !== 'cancelled';
+    //   } else if (activeTab === 'past') {
+    //     return appointmentDate < today && appointment.status !== 'cancelled';
+    //   } 
       
-      else if (activeTab === 'cancelled') {
-        return appointment.status === 'cancelled';
-      }
+    //   else if (activeTab === 'cancelled') {
+    //     return appointment.status === 'cancelled';
+    //   }
   
-      return true;
-    });
+    //   return true;
+    // });
   
     const totalPages = Math.ceil(totalAppointments / slotsPerPage);
 
@@ -111,9 +118,9 @@ const AppointmentDashboard = () => {
 
   const getStatusColor = (status : any) => {
     switch (status) {
-      case 'confirmed': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
+      case 'Booked': return 'bg-green-500 text-green-800';
+      case 'pending': return 'bg-yellow-500 text-yellow-800';
+      case 'cancelled': return 'bg-red-500 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -197,9 +204,9 @@ const AppointmentDashboard = () => {
 
 
             
-          { filteredAppointments.length > 0 ? (
+          { appointments.length > 0 ? (
 
-          filteredAppointments.map((appointment) => (
+            appointments.map((appointment) => (
 
 
             
@@ -242,11 +249,48 @@ const AppointmentDashboard = () => {
 
                   {/* Location & Mode */}
                   <div className="space-y-2">
+
+                    { appointment.mode === 'Offline' ? (
+
                     <div className="flex items-center space-x-2 text-gray-600">
-                      <MapPin className="w-4 h-4" />
-                      {/* <span className="text-sm">{appointment.location}</span> */}
+                    <MapPin className="w-4 h-4" />
+                    <span className="text-sm">{appointment.location}</span>
                     </div>
-                    <div className="flex items-center space-x-2">
+
+
+                    ) : (
+
+                      <div>
+
+                     
+
+                      <span className={`px-2 py-1 rounded-full text-xs ml-6 font-medium ${
+                        appointment.mode === 'Online' 
+                          ? 'bg-blue-100 text-blue-800' 
+                          : 'bg-purple-100 text-purple-800'
+                      }`}>
+                        {appointment.mode}
+                      </span>
+
+
+                         
+                      <Button className="bg-blue-600 hover:bg-blue-700 ml-8 text-white">
+                      <Video className="w-4 h-4" />
+                      </Button>
+
+                
+
+                      </div>
+                    
+
+                    
+                    )
+                    
+                  
+                  
+                  }
+                   
+                    {/* <div className="flex items-center space-x-2">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         appointment.mode === 'Online' 
                           ? 'bg-blue-100 text-blue-800' 
@@ -257,7 +301,7 @@ const AppointmentDashboard = () => {
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(appointment.status)}`}>
                         {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                       </span>
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Actions */}
@@ -266,12 +310,29 @@ const AppointmentDashboard = () => {
                       <p className="text-sm text-gray-500">Amount</p>
                       <p className="font-medium text-gray-900">₹{appointment.amount}</p>
                     </div>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                      View Details
+                    
+
+                    {
+                      appointment.status === 'Booked' ? (
+
+                     <div>
+                       <Button className={`${getStatusColor(appointment.status)} text-white`}>
+                      {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                     </Button>
-                    <Button className="bg-red-600 hover:bg-red-700 text-white">
+                     <Button className="bg-red-600 hover:bg-red-700 text-white ml-2">
                      Cancel
                     </Button>
+                     </div>
+
+                      ) : (
+
+                        <Button className={`${getStatusColor(appointment.status)} text-white`}>
+                        {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                      </Button>
+                       
+                      )
+                    }
+                   
                   </div>
                 </div>
               </CardContent>

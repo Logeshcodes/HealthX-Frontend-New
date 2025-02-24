@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Check,BadgeCheck , Calendar, Clock, User, CreditCard , Mail , Aperture } from 'lucide-react';
+import { Check,BadgeCheck , Calendar, Clock, User, CreditCard , Mail , Aperture , MapPin } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent} from '../../../components/DoctorComponents/Appointments/card';
 import { Button } from '../../../components/DoctorComponents/Appointments/button';
 
@@ -15,6 +15,7 @@ interface Appointment{
   paymentStatus : string ,
   appointmentTime : string ,
   appointmentDate : string ,
+  location : string ,
   mode : string ,
   patientEmail : string ,
 
@@ -144,6 +145,7 @@ const PaymentSuccessPage = () => {
                                 </div>
                                 <p className="font-medium text-lg">{appointment.mode}</p>
                             </div>
+                            
                             <div className="space-y-2 hover:bg-green-50 p-3 rounded-lg transition-colors duration-200">
                                 <div className="flex items-center space-x-2 text-gray-600">
                                     <Check className="w-5 h-5" />
@@ -154,6 +156,18 @@ const PaymentSuccessPage = () => {
                                 </span>
                             </div>
                         </div>
+
+                       {
+                        ( appointment.mode === 'Offline') &&
+
+                        <div className="space-y-2 hover:bg-green-50 p-3 rounded-lg transition-colors duration-200">
+                                <div className="flex items-center space-x-2 text-gray-600">
+                                    <MapPin className="w-5 h-5" />
+                                    <span>Location</span>
+                                </div>
+                                <p className="font-medium text-lg">{appointment.location}</p>
+                        </div>
+                       }
 
                          {/* Additional Actions */}
                          <div className="flex justify-center pt-6 space-x-4">

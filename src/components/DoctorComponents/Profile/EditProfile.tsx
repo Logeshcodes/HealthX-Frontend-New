@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Edit2, FileText, DollarSign, Briefcase , GraduationCap , Phone , Mail , User , Calendar , Store , CircleDot , Aperture } from 'lucide-react';
+import { Edit2, FileText, DollarSign, Briefcase , GraduationCap , Phone , Mail , User , Calendar , Store , CircleDot , Aperture , MapPin } from 'lucide-react';
 import { getDoctorData , updateProfile } from '../../../api/action/DoctorActionApi';
 
 
@@ -24,6 +24,7 @@ interface UserData {
   updatedAt: string;
   createdAt: string ;
   profilePicture : string ;
+  location : string ,
   isBlocked : false ;
 }
 
@@ -49,6 +50,7 @@ const EditProfile = () => {
     updatedAt: '',
     createdAt: '',
     profilePicture : '',
+    location : '',
     isBlocked : false ,
   });
 
@@ -58,6 +60,11 @@ const EditProfile = () => {
       .required('Name is required')
       .min(3, 'Name must be at least 3 characters')
       .max(50, 'Name must be at most 50 characters'),
+    
+    location : Yup.string()
+    .required('Location is required')
+    .min(15, 'Name must be at least 15 characters')
+    .max(100, 'Name must be at most 100 characters'),
 
     email: Yup.string()
       .email('Invalid email format')
@@ -96,6 +103,8 @@ const EditProfile = () => {
     isVerified: Yup.string()
       .oneOf(['Yes', 'No'], 'Invalid verification status')
       .required('Verification status is required')
+
+    
   });
 
 
@@ -149,6 +158,7 @@ const EditProfile = () => {
       isVerified: doctors.isVerified,
       createdAt : doctors.createdAt,
       updatedAt : doctors.updatedAt,
+      location : doctors.location,
       profilePicture : doctors.profilePicture ,
       isBlocked : doctors.isBlocked ,
     };
@@ -413,6 +423,32 @@ const EditProfile = () => {
                       )}
                   
                   </div>
+
+
+                  {/* location */}
+
+                      {
+                        (doctors.consultationType === 'Both' || doctors.consultationType === 'In-Person' ) &&
+
+                          <div>
+                          <label htmlFor="location" className="text-sm text-gray-600">Location</label>
+                          <div className="flex items-center space-x-2">
+                            <MapPin size={20} className="text-blue-500" />
+                            <Field
+                              name="location"
+                              type="text"
+                              placeholder="Location"
+                              className={`w-full px-4 py-3 bg-gray-50 rounded-lg focus:outline-none focus:ring-2 ${errors.location && touched.location ? "focus:ring-red-500" : "focus:ring-purple-500"}`}
+                            />
+                              </div>
+                            {errors.location && touched.location && (
+                              <div className="text-red-500 text-sm mt-1">{errors.location}</div>
+                            )}
+                        </div>
+
+
+                       
+                      }
 
 
                     {/* -- */}

@@ -118,11 +118,11 @@ export const getDepartmentData = async (): Promise<any> => {
   };
 
 
-  export const getAllAppointmentDetails = async (email: string | null, page: number, limit: number ): Promise<any> => {
+  export const getAllAppointmentDetails = async (email: string | null, page: number, limit: number , activeTab : string  ): Promise<any> => {
     try {
       console.log("Fetching Appointment details with pagination" , email);
   
-      const response = await API.get(`${UserRouters.getUserAppointmentData}/${email}?page=${page}&limit=${limit}`);
+    const response = await API.get(`${UserRouters.getUserAppointmentData}/${email}?page=${page}&limit=${limit}&activeTab=${activeTab}`);
 
   
       console.log(response.data, "get Appointment response");

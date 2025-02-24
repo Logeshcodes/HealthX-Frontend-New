@@ -81,7 +81,11 @@ const SlotBooking = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Schedule Day:</span>
-                      <span className="text-sm font-medium text-gray-800">{slot.day}</span>
+                      <span className="text-sm font-medium text-gray-800">{slot.day} </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Mode:</span>
+                      <span className="text-sm font-medium text-gray-800">{slot.mode} </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Slot Timing:</span>
