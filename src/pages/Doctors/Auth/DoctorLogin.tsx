@@ -51,6 +51,7 @@ const DoctorLogin = () => {
             name: doctor.name,
             email: doctor.email,
             role: doctor.role,
+            isBlocked: doctor.isBlocked,
             profilePicture: doctor.profilePicture,
           })
         );
@@ -87,6 +88,7 @@ const DoctorLogin = () => {
             name: doctor.name,
             email: doctor.email,
             role: doctor.role,
+            isBlocked: doctor.isBlocked,
             profilePicture: doctor.profilePicture,
           })
         );

@@ -35,7 +35,7 @@ interface BannerData {
 }
 
 const EditBannerForm = () => {
-  const { id: bannerId } = useParams<{ id: string }>(); // Get Banner ID from URL
+  const { id: bannerId } = useParams<{ id: string }>(); 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState<BannerData>({
@@ -97,21 +97,31 @@ const EditBannerForm = () => {
     try {
       setLoading(true);
 
+      console.log("Form submitted:", values);
      
       const formData = new FormData();
-      formData.append("bannerTitle", values.bannerTitle);
-      formData.append("description", values.description);
-      formData.append("startDate", values.startDate);
-      formData.append("endDate", values.endDate);
-      formData.append("link", values.link);
-      formData.append("role", values.role);
 
-      if (values.bannerImage instanceof File) {
+      if (values.bannerImage) {
         formData.append("bannerImage", values.bannerImage);
       }
 
+        Object.entries(values).forEach(([key, value]) => {
+        if (key !== "bannerImage") {
+          formData.append(key, value);
+        }
+      });
+
+      
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+     
+
+
+
       // API Call
-      const response = await updateBanner(bannerId!, values);
+      const response = await updateBanner(bannerId!, formData);
       if (response.success) {
         toast.success(response.message);
         navigate('/admin/banners');
@@ -227,7 +237,12 @@ const EditBannerForm = () => {
               )}
             </Formik>
           ) : (
-            <p className="text-white text-center">Loading...</p>
+           
+           
+                <div className="min-h-[400px] flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                </div>
+             
           )}
         </CardContent>
       </div>

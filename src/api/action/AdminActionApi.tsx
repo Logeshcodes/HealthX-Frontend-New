@@ -87,10 +87,7 @@ import { BannerData } from "../../@types/BannerDataType";
 
   export const approveDoctorDocuments = async (email: string  ): Promise<any> => {
     try {
-      const response = await API.post(`${AdminRoutes.adminApproveDouments}${email}`,{
-        headers:{ "Content-Type":"application/json"},
-        withCredentials:true
-      });
+      const response = await API.post(`${AdminRoutes.adminApproveDouments}${email}`,{},{withCredentials:true});
       return response?.data;
     } catch (error) {
       console.log(error);
@@ -212,9 +209,10 @@ export const updateDepartment = async (departmentName: string, deptData: { depar
   }
 };
 
-export const updateBanner = async (bannerId: string, bannerData : BannerData ): Promise<any> => {
+export const updateBanner = async (bannerId: string, bannerData : FormData ): Promise<any> => {
   try {
-    const response = await API.put( `${AdminRoutes.adminUpdateBanner}/${bannerId}`, {bannerData },{
+   
+    const response = await API.put( `${AdminRoutes.adminUpdateBanner}/${bannerId}`, bannerData ,{
       headers: { "Content-Type": "multipart/form-data" },
       withCredentials:true
     });

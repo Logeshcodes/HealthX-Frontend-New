@@ -45,6 +45,7 @@ export default function DoctorHeader() {
               name: doctorData.name,
               email: doctorData.email,
               role: doctorData.role,
+              isBlocked: doctorData.isBlocked,
               profilePicture: doctorData?.profilePicture || "/default-avatar.png",
             })  
           );

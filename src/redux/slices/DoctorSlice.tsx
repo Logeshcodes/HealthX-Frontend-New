@@ -4,6 +4,7 @@ interface doctor {
     name: string | null,
     email: string | null,
     role: string | null,
+    isBlocked: string | null,
     profilePicture: string | null
 }
 
@@ -12,6 +13,7 @@ const initialState: doctor = {
     name: null,
     email: null,
     role: null,
+    isBlocked: null,
     profilePicture:null
 };
 
@@ -20,11 +22,12 @@ const doctorSlice = createSlice({
     initialState,
     reducers: {
         setDoctor: (state, action: PayloadAction<doctor>) => {
-             const {  name, email, role ,profilePicture} = action.payload;
+             const {  name, email, role, isBlocked ,profilePicture} = action.payload;
            
                 state.name = name,
                 state.email = email,
-                state.role = role
+                state.role = role,
+                state.isBlocked = isBlocked,
                 state.profilePicture=profilePicture
 
             if (typeof window !== 'undefined') {
@@ -37,6 +40,7 @@ const doctorSlice = createSlice({
             state.name = null
             state.email = null
             state.role = null
+            state.isBlocked = null
             state.profilePicture=null
 
             if (typeof window !== 'undefined') {

@@ -104,7 +104,7 @@ export const getDepartmentData = async (): Promise<any> => {
     try {
       console.log("Fetching slot details with pagination");
   
-      const response = await API.get(`${UserRouters.getDoctorSlotData}/${email}?page=${page}&limit=${limit}`);
+      const response = await API.get(`${UserRouters.getDoctorSlotData}/${email}?page=${page}&limit=${limit}` ,{ withCredentials : true });
 
   
       console.log(response.data, "get slotBooking response");
@@ -122,7 +122,7 @@ export const getDepartmentData = async (): Promise<any> => {
     try {
       console.log("Fetching Appointment details with pagination" , email);
   
-    const response = await API.get(`${UserRouters.getUserAppointmentData}/${email}?page=${page}&limit=${limit}&activeTab=${activeTab}`);
+    const response = await API.get(`${UserRouters.getUserAppointmentData}/${email}?page=${page}&limit=${limit}&activeTab=${activeTab}`,{ withCredentials : true });
 
   
       console.log(response.data, "get Appointment response");
@@ -132,6 +132,7 @@ export const getDepartmentData = async (): Promise<any> => {
   
     } catch (error) {
       console.error("Error in Appointment API call:", error);
+      throw error ;
     }
   };
 
@@ -142,7 +143,7 @@ export const getDepartmentData = async (): Promise<any> => {
     try {
       console.log("Fetching Appointment details with pagination" , email);
   
-      const response = await API.get(`${UserRouters.getAppointment}/${email}`);
+      const response = await API.get(`${UserRouters.getAppointment}/${email}`,{ withCredentials : true });
 
   
       console.log(response.data, "get Appointment response");
@@ -170,7 +171,7 @@ export const getDepartmentData = async (): Promise<any> => {
         console.log("Requesting:", `${UserRouters.getAppointmentDetails}/${txnid}`);
 
 
-        const response = await API.get(`${UserRouters.getAppointmentDetails}${txnid}`);
+        const response = await API.get(`${UserRouters.getAppointmentDetails}${txnid}`,{ withCredentials : true });
 
         console.log(response, "Fetched appointment details");
 

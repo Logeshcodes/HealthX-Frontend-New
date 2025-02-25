@@ -57,6 +57,7 @@ const LoginPage = () => {
             name: user.name,
             email: user.email,
             role: user.role,
+            isBlocked: user.isBlocked,
             profilePicture: user.profilePicture,
           })
         );
@@ -105,6 +106,7 @@ const LoginPage = () => {
             name: user.name,
             email: user.email,
             role: user.role,
+            isBlocked: user.isBlocked,
             profilePicture: user.profilePicture,
           })
         );

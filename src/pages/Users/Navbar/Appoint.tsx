@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-import { 
-  Calendar, Clock, User, MapPin, FileText, 
-  ChevronRight, Search, Filter, Video, Download,
-  CheckCircle2, XCircle, Clock3 , PlusCircle
-} from 'lucide-react';
+import { Calendar, Clock, MapPin, FileText, Video,CheckCircle2, } from 'lucide-react';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"; 
 import timezone from "dayjs/plugin/timezone";
@@ -15,6 +11,14 @@ import { CardContent , Card } from '../../../components/DoctorComponents/Appoint
 import { Button } from '../../../components/DoctorComponents/Appointments/button';
 
 import { getAllAppointmentDetails , getAppointment } from '../../../api/action/UserActionApi';
+import { logout } from '../../../api/auth/UserAuthentication';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toast } from "react-toastify";
+
+import { clearUserDetails } from '../../../redux/slices/userSlice';
+
+
 
 
 interface Appointment{
@@ -45,11 +49,25 @@ const AppointmentDashboard = () => {
     const [upcomingCount, setUpcomingCount] = useState(0);
     const [completedCount, setCompletedCount] = useState(0);
     const [totalSpent, setTotalSpent] = useState(0);
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch();
+
+      const handleLogout = async () => {
+        try {
+          await logout(); 
+          dispatch(clearUserDetails());
+          navigate("/user/login");
+        } catch (error: any) {
+          console.error("Error during logout:", error);
+          toast.error("Failed to log out. Please try again.");
+        }
+      };
   
     useEffect(() => {
       const fetchAppointments = async () => {
         try {
-          const userDataString = localStorage.getItem('user');// instead of "doctor"
+          const userDataString = localStorage.getItem('user');
 
           const today = dayjs().startOf("day"); 
 
@@ -85,32 +103,19 @@ const AppointmentDashboard = () => {
               setTotalSpent(totalSpentAmount);
             }
           }
-        } catch (error) {
-          console.log('Error fetching appointments:', error);
+        } catch (error : any) {
+          console.log('Error fetching appointments:', error.response?.status );
+
+          if(error.response?.status === 401)(
+            await handleLogout()
+          )
         }
       };
   
       fetchAppointments();
     }, [currentPage , activeTab]);
   
-    // const filteredAppointments = appointments.filter((appointment) => {
-    //   const appointmentDate = new Date(appointment.appointmentDate);
-    //   const today = new Date();
-    //   today.setHours(0, 0, 0, 0);
-  
-    //   if (activeTab === 'upcoming') {
-    //     return appointmentDate >= today && appointment.status !== 'cancelled';
-    //   } else if (activeTab === 'past') {
-    //     return appointmentDate < today && appointment.status !== 'cancelled';
-    //   } 
-      
-    //   else if (activeTab === 'cancelled') {
-    //     return appointment.status === 'cancelled';
-    //   }
-  
-    //   return true;
-    // });
-  
+    
     const totalPages = Math.ceil(totalAppointments / slotsPerPage);
 
 

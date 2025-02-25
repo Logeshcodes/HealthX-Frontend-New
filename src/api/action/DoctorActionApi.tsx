@@ -5,7 +5,7 @@ import { API } from "../../service/axios";
 export const getDoctorData = async (email: string | null): Promise<any> => {
   try {
     
-    const response = await API.get( `${DoctorRoutes.getDoctorData}${email}`);
+    const response = await API.get( `${DoctorRoutes.getDoctorData}${email}`,{ withCredentials : true });
     return response?.data;
   } catch (error) {
     console.log(error);
@@ -50,7 +50,7 @@ export const deleteSlot = async (_id: string): Promise<any> => {
   try {
     console.log("Inside deleteSlot API call");
 
-    const response = await API.delete(`${DoctorRoutes.deleteSlot}/${_id}`);
+    const response = await API.delete(`${DoctorRoutes.deleteSlot}/${_id}`,{ withCredentials : true });
     console.log(response.data, "deleteSlot response");
     return response?.data;
   } catch (error) {
@@ -63,7 +63,7 @@ export const getSlotDetails = async (email: string | null): Promise<any> => {
   try {
     console.log("Inside updateProfile API call");
 
-    const response = await API.get(`${DoctorRoutes.getDoctorSlotData}/${email}`);
+    const response = await API.get(`${DoctorRoutes.getDoctorSlotData}/${email}`,{ withCredentials : true });
 
     console.log(response.data, "get slotBooking response");
     return response?.data;
@@ -124,7 +124,7 @@ export const getAllDoctorAppointmentDetails = async (email: string | null, page:
   try {
     console.log("Fetching Appointment details with pagination" , email);
 
-    const response = await API.get(`${DoctorRoutes.getDoctorAppointmentData}/${email}?page=${page}&limit=${limit}&activeTab=${activeTab}`);
+    const response = await API.get(`${DoctorRoutes.getDoctorAppointmentData}/${email}?page=${page}&limit=${limit}&activeTab=${activeTab}`,{ withCredentials : true });
 
     console.log("Fetching Appointment details with pagination" , response);
     return response?.data;
@@ -139,7 +139,7 @@ export const getAppointment = async (email: string): Promise<any> => {
   try {
     console.log("Fetching Appointment details with pagination" , email);
 
-    const response = await API.get(`${DoctorRoutes.getAppointment}/${email}`);
+    const response = await API.get(`${DoctorRoutes.getAppointment}/${email}`,{ withCredentials : true });
 
 
     console.log(response.data, "get Appointment response");

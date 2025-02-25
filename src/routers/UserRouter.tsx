@@ -35,6 +35,8 @@ import AppointmentDashboard from '../pages/Users/Navbar/Appoint';
 import PaymentSuccess from '../pages/Users/Payment/Success';
 import PaymentFailurePage from '../pages/Users/Payment/Failed';
 
+import VideoCallModal from '../components/UserComponents/VideoCall/createCall';
+
 const UserRouter = () => {
   return (
     <Suspense fallback={<BrickLoader />}>
@@ -75,6 +77,8 @@ const UserRouter = () => {
 
             <Route path="/user/patient/payment-success/:txnid" element={<PaymentSuccess />} />
             <Route path="/user/patient/payment-failure" element={<PaymentFailurePage />} />
+
+            {/* <Route path="/user/patient/videoCall" element={<VideoCallModal to={''}  isOpen={true} onClose={()=>{}}/>} /> */}
 
            
             

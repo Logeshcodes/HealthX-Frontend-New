@@ -13,7 +13,7 @@ import { logout } from '../../api/auth/UserAuthentication';
 import {useDispatch } from "react-redux";
 
 
-import { setUser , clearUserDetials } from "../../redux/slices/userSlice";
+import { setUser , clearUserDetails } from "../../redux/slices/userSlice";
 
 
 const navigation = [
@@ -64,6 +64,7 @@ export default function Header() {
             name: userData.name,
             email: userData.email,
             role: userData.role,
+            isBlocked: userData.isBlocked,
             profilePicture: userData.profilePicture,
           }));
         }
@@ -103,7 +104,7 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       await logout(); 
-      dispatch(clearUserDetials());
+      dispatch(clearUserDetails());
       toast.success("Logged out successfully");
       navigate("/user/login");
     } catch (error: any) {
