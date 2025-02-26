@@ -1,20 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSocket } from "../../../redux/SocketProvider";
-import {
-  MdCallEnd,
-  MdCall,
-  MdMic,
-  MdMicOff,
-  MdVideocam,
-  MdVideocamOff,
-} from "react-icons/md";
+import { MdCallEnd,MdCall,MdMic,MdMicOff,MdVideocam,MdVideocamOff,} from "react-icons/md";
 
-
-interface VideoCallModalProps {
-  to: string | undefined;
-  isOpen: boolean;
-  onClose: () => void;
-}
 
 const configuration = {
   iceServers: [
@@ -27,13 +14,14 @@ const configuration = {
   ],
 };
 
-const VideoCallModal: React.FC<VideoCallModalProps> = ({
-  to,
-  isOpen,
-  onClose,
-}) => {
+const VideoCallModal = () => {
+
+
+  console.log("VideoCallModal is being rendered");
+
   const socket = useSocket();
-  if (!socket || !isOpen) return null;
+  console.log("socket" , socket)
+  if (!socket ) return null;
 
   const [isCalling, setIsCalling] = useState(false);
   const [isIncomingCall, setIsIncomingCall] = useState(false);
@@ -48,7 +36,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
 
   // Initialize peer connection
   useEffect(() => {
-    if (isOpen) {
+    
       peerRef.current = new RTCPeerConnection(configuration);
 
       peerRef.current.onconnectionstatechange = () => {
@@ -65,14 +53,14 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
           remoteVideoRef.current.srcObject = stream;
         }
       };
-    }
+    
 
     return () => {
       if (peerRef.current) {
         peerRef.current.close();
       }
     };
-  }, [isOpen]);
+  }, []);
 
   // Handle cleanup
   useEffect(() => {
@@ -85,7 +73,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
 
   // Socket event handlers
   useEffect(() => {
-    if (!socket || !isOpen) return;
+    if (!socket ) return;
 
     const handleIncomingCall = async (data: {
       offer: RTCSessionDescriptionInit;
@@ -125,7 +113,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
         const answer = await peerRef.current.createAnswer();
         await peerRef.current.setLocalDescription(answer);
 
-        socket.emit("call:accepted", { answer, to: data.from });
+        socket.emit("call:accepted", { answer, to: data.from,hello:"helooooooooooo" });
       } catch (error) {
         console.error("Error handling incoming call:", error);
         handleEndCall();
@@ -175,7 +163,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
       socket.off("call:error");
       socket.off("call:ended");
     };
-  }, [socket, isOpen]);
+  }, [socket]);
 
   const startVideoCall = async () => {
     if (!peerRef.current) return;
@@ -199,7 +187,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
 
       const offer = await peerRef.current.createOffer();
       await peerRef.current.setLocalDescription(offer);
-      socket.emit("outgoing:call", { fromOffer: offer, to });
+      socket.emit("outgoing:call", { fromOffer: offer});
     } catch (error) {
       console.error("Error starting video call:", error);
       setIsCalling(false);
@@ -227,7 +215,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
   const handleEndCall = () => {
     // Notify other peer that call has ended
     socket.emit("end:call", {
-      to,
+    
       from: socket.id, // Add sender's ID to help recipient identify who ended the call
     });
 
@@ -253,19 +241,21 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
     setIsMuted(false);
     setIsVideoOff(false);
 
-    // Close the modal
-    onClose();
   };
+
+  
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+
+      
       <div className="bg-gray-900 rounded-lg shadow-lg p-4 w-full max-w-4xl aspect-video relative">
         <video
           ref={remoteVideoRef}
           autoPlay
           className="w-full h-full rounded-lg object-cover"
         />
-        <div className="absolute top-4 right-4 w-32 h-32">
+        <div className="absolute top-4 right-4 w-52 h-52">
           <video
             ref={localVideoRef}
             autoPlay

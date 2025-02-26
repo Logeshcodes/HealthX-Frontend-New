@@ -48,6 +48,7 @@ const DoctorLogin = () => {
 
         dispatch(
           setDoctor({
+            userId: doctor._id,
             name: doctor.name,
             email: doctor.email,
             role: doctor.role,
@@ -85,6 +86,7 @@ const DoctorLogin = () => {
       if (doctor) {
         dispatch(
           setDoctor({
+            userId: doctor._id,
             name: doctor.name,
             email: doctor.email,
             role: doctor.role,

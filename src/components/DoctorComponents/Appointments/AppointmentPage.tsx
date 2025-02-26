@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"; 
 import timezone from "dayjs/plugin/timezone";
 
+import { useNavigate } from 'react-router-dom';
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -37,6 +39,17 @@ const DoctorAppointmentDashboard = () => {
   const [completedCount, setCompletedCount] = useState(0);
 
   const [totalEarnings, setTotalEarnings] = useState(0);
+  const navigate = useNavigate()
+
+  const handleCall =async () => {
+    try {
+      console.log("cliked")
+      navigate('/appointment/videoCall')
+      
+    } catch (error) {
+      
+    }
+  }
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -237,11 +250,11 @@ const DoctorAppointmentDashboard = () => {
                       </div>
                       <div className="flex space-x-2">
                         {appointment.mode === 'Online' && (
-                          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                          <Button onClick={handleCall}  className="bg-blue-600 hover:bg-blue-700 text-white">
                             <Video className="w-4 h-4" />
                           </Button>
                         )}
-                        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                        <Button  className="bg-indigo-600 hover:bg-indigo-700 text-white">
                           Start Consultation
                         </Button>
                       </div>

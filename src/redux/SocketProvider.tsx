@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import cookies from "js-cookie";
 import { SOCKET_URI } from "../utils/constants";
 
 interface SocketContextType {
@@ -11,40 +10,35 @@ const SocketContext = createContext<SocketContextType>({ socket: null });
 
 export const useSocket = () => useContext(SocketContext).socket;
 
-const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+console.log("hi")
+
+const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const token = cookies.get("token");
-    if (token) {
-      const socketInstance = io(SOCKET_URI, {
-        withCredentials: true,
-        auth: { token },
-      });
+    const socketInstance = io(SOCKET_URI, {
+      withCredentials: true,
+    });
 
-      socketInstance.on("connect", () => {
-        console.log("Connected to socket");
-        setSocket(socketInstance);
-      });
+    setSocket(socketInstance);
 
-      socketInstance.on("disconnect", () => {
-        console.log("Disconnected from socket");
-        setSocket(null);
-      });
+    socketInstance.on("connect", () => {
+      console.log("Connected to socket");
+    });
 
-      return () => {
-        socketInstance.disconnect();
-      };
-    }
+    socketInstance.on("disconnect", () => {
+      console.log("Disconnected from socket");
+      setSocket(null);
+    });
+
+    return () => {
+      socketInstance.disconnect();
+    };
   }, []);
 
-  return (
-    <SocketContext.Provider value={{ socket }}>
-      {children}
-    </SocketContext.Provider>
-  );
+  console.log("SocketProvider rendering with socket:", socket);
+
+  return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 };
 
 export default SocketProvider;

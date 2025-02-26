@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface doctor {
+    userId: string | null,
     name: string | null,
     email: string | null,
     role: string | null,
@@ -10,6 +11,7 @@ interface doctor {
 
 // Initialize state
 const initialState: doctor = {
+    userId: null,
     name: null,
     email: null,
     role: null,
@@ -22,8 +24,9 @@ const doctorSlice = createSlice({
     initialState,
     reducers: {
         setDoctor: (state, action: PayloadAction<doctor>) => {
-             const {  name, email, role, isBlocked ,profilePicture} = action.payload;
+             const { userId ,  name, email, role, isBlocked ,profilePicture} = action.payload;
            
+                state.userId = userId,
                 state.name = name,
                 state.email = email,
                 state.role = role,
@@ -37,6 +40,7 @@ const doctorSlice = createSlice({
 
         clearDoctorDetials: (state) => {
           
+            state.userId = null
             state.name = null
             state.email = null
             state.role = null

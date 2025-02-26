@@ -5,6 +5,7 @@ import DoctorRouter from "./routers/DoctorRouter"
 
 import UserRouter from "./routers/UserRouter"
 import AdminRouter from "./routers/AdminRouter"
+import AppointmentRouter from "./routers/commonRouter"
 
 const App = () => {
   
@@ -15,6 +16,7 @@ const App = () => {
       <Route path='/*' element={<UserRouter/>}/>
       <Route path='/admin/*' element={<AdminRouter/>}/>
       <Route path='/doctor/*' element={<DoctorRouter/>}/>
+      <Route path='/appointment/*' element={<AppointmentRouter/>}/>
     </Routes>
     </>
     

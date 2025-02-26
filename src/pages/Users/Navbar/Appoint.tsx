@@ -63,6 +63,17 @@ const AppointmentDashboard = () => {
           toast.error("Failed to log out. Please try again.");
         }
       };
+
+
+      const handleCall =async () => {
+        try {
+
+          navigate('/appointment/videoCall')
+          
+        } catch (error) {
+          
+        }
+      }
   
     useEffect(() => {
       const fetchAppointments = async () => {
@@ -279,7 +290,7 @@ const AppointmentDashboard = () => {
 
 
                          
-                      <Button className="bg-blue-600 hover:bg-blue-700 ml-8 text-white">
+                      <Button onClick={handleCall} className="bg-blue-600 hover:bg-blue-700 ml-8 text-white">
                       <Video className="w-4 h-4" />
                       </Button>
 

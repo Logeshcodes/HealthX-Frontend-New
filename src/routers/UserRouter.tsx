@@ -35,7 +35,7 @@ import AppointmentDashboard from '../pages/Users/Navbar/Appoint';
 import PaymentSuccess from '../pages/Users/Payment/Success';
 import PaymentFailurePage from '../pages/Users/Payment/Failed';
 
-import VideoCallModal from '../components/UserComponents/VideoCall/createCall';
+
 
 const UserRouter = () => {
   return (
@@ -44,9 +44,6 @@ const UserRouter = () => {
 
         {/* auth - Unprotected Route  */}
 
-        <Route element={<PrivateRoute />}>
-         
-        </Route>
         
         <Route path="/user/signup" element={  <SignupPage />  } />
           
@@ -78,7 +75,7 @@ const UserRouter = () => {
             <Route path="/user/patient/payment-success/:txnid" element={<PaymentSuccess />} />
             <Route path="/user/patient/payment-failure" element={<PaymentFailurePage />} />
 
-            {/* <Route path="/user/patient/videoCall" element={<VideoCallModal to={''}  isOpen={true} onClose={()=>{}}/>} /> */}
+            
 
            
             
@@ -93,6 +90,7 @@ const UserRouter = () => {
         </Route>
 
         {/* nav-item */}
+        
 
         <Route element={<Layout />}>
 

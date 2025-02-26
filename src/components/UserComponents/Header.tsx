@@ -61,6 +61,7 @@ export default function Header() {
         if (userData?.email) {
           setUserId(userData.email);
           dispatch(setUser({
+            userId: userData.userId,
             name: userData.name,
             email: userData.email,
             role: userData.role,

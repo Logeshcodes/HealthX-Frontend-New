@@ -42,6 +42,7 @@ export default function DoctorHeader() {
           setUserId(doctorData);
           dispatch(
             setDoctor({
+              userId: doctorData.userId,
               name: doctorData.name,
               email: doctorData.email,
               role: doctorData.role,
