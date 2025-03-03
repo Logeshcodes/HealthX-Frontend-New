@@ -8,16 +8,15 @@ const DoctorRoutes={
 
     //verification
     sendVerification:'/verification/doctor/verificationRequest',
-    sendReVerifyRequest : '/verification/reVerifyRequest',
+    //sendReVerifyRequest : '/verification/reVerifyRequest',
 
     // Booking
-
     SlotBooking : '/booking/doctor/slotBooking' ,
     getDoctorSlotData: '/booking/doctor/slotBooking',
     deleteSlot : 'booking/doctor/slotBooking',
 
 
-    getDoctorAppointmentData: '/user/doctor/appointments',
-    getAppointment : '/user/doctor/appointmentData',
+    getDoctorAppointmentData: '/booking/doctor/appointments',
+    getAppointment : '/booking/doctor/appointmentData',
 }
 export default DoctorRoutes 

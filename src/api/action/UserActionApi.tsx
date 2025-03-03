@@ -118,16 +118,16 @@ export const getDepartmentData = async (): Promise<any> => {
   };
 
 
-  export const getAllAppointmentDetails = async (email: string | null, page: number, limit: number , activeTab : string  ): Promise<any> => {
+  export const getAllAppointmentDetails = async (userId: string | null, page: number, limit: number , activeTab : string  ): Promise<any> => {
     try {
-      console.log("Fetching Appointment details with pagination" , email);
+      console.log("Fetching Appointment details with pagination....." , userId);
   
-    const response = await API.get(`${UserRouters.getUserAppointmentData}/${email}?page=${page}&limit=${limit}&activeTab=${activeTab}`,{ withCredentials : true });
+    const response = await API.get(`${UserRouters.getUserAppointmentData}/${userId}?page=${page}&limit=${limit}&activeTab=${activeTab}`,{ withCredentials : true });
 
   
-      console.log(response.data, "get Appointment response");
-      console.log(response, "resp-1");
-  
+      // console.log(response.data, "get Appointment response");
+      // console.log(response, "resp-1");
+  console.log('all appointments_________________|',response)
       return response?.data;
   
     } catch (error) {
@@ -139,15 +139,15 @@ export const getDepartmentData = async (): Promise<any> => {
  
 
 
-  export const getAppointment = async (email: string): Promise<any> => {
+  export const getAppointment = async (userId: string): Promise<any> => {
     try {
-      console.log("Fetching Appointment details with pagination" , email);
+      console.log("Fetching Appointment details with pagination" , userId);
   
-      const response = await API.get(`${UserRouters.getAppointment}/${email}`,{ withCredentials : true });
+      const response = await API.get(`${UserRouters.getAppointment}/${userId}`,{ withCredentials : true });
 
   
-      console.log(response.data, "get Appointment response");
-      console.log(response, "resp-2222222222222222");
+      // console.log(response.data, "get Appointment response");
+      // console.log(response, "resp-2222222222222222");
   
       return response?.data;
   

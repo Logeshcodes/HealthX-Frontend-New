@@ -61,7 +61,7 @@ export default function DoctorHeader() {
   const navigation = [
     { name: "Home", href: "/doctor", id: "home", icon: Home },
     { name: "Appointments", href: "/doctor/bookedAppointments", id: "appointments", icon: Users },
-    { name: "Slots", href: `/doctor/appointments/${userId?.email}`, id: "slots", icon: Calendar }, // i want get email here
+    { name: "Slots", href: `/doctor/slots/${userId?.email}`, id: "slots", icon: Calendar }, // i want get email here
     { name: "Service", href: "/doctor/services", id: "services", icon: Grid },
     { name: "About Us", href: "/doctor/about", id: "about", icon: Info },
   ];

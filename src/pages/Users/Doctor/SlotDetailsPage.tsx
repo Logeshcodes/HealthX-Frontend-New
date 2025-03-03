@@ -10,6 +10,7 @@ import { getUserData } from "../../../api/action/UserActionApi";
 // config()
 
 interface Doctor {
+  _id: string;
   name: string;
   email: string;
   Mobile: string;
@@ -33,6 +34,7 @@ interface Slot {
 }
 
 interface UserData {
+  _id : string ,
   username: string;
   email: string;
   mobileNumber: string;
@@ -124,9 +126,10 @@ const SlotDetailsPage = () => {
 
   useEffect(() => {
     
-    if (!txnid || !id || !doctor || !users?.email) return;
+    if (!txnid || !id || !doctor || !users?._id) return;
 
-    console.log("ok ___________" , users?.email)
+    console.log("ok ___________" , users?._id)
+    console.log("ok ___________" , doctor?._id)
 
     const key = 't4VOu4';
     const salt = 'h1r2JIjnHkpgtJrfBkfqKOS02hi3B0UB';
@@ -137,20 +140,20 @@ const SlotDetailsPage = () => {
     const productinfo = id;
     const firstname = doctor?.name ;
     const userEmail = doctor?.email ;
-    const udf1 = users?.email;
+    const udf1 = users?._id;
+    const udf2 = doctor?._id;
 
-    // Ensure all required fields are present
-    if (!key || !txnid || !amount || !productinfo || !firstname || !userEmail || !udf1 || !salt) {
-      // console.log(amount,txnid,key , productinfo , firstname ,userEmail,salt , udf1,"-----hbd logesh")
+    
+    if (!key || !txnid || !amount || !productinfo || !firstname || !userEmail || !udf1 || !udf2 || !salt) {
+    
 
       toast.error('Missing required payment details. Please refresh and try again.');
       return;
     }
 
-    // Concatenate the fields in the correct order
-    const hashString = `${key}|${txnid}|${amount}|${productinfo}|${firstname}|${userEmail}|${udf1}||||||||||${salt}`;
+   
+    const hashString = `${key}|${txnid}|${amount}|${productinfo}|${firstname}|${userEmail}|${udf1}|${udf2}|||||||||${salt}`;
 
-    // Generate the SHA512 hash
     const hash = CryptoJS.SHA512(hashString).toString(CryptoJS.enc.Hex);
     setHash(hash);
   }, [doctor]);
@@ -163,8 +166,8 @@ const SlotDetailsPage = () => {
       return;
     }
 
-    const surl = `http://localhost:5000/user/patient/payment-success`;
-    const furl = `http://localhost:5000/user/patient/payment-failure`;
+    const surl = `http://localhost:5000/booking/patient/payment-success`;
+    const furl = `http://localhost:5000/booking/patient/payment-failure`;
 
     const formData = {
       key: 't4VOu4',
@@ -174,7 +177,8 @@ const SlotDetailsPage = () => {
       firstname: doctor.name,
       email: doctor.email,
       phone: doctor.Mobile,
-      udf1: users?.email,
+      udf1: users?._id,
+      udf2: doctor?._id,
       surl,
       furl,
       hash,

@@ -30,7 +30,7 @@ const authentictaionRoutes = {
 
     // doctor 
 
-    Get_All_Department : "/auth/doctor/register",
+    
 
     signup_Doctor:"/auth/doctor/register",
     resendOtp_Doctor:'/auth/doctor/resendOtp',
@@ -44,7 +44,7 @@ const authentictaionRoutes = {
     forgotResendOtp_doctor:'/auth/doctor/forgotResendOtp',
     resetPassword_doctor:'/auth/doctor/resetPassword', 
     logout_Doctor:'/auth/doctor/logout',
- 
+    Get_All_Department : "/user/patient/department_list",
 
 
     //admin

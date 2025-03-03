@@ -34,9 +34,12 @@ const UserRouters = {
 
     // Appointment 
 
-    getUserAppointmentData: '/user/patient/appointments',
+    getUserAppointmentData: '/booking/patient/appointments',
     
-    getAppointment : '/user/patient/appointmentData',
+    getAppointment : '/booking/patient/appointmentData',
+
+
+
 
      // For Slot details 
 
@@ -45,7 +48,7 @@ const UserRouters = {
 
     // payment -success
 
-    getAppointmentDetails : '/user/patient/payment-success/'
+    getAppointmentDetails : '/booking/patient/payment-success/'
    
 }
 

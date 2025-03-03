@@ -106,25 +106,25 @@ export const sendVerification=async (formData:FormData)=>{
 }
 
 
-export const reVerifyRequest=async (formData:FormData)=>{
-  try {
-      const response=await API.post(DoctorRoutes.sendReVerifyRequest,formData,{headers:{"Content-Type":"multipart/form-data"},
-      withCredentials:true})
+// export const reVerifyRequest=async (formData:FormData)=>{
+//   try {
+//       const response=await API.post(DoctorRoutes.sendReVerifyRequest,formData,{headers:{"Content-Type":"multipart/form-data"},
+//       withCredentials:true})
       
-      console.log(response.data,"response verification...")
-      return response.data
+//       console.log(response.data,"response verification...")
+//       return response.data
       
-  } catch (error) {
-      console.log(error)
-  }
-}
+//   } catch (error) {
+//       console.log(error)
+//   }
+// }
 
 
-export const getAllDoctorAppointmentDetails = async (email: string | null, page: number, limit: number , activeTab: string ): Promise<any> => {
+export const getAllDoctorAppointmentDetails = async (doctorId: string | null, page: number, limit: number , activeTab: string ): Promise<any> => {
   try {
-    console.log("Fetching Appointment details with pagination" , email);
+    console.log("Fetching Appointment details with pagination" , doctorId);
 
-    const response = await API.get(`${DoctorRoutes.getDoctorAppointmentData}/${email}?page=${page}&limit=${limit}&activeTab=${activeTab}`,{ withCredentials : true });
+    const response = await API.get(`${DoctorRoutes.getDoctorAppointmentData}/${doctorId}?page=${page}&limit=${limit}&activeTab=${activeTab}`,{ withCredentials : true });
 
     console.log("Fetching Appointment details with pagination" , response);
     return response?.data;
@@ -135,11 +135,11 @@ export const getAllDoctorAppointmentDetails = async (email: string | null, page:
 };
 
 
-export const getAppointment = async (email: string): Promise<any> => {
+export const getAppointment = async (doctorId: string): Promise<any> => {
   try {
-    console.log("Fetching Appointment details with pagination" , email);
+    console.log("Fetching Appointment details with pagination" , doctorId);
 
-    const response = await API.get(`${DoctorRoutes.getAppointment}/${email}`,{ withCredentials : true });
+    const response = await API.get(`${DoctorRoutes.getAppointment}/${doctorId}`,{ withCredentials : true });
 
 
     console.log(response.data, "get Appointment response");

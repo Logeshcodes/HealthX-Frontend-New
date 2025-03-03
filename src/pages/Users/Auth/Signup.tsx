@@ -96,7 +96,8 @@ const SignupPage = () => {
         </div>
           <div className="mb-8">
             
-            <h2 className="text-2xl font-bold mb-2">Welcome to HealthX</h2>
+            {/* <h2 className="text-2xl font-bold mb-2">Welcome to HealthX</h2> */}
+            {/* <h2 className="text-2xl font-bold mb-2">Welcome to Welliy</h2> */}
             {/* <h3 className="text-xl font-semibold text-gray-700 mb-6">
               Get started with your email
               <br />

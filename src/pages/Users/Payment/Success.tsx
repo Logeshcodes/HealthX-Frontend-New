@@ -1,29 +1,38 @@
 import { useEffect, useState } from 'react';
-import { Check,BadgeCheck , Calendar, Clock, User, CreditCard , Mail , Aperture , MapPin } from 'lucide-react';
+import { Check,BadgeCheck , Calendar, Clock, User, CreditCard ,  Aperture , MapPin ,BadgeAlert } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent} from '../../../components/DoctorComponents/Appointments/card';
 import { Button } from '../../../components/DoctorComponents/Appointments/button';
 
 import { getAppointmentDetails } from '../../../api/action/UserActionApi';
-
+import { getSlotDetailsById } from '../../../api/action/UserActionApi';
 
 
 interface Appointment{
-
+  slotId : string ,
   paymentId : string ,
-  doctorEmail : string ,
+  doctorId : string ,
   amount : number ,
   paymentStatus : string ,
-  appointmentTime : string ,
-  appointmentDate : string ,
   location : string ,
-  mode : string ,
-  patientEmail : string ,
+  patientId : string ,
+}
 
+
+interface Slot {
+    date : string ,
+    timeSlot : string ,
+    mode : string ,
+}
+
+interface Doctor{
+    location : string ,
 }
 
 const PaymentSuccessPage = () => {
     const txnid = decodeURI(location.pathname.split('/').pop() || '');
     const [appointment, setAppointment] = useState<Appointment>();
+    const [slot, setSlot] = useState<Slot>();
+    const [doctor, setDoctor] = useState<Doctor>();
     const [showAnimation, setShowAnimation] = useState(false);
     
 
@@ -31,9 +40,6 @@ const PaymentSuccessPage = () => {
         if (txnid) {
             const fetchAppointment = async () => {
                 try {
-
-                   
-                    
                     const response = await getAppointmentDetails(txnid);
                     setAppointment(response.data);
                     setShowAnimation(true);
@@ -44,6 +50,28 @@ const PaymentSuccessPage = () => {
             fetchAppointment();
         }
     }, [txnid]);
+
+
+    const slotId = appointment?.slotId ;
+
+
+    useEffect(() => {
+        if (slotId) {
+            const fetchSlot = async () => {
+                try {
+                    const response = await getSlotDetailsById(slotId);
+                    setSlot(response.data);
+                    setShowAnimation(true);
+                } catch (error) {
+                    console.error("Error fetching slot details:", error);
+                }
+            };
+            fetchSlot();
+        }
+    }, [slotId]);
+
+
+
 
     if (!appointment) {
         return (
@@ -101,12 +129,14 @@ const PaymentSuccessPage = () => {
                                     <span>Appointment Date</span>
                                 </div>
                                 <p className="font-medium text-lg">
-                                    {new Date(appointment.appointmentDate).toLocaleDateString('en-US', {
+                                {slot?.date
+                                    ? new Date(slot.date).toLocaleDateString('en-US', {
                                         weekday: 'long',
                                         year: 'numeric',
                                         month: 'long',
-                                        day: 'numeric'
-                                    })}
+                                        day: 'numeric',
+                                    })
+                                    : 'Date not available'}
                                 </p>
                             </div>
                             <div className="space-y-2 hover:bg-green-50 p-3 rounded-lg transition-colors duration-200">
@@ -114,7 +144,7 @@ const PaymentSuccessPage = () => {
                                     <Clock className="w-5 h-5" />
                                     <span>Time Slot</span>
                                 </div>
-                                <p className="font-medium text-lg">{appointment.appointmentTime}</p>
+                                <p className="font-medium text-lg">{slot?.timeSlot}</p>
                             </div>
                         </div>
 
@@ -122,17 +152,17 @@ const PaymentSuccessPage = () => {
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="space-y-2 hover:bg-green-50 p-3 rounded-lg transition-colors duration-200">
                                 <div className="flex items-center space-x-2 text-gray-600">
-                                    <Mail className="w-5 h-5" />
-                                    <span>Patient Email</span>
+                                    <BadgeAlert className="w-5 h-5" />
+                                    <span>Patient Id</span>
                                 </div>
-                                <p className="font-medium text-lg">{appointment.patientEmail}</p>
+                                <p className="font-medium text-lg">{appointment.patientId}</p>
                             </div>
                             <div className="space-y-2 hover:bg-green-50 p-3 rounded-lg transition-colors duration-200">
                                 <div className="flex items-center space-x-2 text-gray-600">
                                     <User className="w-5 h-5" />
-                                    <span>Doctor Email</span>
+                                    <span>Doctor Id</span>
                                 </div>
-                                <p className="font-medium text-lg">{appointment.doctorEmail}</p>
+                                <p className="font-medium text-lg">{appointment.doctorId}</p>
                             </div>
                         </div>
 
@@ -143,7 +173,7 @@ const PaymentSuccessPage = () => {
                                     <Aperture className="w-5 h-5" />
                                     <span>Appointment Mode</span>
                                 </div>
-                                <p className="font-medium text-lg">{appointment.mode}</p>
+                                <p className="font-medium text-lg">{slot?.mode}</p>
                             </div>
                             
                             <div className="space-y-2 hover:bg-green-50 p-3 rounded-lg transition-colors duration-200">
@@ -158,14 +188,14 @@ const PaymentSuccessPage = () => {
                         </div>
 
                        {
-                        ( appointment.mode === 'Offline') &&
+                        ( slot?.mode === 'Offline') &&
 
                         <div className="space-y-2 hover:bg-green-50 p-3 rounded-lg transition-colors duration-200">
                                 <div className="flex items-center space-x-2 text-gray-600">
                                     <MapPin className="w-5 h-5" />
                                     <span>Location</span>
                                 </div>
-                                <p className="font-medium text-lg">{appointment.location}</p>
+                                <p className="font-medium text-lg">{doctor?.location}</p>
                         </div>
                        }
 

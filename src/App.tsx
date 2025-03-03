@@ -5,7 +5,12 @@ import DoctorRouter from "./routers/DoctorRouter"
 
 import UserRouter from "./routers/UserRouter"
 import AdminRouter from "./routers/AdminRouter"
-import AppointmentRouter from "./routers/commonRouter"
+import AppointmentRouter from "./routers/CommonRouter"
+
+
+
+
+
 
 const App = () => {
   

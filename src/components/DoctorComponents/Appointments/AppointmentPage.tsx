@@ -1,19 +1,37 @@
 import  { useEffect, useState } from 'react';
-import { Calendar, Clock, User, FileText, CheckCircle2, Video,} from 'lucide-react';
+import { Calendar, Clock,  FileText, CheckCircle2, Video,} from 'lucide-react';
 import { CardContent , Card } from '../../../components/DoctorComponents/Appointments/card';
 import { Button } from '../../../components/DoctorComponents/Appointments/button';
-import { getAllDoctorAppointmentDetails , getAppointment} from '../../../api/action/DoctorActionApi';
+import { getAllDoctorAppointmentDetails } from '../../../api/action/DoctorActionApi';
+import { getDoctorData } from '../../../api/action/DoctorActionApi';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"; 
 import timezone from "dayjs/plugin/timezone";
 
-import { useNavigate } from 'react-router-dom';
+import VideoCallModal from '../../Common/VideoCall/createCall';
+import useVideoCall from '../../Common/VideoCall/useVideoCall';
+
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+
+interface PatientDetails {
+  _id?: string |  undefined;
+  username: string;
+  email: string;
+  profilePicture: string;
+}
+
+interface SlotDetails {
+  _id: string;
+  mode: string;
+  timeSlot: string;
+}
+
 interface Appointment {
   paymentId: string;
+  doctorId: string;
   doctorEmail: string;
   doctorName: string;
   profilePicture: string;
@@ -25,6 +43,17 @@ interface Appointment {
   mode: string;
   status: string;
   patientEmail: string;
+  patientDetails?: PatientDetails;
+  slotDetails?: SlotDetails;
+}
+
+
+
+interface Doctor{
+  profilePicture : string ;
+  name : string ;
+  department : string ;
+  location : string ;
 }
 
 const DoctorAppointmentDashboard = () => {
@@ -35,21 +64,39 @@ const DoctorAppointmentDashboard = () => {
   const [totalAppointments, setTotalAppointments] = useState(0);
   const slotsPerPage = 5;
 
+  const [doctor , setDoctor] = useState<Doctor>()
+
   const [todayCount, setTodayCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
-
   const [totalEarnings, setTotalEarnings] = useState(0);
-  const navigate = useNavigate()
 
-  const handleCall =async () => {
-    try {
-      console.log("cliked")
-      navigate('/appointment/videoCall')
-      
-    } catch (error) {
-      
-    }
-  }
+
+  const { showVideoCallModal, sender, handleCall, closeModal } = useVideoCall();
+
+
+
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      try {
+        const userDataString = localStorage.getItem('doctor');
+        if (userDataString) {
+          const user = JSON.parse(userDataString);
+          const email = user?.email;
+  
+          const response = await getDoctorData(email);
+  
+          setDoctor(response);
+          console.log("ooooooo", response);
+        }
+      } catch (error) {
+        console.log('Error fetching doctor data:', error);
+      }
+    };
+  
+    fetchDoctor();
+  }, []);
+  
+
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -57,25 +104,24 @@ const DoctorAppointmentDashboard = () => {
         const userDataString = localStorage.getItem('doctor');
         if (userDataString) {
           const user = JSON.parse(userDataString);
-          const email = user?.email;
-          if (email) {
-            const response = await getAllDoctorAppointmentDetails(email, currentPage, slotsPerPage, activeTab);
+          const doctorId = user?.userId;
+          if (doctorId) {
+            const response = await getAllDoctorAppointmentDetails(doctorId, currentPage, slotsPerPage, activeTab);
             setAppointments(response.data);
             setFilteredAppointments(response.data);
             setTotalAppointments(response.total);
 
-            const response2 = await getAppointment(email);
+            console.log('first.', response.data)
 
-            const today = dayjs().startOf("day");
-            const todayAppointments = response2.data.filter((apt: Appointment) => dayjs.utc(apt.appointmentDate).isAfter(today)  && apt.status !== 'cancelled');
-            const completedAppointments = response2.data.filter((apt: Appointment) => dayjs.utc(apt.appointmentDate).isBefore(today) && apt.status !== 'cancelled');
-          
-            const totalEarningsAmount = completedAppointments.reduce((sum: number, apt: Appointment) => sum + (apt.amount || 0), 0);
+            console.log('first1.', response.todayCount)
+            console.log('first2.', response.completedCount)
+            console.log('first2.', response.totalEarnings)
 
-            setTodayCount(todayAppointments.length);
-            setCompletedCount(completedAppointments.length);
+           
+            setTodayCount(response.todayCount);
+            setCompletedCount(response.completedCount);
             
-            setTotalEarnings(totalEarningsAmount);
+            setTotalEarnings(response.totalEarnings);
           }
         }
       } catch (error) {
@@ -107,14 +153,14 @@ const DoctorAppointmentDashboard = () => {
               <div className="flex items-center space-x-4">
                 <div className="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center">
                   <img
-                    src={appointment.profilePicture || '/api/placeholder/96/96'}
+                    src={doctor?.profilePicture || '/api/placeholder/96/96'}
                     alt="Doctor"
                     className="w-20 h-20 rounded-full object-cover"
                   />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">{appointment.doctorName}</h1>
-                  <p className="text-gray-500">{appointment.department}</p>
+                  <h1 className="text-2xl font-bold text-gray-900">{doctor?.name}</h1>
+                  <p className="text-gray-500">{doctor?.department}</p>
                 </div>
               </div>
             </div>
@@ -191,13 +237,22 @@ const DoctorAppointmentDashboard = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                     {/* Patient Info */}
                     <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                        <User className="w-6 h-6 text-gray-600" />
+                    <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                        <img
+                          src={appointment?.patientDetails?.profilePicture ?? 'unknown'}
+                          alt="Doctor"
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
                       </div>
                       <div>
-                        <div className="flex items-center space-x-2 mt-4 font-medium">
-                          <span className="text-sm">{appointment.patientEmail}</span>
+                      
+                        <div className="flex items-center space-x-2 mt-1 font-medium">
+                          <span className="text-sm">{appointment.patientDetails?.username}</span>
                         </div>
+                        <h3 className="text-sm text-gray-500">
+                          {appointment.patientDetails?.email}
+                        </h3>
+                        
                       </div>
                     </div>
 
@@ -216,7 +271,7 @@ const DoctorAppointmentDashboard = () => {
                       </div>
                       <div className="flex items-center space-x-2 text-gray-600">
                         <Clock className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-500">{appointment.appointmentTime}</span>
+                        <span className="text-sm text-gray-500">{appointment?.slotDetails?.timeSlot}</span>
                       </div>
                     </div>
 
@@ -228,12 +283,26 @@ const DoctorAppointmentDashboard = () => {
                             ? 'bg-blue-100 text-blue-800' 
                             : 'bg-purple-100 text-purple-800'
                         }`}>
-                          {appointment.mode}
+                          {appointment?.slotDetails?.mode}
                         </span>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(appointment.status)}`}>
                           {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                         </span>
+                        
                       </div>
+                      <div className="flex space-x-2">
+                        {appointment?.slotDetails?.mode === 'Offline' && (
+                          
+                            
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium `}>
+                        {doctor?.location}
+                          
+                        </span>
+                          
+                        )}
+                        
+                      </div>
+                      
                     </div>
 
                     {/* Actions */}
@@ -249,10 +318,19 @@ const DoctorAppointmentDashboard = () => {
                         <span className="text-sm font-medium">₹{appointment.amount}</span>
                       </div>
                       <div className="flex space-x-2">
-                        {appointment.mode === 'Online' && (
-                          <Button onClick={handleCall}  className="bg-blue-600 hover:bg-blue-700 text-white">
-                            <Video className="w-4 h-4" />
-                          </Button>
+
+                      {/* appointment.patientDetails?._id */}
+                        {appointment?.slotDetails?.mode === 'Online' && (
+                          <Button
+                          onClick={() => {
+                            console.log("Video Call Button Clicked - Doctor Side",appointment?.patientDetails?._id );
+                            handleCall(appointment?.patientDetails?.email ||"");
+                          }}
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                          aria-label="Start Video Call"
+                        >
+                          <Video className="w-4 h-4" />
+                        </Button>
                         )}
                         <Button  className="bg-indigo-600 hover:bg-indigo-700 text-white">
                           Start Consultation
@@ -268,6 +346,18 @@ const DoctorAppointmentDashboard = () => {
           )}
         </div>
       </div>
+
+
+
+          {/* Video Call Modal */}
+          {showVideoCallModal && (
+            <VideoCallModal
+              to={sender}
+              isOpen={showVideoCallModal}
+              onClose={closeModal}
+            />
+          )}
+
 
       {/* Pagination */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">

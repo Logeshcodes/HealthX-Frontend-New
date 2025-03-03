@@ -130,19 +130,7 @@ const DoctorProfile = () => {
               </CardContent>
             </Card>
 
-            {/* Languages Card */}
-            {/* <Card className="mt-6 bg-white">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">Languages</h3>
-                <div className="flex flex-wrap gap-2">
-                  {doctor.languages.map((lang) => (
-                    <Badge key={lang}  className="px-3 py-1">
-                      {lang}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card> */}
+           
           </div>
 
           {/* Right Details Section */}
