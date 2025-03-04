@@ -17,10 +17,7 @@ import {
   Card,
 } from "../../../components/DoctorComponents/Appointments/card";
 import { Button } from "../../../components/DoctorComponents/Appointments/button";
-import {
-  getAllAppointmentDetails,
-  getAppointment,
-} from "../../../api/action/UserActionApi";
+import { getAllAppointmentDetails } from "../../../api/action/UserActionApi";
 import { logout } from "../../../api/auth/UserAuthentication";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -30,6 +27,12 @@ import { clearUserDetails } from "../../../redux/slices/userSlice";
 import VideoCallModal from "../../../components/Common/VideoCall/createCall";
 import useVideoCall from "../../../components/Common/VideoCall/useVideoCall";
 
+interface PatientDetails {
+  _id?: string | undefined;
+  username: string;
+  email: string;
+  profilePicture: string;
+}
 
 interface Appointment {
   slotId: string;
@@ -48,26 +51,26 @@ interface Appointment {
   location: string;
   status: string;
   patientEmail: string;
+  patientDetails?: PatientDetails;
 }
 
-
-
 const AppointmentDashboard = () => {
-
-  console.log("compound is rendering....")
+  console.log("compound is rendering....");
   const [activeTab, setActiveTab] = useState("upcoming");
   const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [filteredAppointments, setFilteredAppointments] = useState<
+    Appointment[]
+  >([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalAppointments, setTotalAppointments] = useState(0);
 
   const { showVideoCallModal, sender, handleCall, closeModal } = useVideoCall();
 
-
   const slotsPerPage = 5;
 
-  const [upcomingCount, setUpcomingCount] = useState(0);
+  const [todayCount, setTodayCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
-  const [totalSpent, setTotalSpent] = useState(0);
+  const [totalEarnings, setTotalEarnings] = useState(0);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -83,93 +86,34 @@ const AppointmentDashboard = () => {
     }
   };
 
-
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const userDataString = localStorage.getItem("user");
-        const today = dayjs().startOf("day");
-  
+
         if (userDataString) {
           const user = JSON.parse(userDataString);
           const userId = user?.userId;
-  
+
           if (userId) {
             console.log("Fetching data for:", userId, currentPage, activeTab);
-  
+
             const response = await getAllAppointmentDetails(
               userId,
               currentPage,
               slotsPerPage,
               activeTab
             );
-  
+
             console.log("Fetched Appointments:", response.data);
-  
-            const response2 = await getAppointment(userId);
-  
-            const upcoming = response2.data.filter(
-              (apt: any) =>
-                dayjs.utc(apt.appointmentDate).isAfter(today) &&
-                apt.status !== "cancelled"
-            );
-  
-            const completed = response2.data.filter(
-              (apt: any) =>
-                dayjs.utc(apt.appointmentDate).isBefore(today) &&
-                apt.status !== "cancelled"
-            );
-  
-            const cancelled = response2.data.filter(
-              (apt: any) => apt.status === "cancelled"
-            );
-  
-            const totalSpentAmount = completed.reduce(
-              (sum: number, apt: any) => sum + (apt.amount || 0),
-              0
-            );
-  
-            console.log(
-              "Upcoming:", upcoming,
-              "Completed:", completed,
-              "Cancelled:", cancelled
-            );
-  
-            setUpcomingCount(upcoming.length);
-            setCompletedCount(completed.length);
-            setTotalSpent(totalSpentAmount);
-  
-            let finalAppointments = response.data; // Use main API response
-  
-            if (activeTab === "upcoming") {
-              finalAppointments = upcoming.map((apt: any) => ({
-                ...apt,
-                doctorDetails: response.data.find((d: any) => d._id === apt._id)
-                  ?.doctorDetails,
-                slotDetails: response.data.find((d: any) => d._id === apt._id)
-                  ?.slotDetails,
-              }));
-            } else if (activeTab === "past") {
-              finalAppointments = completed.map((apt: any) => ({
-                ...apt,
-                doctorDetails: response.data.find((d: any) => d._id === apt._id)
-                  ?.doctorDetails,
-                slotDetails: response.data.find((d: any) => d._id === apt._id)
-                  ?.slotDetails,
-              }));
-            } else if (activeTab === "cancelled") {
-              finalAppointments = cancelled.map((apt: any) => ({
-                ...apt,
-                doctorDetails: response.data.find((d: any) => d._id === apt._id)
-                  ?.doctorDetails,
-                slotDetails: response.data.find((d: any) => d._id === apt._id)
-                  ?.slotDetails,
-              }));
-            }
-  
-            console.log("Final Processed Appointments:", finalAppointments);
-            setAppointments(finalAppointments); // Only ONE state update
-  
+
+            setAppointments(response.data);
+            setFilteredAppointments(response.data);
+            setTotalAppointments(response.total);
+
+            setTodayCount(response.todayCount);
+            setCompletedCount(response.completedCount);
+            setTotalEarnings(response.totalEarnings);
           }
         }
       } catch (error: any) {
@@ -177,22 +121,20 @@ const AppointmentDashboard = () => {
         if (error.response?.status === 401) await handleLogout();
       }
     };
-  
+
     fetchAppointments();
   }, [currentPage, activeTab]);
 
-  
-  
   const totalPages = Math.ceil(totalAppointments / slotsPerPage);
 
-  const getStatusColor = (status: any) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case "Booked":
-        return "bg-green-500 text-green-800";
+      case "confirmed":
+        return "bg-green-100 text-green-800";
       case "pending":
-        return "bg-yellow-500 text-yellow-800";
+        return "bg-yellow-100 text-yellow-800";
       case "cancelled":
-        return "bg-red-500 text-red-800";
+        return "bg-red-100 text-red-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -201,26 +143,47 @@ const AppointmentDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 mt-36">
       {/* Header Section */}
-      <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">
-              My Appointments
-            </h1>
-            <div className="flex items-center space-x-4"></div>
+      {appointments.slice(0, 1).map((appointment) => (
+        <div
+          className="bg-white shadow-sm border-b"
+          key={appointment.paymentId}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center space-x-4">
+                <div className="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center">
+                  <img
+                    src={
+                      appointment?.patientDetails?.profilePicture ||
+                      "/api/placeholder/96/96"
+                    }
+                    alt="Doctor"
+                    className="w-20 h-20 rounded-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">
+                    {appointment?.patientDetails?.username}
+                  </h1>
+                  <p className="text-gray-500">
+                    {appointment?.patientDetails?.email}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      ))}
 
       {/* Stats Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-            <CardContent className="p-6">
+            <CardContent className="p-8">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm opacity-80">Upcoming Appointments</p>
-                  <p className="text-3xl font-bold mt-2">{upcomingCount}</p>
+                  <p className="text-3xl font-bold mt-2">{todayCount}</p>
                 </div>
                 <Calendar className="w-8 h-8 opacity-80" />
               </div>
@@ -241,8 +204,8 @@ const AppointmentDashboard = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm opacity-80">Total Spent</p>
-                  <p className="text-3xl font-bold mt-2">₹ {totalSpent}</p>
+                  <p className="text-sm opacity-80">Total Earnings</p>
+                  <p className="text-3xl font-bold mt-2">₹{totalEarnings}</p>
                 </div>
                 <FileText className="w-8 h-8 opacity-80" />
               </div>
@@ -272,8 +235,8 @@ const AppointmentDashboard = () => {
       {/* Appointments List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
-          {appointments.length > 0 ? (
-            appointments.map((appointment: any) => (
+          {filteredAppointments.length > 0 ? (
+            filteredAppointments.map((appointment: any) => (
               <Card
                 key={appointment._id}
                 className="hover:shadow-lg transition-shadow duration-200"
@@ -343,9 +306,17 @@ const AppointmentDashboard = () => {
                             {appointment.slotDetails?.mode}
                           </span>
 
-                          <Button onClick={() =>{ console.log("Video Call Button Clicked - Patient Side"); handleCall(appointment?.
-doctorDetails?.email)}}  className="bg-blue-600 hover:bg-blue-700 m-5 text-white">
-                            <Video className="w-6 h-6 m-2" />Join Call
+                          <Button
+                            onClick={() => {
+                              console.log(
+                                "Video Call Button Clicked - Patient Side"
+                              );
+                              handleCall(appointment?.doctorDetails?.email);
+                            }}
+                            className="bg-blue-600 hover:bg-blue-700 m-5 text-white"
+                          >
+                            <Video className="w-6 h-6 m-2" />
+                            Join Call
                           </Button>
                         </div>
                       )}
@@ -399,15 +370,14 @@ doctorDetails?.email)}}  className="bg-blue-600 hover:bg-blue-700 m-5 text-white
         </div>
       </div>
 
-        {/* Video Call Modal */}
-        {showVideoCallModal && (
-          <VideoCallModal
-            to={sender}
-            isOpen={showVideoCallModal}
-            onClose={closeModal}
-          />
-        )}
-
+      {/* Video Call Modal */}
+      {showVideoCallModal && (
+        <VideoCallModal
+          to={sender}
+          isOpen={showVideoCallModal}
+          onClose={closeModal}
+        />
+      )}
 
       {/* Action Button */}
       <div className="fixed bottom-8 right-8">
