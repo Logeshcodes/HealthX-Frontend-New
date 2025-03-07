@@ -6,6 +6,9 @@ import {
   FileText,
   Video,
   CheckCircle2,
+  CircleX,
+  CircleCheck,
+  Ban,
 } from "lucide-react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -17,7 +20,7 @@ import {
   Card,
 } from "../../../components/DoctorComponents/Appointments/card";
 import { Button } from "../../../components/DoctorComponents/Appointments/button";
-import { getAllAppointmentDetails } from "../../../api/action/UserActionApi";
+import { getAllAppointmentDetails , appointmentCancel } from "../../../api/action/UserActionApi";
 import { logout } from "../../../api/auth/UserAuthentication";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -27,6 +30,9 @@ import { clearUserDetails } from "../../../redux/slices/userSlice";
 import VideoCallModal from "../../../components/Common/VideoCall/createCall";
 import useVideoCall from "../../../components/Common/VideoCall/useVideoCall";
 
+
+import AlertDialog2 from "../../../components/UserComponents/common/AlertDialogBox2";
+
 interface PatientDetails {
   _id?: string | undefined;
   username: string;
@@ -35,6 +41,7 @@ interface PatientDetails {
 }
 
 interface Appointment {
+  _id?: string ;
   slotId: string;
   paymentId: string;
   doctorId: string;
@@ -58,9 +65,7 @@ const AppointmentDashboard = () => {
   console.log("compound is rendering....");
   const [activeTab, setActiveTab] = useState("upcoming");
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [filteredAppointments, setFilteredAppointments] = useState<
-    Appointment[]
-  >([]);
+ 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalAppointments, setTotalAppointments] = useState(0);
 
@@ -86,6 +91,25 @@ const AppointmentDashboard = () => {
     }
   };
 
+  const handleCancel = async (appointmentId : string) =>{
+
+      try {
+
+        const response =  await appointmentCancel(appointmentId);
+
+        if (response.success) {
+          toast.success(response.message);
+          setAppointments((prevAppointment) => prevAppointment.filter((appointment) => appointment._id !== appointmentId))
+        } else {
+          toast.error(response.message || "Failed to Cancel Requested");
+        }
+        
+      } catch (error) {
+          console.error(error);
+          toast.error("An unexpected error occurred");
+      }
+  }
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -108,7 +132,6 @@ const AppointmentDashboard = () => {
             console.log("Fetched Appointments:", response.data);
 
             setAppointments(response.data);
-            setFilteredAppointments(response.data);
             setTotalAppointments(response.total);
 
             setTodayCount(response.todayCount);
@@ -125,18 +148,19 @@ const AppointmentDashboard = () => {
     fetchAppointments();
   }, [currentPage, activeTab]);
 
-  const totalPages = Math.ceil(totalAppointments / slotsPerPage);
+  const totalPages = Math.ceil(totalAppointments / slotsPerPage) ;
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "confirmed":
-        return "bg-green-100 text-green-800";
-      case "pending":
-        return "bg-yellow-100 text-yellow-800";
+      case "booked":
+        return "bg-green-600 text-green-800";
+      case "completed":
+        return "bg-yellow-600 text-yellow-800";
       case "cancelled":
-        return "bg-red-100 text-red-800";
+        return "bg-red-600 text-red-800";
+      
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-700 text-gray-800";
     }
   };
 
@@ -235,8 +259,8 @@ const AppointmentDashboard = () => {
       {/* Appointments List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
-          {filteredAppointments.length > 0 ? (
-            filteredAppointments.map((appointment: any) => (
+          {appointments.length > 0 ? (
+            appointments.map((appointment: any) => (
               <Card
                 key={appointment._id}
                 className="hover:shadow-lg transition-shadow duration-200"
@@ -331,30 +355,55 @@ const AppointmentDashboard = () => {
                         </p>
                       </div>
 
-                      {appointment.status === "Booked" ? (
+                      {appointment.status === "booked" ? (
                         <div>
                           <Button
-                            className={`${getStatusColor(
-                              appointment.status
-                            )} text-white`}
+                            className={`${getStatusColor(appointment.status)} text-white`}
                           >
-                            {appointment.status.charAt(0).toUpperCase() +
-                              appointment.status.slice(1)}
+                            
+                            {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                           
                           </Button>
-                          <Button className="bg-red-600 hover:bg-red-700 text-white ml-2">
-                            Cancel
-                          </Button>
+                          <AlertDialog2
+                            title="Confirm Cancellation"
+                            alert={`Canceling will deduct 10% from your payment.
+
+                          Are you sure you want to proceed?`}
+                            onConfirm={() => handleCancel(appointment._id)}
+                          >
+                            <Button className="bg-red-600 hover:bg-red-700 text-white ml-2">
+                              Cancel
+                            </Button>
+                          </AlertDialog2>
+
+
                         </div>
-                      ) : (
-                        <Button
-                          className={`${getStatusColor(
-                            appointment.status
-                          )} text-white`}
-                        >
-                          {appointment.status.charAt(0).toUpperCase() +
-                            appointment.status.slice(1)}
+                      ) : appointment.status === "completed" ? (
+                        <Button className={`${getStatusColor(appointment.status)} text-white`}>
+                          <CircleCheck className="w-6 h-6 mr-2" />
+                          Completed
                         </Button>
-                      )}
+                      ) : appointment.status === "cancelled" ? (
+                        <Button
+                          className={`${getStatusColor(appointment.status)} text-white`}
+                        >
+                          <CircleX className="w-6 h-6 mr-2" />
+                          {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                        </Button>
+                      ) :
+                      (
+                        <div>
+                          <Button
+                          className={`${getStatusColor(appointment.status)} text-white`}
+                        >
+                          <Ban className="w-6 h-6 mr-2" />
+                          Approve
+                        </Button>
+                        </div>
+                      )
+                      
+                      }
+
                     </div>
                   </div>
                 </CardContent>

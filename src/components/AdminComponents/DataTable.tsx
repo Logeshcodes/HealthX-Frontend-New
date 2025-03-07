@@ -64,8 +64,8 @@ const DataTable: React.FC<DataTableProps> = ({
                 doctor.email === email
                   ? {
                       ...doctor,
-                      status: doctor.status === "blocked" ? "approved" : "blocked", // toggle status
-                      isBlocked: !doctor.isBlocked, // toggle isBlocked
+                      status: doctor.status === "blocked" ? "approved" : "blocked", 
+                      isBlocked: !doctor.isBlocked, 
                     }
                   : doctor
               )
@@ -196,14 +196,14 @@ const DataTable: React.FC<DataTableProps> = ({
                   <td className="px-4 py-4">
                     <div className="flex gap-2">
 
-                      
+                    <a href={`/admin/documentVerification/${doctor.email}`}>
                       <button
                         className="p-2 text-blue-400 hover:text-blue-300 transform hover:scale-110"
                         title="View Documents"
                       >
                         <Eye className="h-4 w-4" />
                       </button>
-
+                      </a>
                       <div className="flex space-x-3">
                         <button
                           onClick={() => handleBlock(doctor.email)}

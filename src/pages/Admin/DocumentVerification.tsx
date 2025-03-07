@@ -235,10 +235,10 @@ const DocumentVerification = () => {
           </Card>
         </div>
 
-        {status && (
-          <Alert className={`mb-6 ${status === 'approved' ? 'bg-green-50' : 'bg-red-50'}`}>
+        {doctor.status && (
+          <Alert className={`mb-6 ${doctor.status === 'approved' ? 'bg-green-50' : 'bg-red-50'}`}>
             <AlertDescription className="flex items-center gap-2">
-              {status === 'approved' ? (
+              {doctor.status === 'approved' ? (
                 <>
                   <CheckCircle className="h-4 w-4 text-green-600" />
                   <span className="text-green-600">Documents have been approved</span>
@@ -304,9 +304,13 @@ const DocumentVerification = () => {
         {/* Action Buttons */}
         <Card>
           <CardFooter className="flex justify-end gap-4 p-6">
-            {doctor.status === 'rejected' ? (
+            {doctor.status === 'approved' ? (
+              <p className="text-green-600 font-medium">Already these documents are approved.</p>
+            ) : doctor.status === 'rejected' ?(
               <p className="text-red-600 font-medium">Already these documents are rejected.</p>
-            ) : (
+            ) 
+            
+            : (
               !showRejectReason ? (
                 <>
                   <Button

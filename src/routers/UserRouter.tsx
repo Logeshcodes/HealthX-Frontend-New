@@ -31,8 +31,8 @@ import MyAccount from '../components/UserComponents/Profile/MyAccount';
 import ChangePassword from '../components/UserComponents/Profile/ChangePassword';
 import EditProfile from '../components/UserComponents/Profile/EditProfile';
 import AccountStatus from '../components/UserComponents/Profile/AccountStatus';
-
-
+import WalletApp from '../components/UserComponents/Profile/Wallet';
+import WalletAppointmentConfirmation from '../pages/Users/Doctor/WalletSlotBooking';
 
 
 import PaymentSuccess from '../pages/Users/Payment/Success';
@@ -69,6 +69,7 @@ const UserRouter = () => {
             <Route path="/user/doctor_details/:email" element={<DoctorDetailPage />} />
             <Route path="/user/slot/:email" element={<Slot/>} />
             <Route path="/user/slotDetails/:id" element={<SlotDetailsPage/>} />
+            <Route path="/user/walletPayment/:id" element={<WalletAppointmentConfirmation/>} />
             <Route path="/user/appointments" element={<AppointmentDashboard/>} />
             <Route path="/user/about" element={<About />} />
 
@@ -86,6 +87,7 @@ const UserRouter = () => {
               <Route path="account-status" element={<AccountStatus/>} />
               <Route path="change-password" element={<ChangePassword />} />
               <Route path="edit-profile" element={<EditProfile />} />
+              <Route path="wallet" element={<WalletApp />} />
             </Route>
 
             {/* profile */}

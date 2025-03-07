@@ -32,7 +32,7 @@ const PaymentSuccessPage = () => {
     const txnid = decodeURI(location.pathname.split('/').pop() || '');
     const [appointment, setAppointment] = useState<Appointment>();
     const [slot, setSlot] = useState<Slot>();
-    const [doctor, setDoctor] = useState<Doctor>();
+    // const [doctor, setDoctor] = useState<Doctor>();
     const [showAnimation, setShowAnimation] = useState(false);
     
 
@@ -187,7 +187,7 @@ const PaymentSuccessPage = () => {
                             </div>
                         </div>
 
-                       {
+                       {/* {
                         ( slot?.mode === 'Offline') &&
 
                         <div className="space-y-2 hover:bg-green-50 p-3 rounded-lg transition-colors duration-200">
@@ -197,7 +197,7 @@ const PaymentSuccessPage = () => {
                                 </div>
                                 <p className="font-medium text-lg">{doctor?.location}</p>
                         </div>
-                       }
+                       } */}
 
                          {/* Additional Actions */}
                          <div className="flex justify-center pt-6 space-x-4">

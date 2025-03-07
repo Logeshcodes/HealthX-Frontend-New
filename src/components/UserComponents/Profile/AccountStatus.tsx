@@ -1,7 +1,7 @@
 import { CheckCircle, Clock } from 'lucide-react';
 import { getUserData } from '../../../api/action/UserActionApi';
 import { useEffect, useState } from 'react';
-
+import { motion } from 'framer-motion';
 
 interface UserData {
   username: string;
@@ -70,12 +70,12 @@ const AccountStatus = () => {
         <div className="bg-white rounded-lg p-6 shadow-lg">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">Account Status</h2>
           <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg">
-          <img
-              src={imgSrc}
-              alt="Profile"
-              className="w-28 h-28 rounded-full object-cover border-blue-100"
-              onError={(e) => (e.currentTarget.src = "../../../profile.jpg")}
-            />
+          <motion.img 
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            src={imgSrc} 
+            alt="Profile" 
+            className="w-24 h-24 rounded-full object-cover border-3 border-blue-500 shadow-md"
+          />
             <h3 className="text-xl font-medium text-gray-800 mb-2">{users.username}</h3>
     
 

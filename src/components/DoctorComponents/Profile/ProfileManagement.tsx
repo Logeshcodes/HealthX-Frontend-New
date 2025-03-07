@@ -1,7 +1,7 @@
 import React from 'react';
 import {  Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { User, Lock, Shield, Edit2, BadgeCheck } from 'lucide-react';
+import { User, Lock, Shield, Edit2, BadgeCheck , Wallet } from 'lucide-react';
 
 const ProfileManagement: React.FC = () => {
   
@@ -9,6 +9,7 @@ const ProfileManagement: React.FC = () => {
   const navItems = [
     { id: 'myAccount', label: 'My Account', icon: User, link: '/doctor/profile/my-account' },
     { id: 'accountStatus', label: 'Account Status', icon: Shield, link: '/doctor/profile/account-status' },
+    { id: 'wallet', label: 'Wallet', icon: Wallet, link: '/doctor/profile/wallet' },
     { id: 'editProfile', label: 'Edit Profile', icon: Edit2, link: '/doctor/profile/edit-profile' },
     { id: 'verifyProfile', label: 'Verify Profile', icon: BadgeCheck, link: '/doctor/profile/verify-profile' },
     { id: 'changePassword', label: 'Change Password', icon: Lock, link: '/doctor/profile/change-password' },

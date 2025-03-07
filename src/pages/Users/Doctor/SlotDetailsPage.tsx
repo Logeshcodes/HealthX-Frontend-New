@@ -1,10 +1,12 @@
 import { Card , CardContent, CardHeader } from '../../../components/AdminComponents/common/Card';
-import { Calendar, Clock, Phone, Mail, Languages, CheckCircle, AlertCircle, MapPin } from 'lucide-react';
+import { Calendar, Clock, Phone, Mail, Languages, CheckCircle, AlertCircle, MapPin, ChevronUp, ChevronDown, Wallet } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import CryptoJS from 'crypto-js';
 import { getDoctorDetails , getSlotDetailsById } from "../../../api/action/UserActionApi";
 import { getUserData } from "../../../api/action/UserActionApi";
+import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 // import {config} from "dotenv"
 
 // config()
@@ -26,11 +28,17 @@ interface Doctor {
 }
 
 interface Slot {
+  _id : string ;
   date: string ;
   day?: string; 
   mode: string;
   timeSlot: string;
   email : string ;
+}
+
+interface Transaction{
+  date :  Date 
+  
 }
 
 interface UserData {
@@ -47,6 +55,10 @@ interface UserData {
   height: string;
   weight: string;
   bloodGroup: string;
+  wallet : {
+    balance : number ;
+    transactions : Array<Transaction>;
+  }
 }
 
 const SlotDetailsPage = () => {
@@ -56,6 +68,7 @@ const SlotDetailsPage = () => {
   const [hash, setHash] = useState<string>('');
   const [users, setUsers] = useState<UserData>();
 
+  const [showBalance, setShowBalance] = useState(false);
 
 
   
@@ -119,7 +132,7 @@ const SlotDetailsPage = () => {
     languages: ["Tamil", "English", "Malayalam"],
   };
 
-
+  const navigate = useNavigate()
 
 
   
@@ -157,6 +170,26 @@ const SlotDetailsPage = () => {
     const hash = CryptoJS.SHA512(hashString).toString(CryptoJS.enc.Hex);
     setHash(hash);
   }, [doctor]);
+
+
+  
+  
+
+
+  const handleWalletPayment = (id : string ) => {
+
+      try {
+
+        // console.log("PPPPPPPPPPPP" , users?.wallet?.balance)
+        if(Number(doctor.consultationFee) > Number(users?.wallet?.balance)){
+          toast.error("Insuffient wallet Balance")
+        }else{
+          navigate(`/user/walletPayment/${id}`);
+        }
+      } catch (error) {
+        console.log(error)
+      }
+  }
 
   const handlePayment = () => {
     if (!doctor.name || !doctor.consultationFee || !id || !txnid || !hash || !users?.email) {
@@ -320,12 +353,67 @@ const SlotDetailsPage = () => {
 
             <div className="p-6 pt-0">
               <button onClick={handlePayment} className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 flex items-center justify-center">
-                <CheckCircle className="mr-2" /> Confirm Appointment
+                <CheckCircle className="mr-2" /> Pay-U Payment
+              </button>
+            </div>
+
+             {/* Divider */}
+             <div className="relative ">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                      <span className=" bg-white text-gray-500">
+                        Or With
+                      </span>
+                    </div>
+            </div>
+
+            <div className="p-6 pt-0">
+              <button onClick={() => handleWalletPayment(slot?._id || "")} className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 flex items-center justify-center">
+                <CheckCircle className="mr-2" /> Wallet Payment
               </button>
             </div>
           </CardContent>
         </Card>
+
+        
       </div>
+
+      {/* New Wallet Balance Toggle Section */}
+      <div className="mt-4 border border-gray-200 rounded-lg overflow-hidden">
+          <button 
+            onClick={() => setShowBalance(!showBalance)}
+            className="w-full flex items-center justify-between p-4 bg-blue-50 hover:bg-blue-100 transition-colors"
+          >
+            <div className="flex items-center">
+              <Wallet className="text-blue-600 mr-2" size={20} />
+              <span className="font-medium text-gray-800">Available Balance</span>
+            </div>
+            {showBalance ? 
+              <ChevronUp className="text-blue-600" size={20} /> : 
+              <ChevronDown className="text-blue-600" size={20} />
+            }
+          </button>
+          
+          
+        </div>
+
+      {showBalance && (
+            <div className="p-4 bg-white border-t border-gray-200">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Current Balance:</span>
+                <span className="text-3xl font-bold text-green-600">₹{ users?.wallet?.balance}</span>
+              </div>
+              <div className="mt-3 text-xs text-gray-500 flex justify-end">
+              
+                <div>
+                  Last updated: {format(new Date(users?.wallet.transactions.at(-1)?.date ?? new Date(0)), 'PPpp')}
+                </div>
+             
+            </div>
+            </div>
+          )}
 
       {/* Additional Information Card */}
       <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 mt-6">

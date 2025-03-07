@@ -164,9 +164,10 @@ const EditProfile = () => {
     };
 
 
-      const handleSubmit = async (data: UserData) => {
+      const handleSubmit = async (data: UserData, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) =>{
         try {
           console.log("clicked...")
+          setSubmitting(true);
           
           const formData = new FormData();
           Object.entries(data).forEach(([key, value]) => {
@@ -184,6 +185,8 @@ const EditProfile = () => {
         } catch (error) {
           console.error(error);
           toast.error("An unexpected error occurred");
+        }finally {
+          setSubmitting(false); 
         }
       };
 
@@ -219,9 +222,9 @@ const EditProfile = () => {
               initialValues={initialValues}
               enableReinitialize
               validationSchema={validationSchema}
-              onSubmit={handleSubmit}
+              onSubmit={(values, { setSubmitting }) => handleSubmit(values, { setSubmitting })}
             >
-              {({ isSubmitting, values  , errors, touched }) => (
+              {({ isSubmitting,setSubmitting , values  , errors, touched }) => (
                 <Form className="space-y-4">
 
 
@@ -450,24 +453,8 @@ const EditProfile = () => {
                        
                       }
 
-
-                    {/* -- */}
-
-
-
-
-
-                 
                       </div>
-                      
-                   
-
-
-
             </div>
-
-           
-
           </div>
 
 
@@ -541,19 +528,24 @@ const EditProfile = () => {
                     </div>
 
 
-              <div className="col-span-full mt-4">
-                        <AlertDialog2
-                          title="Confirm Changes"
-                          alert="Are you sure you want to update your details?"
-                          onConfirm={() => handleSubmit(values)}
-                        >
-                          <button
-                            type="submit"
-                            name={isSubmitting ? "Saving..." : "Save Changes"}
-                            className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors">
-                            Save Changes</button>
-                        </AlertDialog2>
-                      </div>
+                    <div className="col-span-full mt-4">
+                    <AlertDialog2
+                      title="Confirm Changes"
+                      alert="Are you sure you want to update your details?"
+                      onConfirm={() => handleSubmit(values, { setSubmitting })} // ✅ Corrected
+                    >
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`w-full bg-blue-500 text-white py-3 rounded-lg ${
+                          isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+                        }`}
+                      >
+                        {isSubmitting ? "Saving..." : "Save Changes"}
+                      </button>
+                    </AlertDialog2>
+
+                    </div>
          
 
 

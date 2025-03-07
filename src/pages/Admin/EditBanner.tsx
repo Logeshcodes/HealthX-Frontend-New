@@ -182,12 +182,38 @@ const EditBannerForm = () => {
                     />
                     {errors.description && touched.description && <div className="text-red-400 text-sm mt-1">{errors.description}</div>}
                   </div>
+                  {/* Role */}
+                  <div>
+                  <label htmlFor="role" className="block text-sm font-medium text-gray-200 mb-1">Role</label>
+                  <Field
+                    as="select"
+                    id="role"
+                    name="role"
+                    className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white"
+                  >
+                    <option value="">Select Role</option>
+                    <option value="Patient">Patient</option>
+                    <option value="Doctor">Doctor</option>
+                  </Field>
+                  {errors.role && touched.role && (
+                    <div className="text-red-400 text-sm mt-1">{errors.role}</div>
+                  )}
+                </div>
 
                   {/* Start & End Dates */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Field type="date" id="startDate" name="startDate" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
                     <Field type="date" id="endDate" name="endDate" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
                   </div>
+
+
+                 {/* Link */}
+
+                  <div>
+                    <label htmlFor="link" className="block text-sm font-medium text-gray-200 mb-1">Link</label>
+                    <Field id="link" name="link" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
+                    {errors.link && touched.link && <div className="text-red-400 text-sm mt-1">{errors.link}</div>}
+                  </div>                
 
                   {/* File Upload */}
                   <div>

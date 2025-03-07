@@ -1,5 +1,5 @@
 import  { useEffect, useState } from 'react';
-import { Calendar, Clock,  FileText, CheckCircle2, Video,} from 'lucide-react';
+import { Calendar, Clock,  FileText, CheckCircle2, Video,MapPin, TicketCheck, CircleX, CircleCheck, Ban} from 'lucide-react';
 import { CardContent , Card } from '../../../components/DoctorComponents/Appointments/card';
 import { Button } from '../../../components/DoctorComponents/Appointments/button';
 import { getAllDoctorAppointmentDetails } from '../../../api/action/DoctorActionApi';
@@ -30,6 +30,7 @@ interface SlotDetails {
 }
 
 interface Appointment {
+  _id: string;
   paymentId: string;
   doctorId: string;
   doctorEmail: string;
@@ -59,7 +60,6 @@ interface Doctor{
 const DoctorAppointmentDashboard = () => {
   const [activeTab, setActiveTab] = useState('upcoming'); // Default to 'upcoming'
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalAppointments, setTotalAppointments] = useState(0);
   const slotsPerPage = 5;
@@ -108,7 +108,6 @@ const DoctorAppointmentDashboard = () => {
           if (doctorId) {
             const response = await getAllDoctorAppointmentDetails(doctorId, currentPage, slotsPerPage, activeTab);
             setAppointments(response.data);
-            setFilteredAppointments(response.data);
             setTotalAppointments(response.total);
 
             console.log('first.', response.data)
@@ -136,10 +135,15 @@ const DoctorAppointmentDashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'confirmed': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "booked":
+        return "bg-green-400 text-green-800";
+      case "completed":
+        return "bg-yellow-400 text-yellow-800";
+      case "cancelled":
+        return "bg-red-400 text-red-800";
+    
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -229,9 +233,9 @@ const DoctorAppointmentDashboard = () => {
       {/* Appointments List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-6">
-          {filteredAppointments.length > 0 ? (
-            filteredAppointments.map((appointment) => (
-              <Card key={appointment.paymentId} className="hover:shadow-lg transition-shadow duration-200">
+          {appointments.length > 0 ? (
+            appointments.map((appointment) => (
+              <Card key={appointment._id} className="hover:shadow-lg transition-shadow duration-200">
                 <CardContent className="p-6">
                   {/* Appointment details */}
                   <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -291,13 +295,28 @@ const DoctorAppointmentDashboard = () => {
                         
                       </div>
                       <div className="flex space-x-2">
-                        {appointment?.slotDetails?.mode === 'Offline' && (
+                        {appointment?.slotDetails?.mode === 'Offline' ? (
                           
-                            
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium `}>
-                        {doctor?.location}
+                          <div className="flex items-center space-x-2 text-gray-600">
+                          <MapPin className="w-4 h-4" />
+                          <span className="text-sm">
+                          {doctor?.location}
+                          </span>
+                        </div>
                           
-                        </span>
+                        ):(
+                         
+                            <Button
+                            onClick={() => {
+                              console.log("Video Call Button Clicked - Doctor Side",appointment?.patientDetails?._id );
+                              handleCall(appointment?.patientDetails?.email ||"");
+                            }}
+                            className="bg-blue-600 hover:bg-blue-700 text-white mt-2"
+                            aria-label="Start Video Call"
+                          >
+                            <Video className="w-6 h-6 m-2" />
+                            Start Consultation
+                          </Button>
                           
                         )}
                         
@@ -319,22 +338,44 @@ const DoctorAppointmentDashboard = () => {
                       </div>
                       <div className="flex space-x-2">
 
-                      {/* appointment.patientDetails?._id */}
-                        {appointment?.slotDetails?.mode === 'Online' && (
+                      
+                       
+
+
+                        {appointment.status === "booked" ? (
+                        <div>
                           <Button
-                          onClick={() => {
-                            console.log("Video Call Button Clicked - Doctor Side",appointment?.patientDetails?._id );
-                            handleCall(appointment?.patientDetails?.email ||"");
-                          }}
-                          className="bg-blue-600 hover:bg-blue-700 text-white"
-                          aria-label="Start Video Call"
+                            className={`${getStatusColor(appointment.status)} text-white`}
+                          >
+                             <TicketCheck className="w-6 h-6 m-2" />
+                            {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)} Appointmnets
+                          </Button>
+                         
+                        </div>
+                      ) : appointment.status === "completed" ? (
+                        <Button className={`${getStatusColor(appointment.status)} text-white`}>
+                          <CircleCheck className="w-6 h-6 m-1" />
+                          Completed
+                        </Button>
+                      ): appointment.status === "cancelled" ? (
+                        <Button
+                          className={`${getStatusColor(appointment.status)} text-white`}
                         >
-                          <Video className="w-4 h-4" />
+                          <CircleX className="w-6 h-6 mr-2" />
+                          {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                         </Button>
-                        )}
-                        <Button  className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                          Start Consultation
+                      )
+                      
+                      : (
+                        <Button
+                          className={`${getStatusColor(appointment.status)} text-white`}
+                        >
+                           <Ban className="w-6 h-6 mr-2" />
+                          {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                         </Button>
+                      )}
+
+
                       </div>
                     </div>
                   </div>
@@ -342,7 +383,11 @@ const DoctorAppointmentDashboard = () => {
               </Card>
             ))
           ) : (
-            <div>No Appointments available</div>
+            <div className="text-center text-gray-500">
+            {activeTab === "past" && "No Past Appointments"}
+            {activeTab === "cancelled" && "No Cancelled Appointments"}
+            {activeTab === "upcoming" && "No Upcoming Appointments"}
+          </div>
           )}
         </div>
       </div>

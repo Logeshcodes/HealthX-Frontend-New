@@ -38,7 +38,9 @@ const UserRouters = {
     
     getAppointment : '/booking/patient/appointmentData',
 
+    walletPayment : '/booking/patient/walletPayment',
 
+    appointmentCancel : '/booking/patient/cancelAppointment',
 
 
      // For Slot details 

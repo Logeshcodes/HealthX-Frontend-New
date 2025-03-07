@@ -150,6 +150,7 @@ transition={{duration:1 , ease:'easeInOut'}}
                 <Form className="space-y-6">
                   <div>
                     <div className="relative">
+                      <label htmlFor="">Email</label>
                       <Field
                         name="email"
                         type="email"
@@ -167,9 +168,7 @@ transition={{duration:1 , ease:'easeInOut'}}
                   <div>
                     <div className="relative">
                       <PasswordField name="password" placeholder="password" />
-                      {errors.password && touched.password && (
-                        <div className="text-red-500 text-sm mt-1">{errors.password}</div>
-                      )}
+                     
                     </div>
                     <div className="text-right">
                       <a href="/doctor/verifyEmail" className="text-red-500 hover:text-red-600 text-sm">

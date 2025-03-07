@@ -1,7 +1,7 @@
 import { API } from "../../service/axios";
 
 import UserRouters from "../../@types/endPoints/userEndPoints";
-
+import { Wallet } from "../../@types/WalletPayment";
 
 
 
@@ -80,6 +80,26 @@ export const getDepartmentData = async (): Promise<any> => {
       return response.data;
     } catch (error) {
       console.error("Error in updateProfile API call:", error);
+    }
+  };
+
+  export const walletPayment = async ( appointmentData : Wallet ): Promise<any> => {
+    try {
+      const response = await API.post(`${UserRouters.walletPayment}`,  {appointmentData}, { withCredentials: true });
+      console.log(response,"response walletPayment appointment ")
+      return response.data;
+    } catch (error) {
+      console.error("Error in walletPayment API call:", error); 
+    }
+  };
+
+  export const appointmentCancel = async (appointmentId : string ): Promise<any> => {
+    try {
+      const response = await API.post(`${UserRouters.appointmentCancel}/${appointmentId}`,  {}, { withCredentials: true });
+      console.log(response,"response appointment cancel")
+      return response.data;
+    } catch (error) {
+      console.error("Error in cancelAppointment API call:", error);
     }
   };
 
@@ -185,8 +205,7 @@ export const getDepartmentData = async (): Promise<any> => {
 
 export const getAllBanner = async (): Promise<any> => {
   try {
-   
-
+  
     const response = await API.get(UserRouters.getAllBanner, {
       headers: { "Content-Type": "multipart/form-data" },
       withCredentials: true,

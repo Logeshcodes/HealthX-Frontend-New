@@ -4,11 +4,12 @@ const DoctorRoutes={
     getDoctorData:"/user/doctor/",
     updateProfile:'/user/doctor/profile/edit-profile' ,
     updatePassword:'/user/doctor/profile/change-password',
+
+    getAllBanner : '/user/doctor/banner_list',
     
 
     //verification
     sendVerification:'/verification/doctor/verificationRequest',
-    //sendReVerifyRequest : '/verification/reVerifyRequest',
 
     // Booking
     SlotBooking : '/booking/doctor/slotBooking' ,

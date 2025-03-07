@@ -30,48 +30,6 @@ const DoctorCarousel = () => {
 
   } , [])
 
-  // const doctors = [
-  //   {
-  //     name: "Dr. Sarah Johnson",
-  //     specialty: "Neurologist",
-  //     imageUrl: "https://cdn-icons-png.flaticon.com/512/6998/6998099.png"
-  //   },
-  //   {
-  //     name: "Dr. Michael Chen",
-  //     specialty: "Cardiologist",
-  //     imageUrl: "https://as1.ftcdn.net/jpg/01/22/14/46/1000_F_122144677_FCVJF5Fyh0EZrzkPji7ARzphAuRzZQoe.jpg"
-  //   },
-  //   {
-  //     name: "Dr. Emily Williams",
-  //     specialty: "Pediatrician",
-  //     imageUrl: "https://cdn-icons-png.flaticon.com/512/3774/3774293.png"
-  //   },
-  //   {
-  //     name: "Dr. James Wilson",
-  //     specialty: "Orthopedic Surgeon",
-  //     imageUrl: "https://cdn-icons-png.flaticon.com/512/4974/4974208.png"
-  //   },
-  //   {
-  //     name: "Dr. Amanda Martinez",
-  //     specialty: "Dermatologist",
-  //     imageUrl: "https://media.istockphoto.com/id/1219185969/vector/the-icon-the-doctor-on-a-turquoise-background-in-a-circle-vector-illustration.jpg?s=612x612&w=0&k=20&c=NufjEIGGpxX-fic8Z-uVQAN7X-7Y5JIedJ3KXMbk_HU="
-  //   },
-  //   {
-  //     name: "Dr. Amanda Martinez",
-  //     specialty: "Dermatologist",
-  //     imageUrl: "https://img.freepik.com/premium-vector/female-doctor-with-stethoscope-round-icon-vector-illustration-cartoon-style_1142-66659.jpg"
-  //   },
-  //   {
-  //     name: "Dr. Amanda Martinez",
-  //     specialty: "Dermatologist",
-  //     imageUrl: "/api/placeholder/200/200"
-  //   },
-  //   {
-  //     name: "Dr. Amanda Martinez",
-  //     specialty: "Dermatologist",
-  //     imageUrl: "/api/placeholder/200/200"
-  //   }
-  // ];
 
   const handlePrevious = () => {
     setCurrentIndex((prev) => (prev === 0 ? doctors.length - 1 : prev - 1));

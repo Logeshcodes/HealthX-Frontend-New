@@ -199,7 +199,7 @@ const DoctorSignup = () => {
                   validationSchema={signupSchema}
                   onSubmit={handleSubmit}
                 >
-                  {({ isSubmitting }) => (
+                  {({ isSubmitting, errors, touched }) => (
                     <Form className="space-y-5">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="space-y-1">
@@ -242,42 +242,47 @@ const DoctorSignup = () => {
                         </div>
 
                         <div className="space-y-1">
-                          <div className="flex items-center space-x-2 text-gray-600 text-sm mb-1">
-                            <Building className="w-4 h-4" />
-                            <span>Department</span>
-                          </div>
-                          <Field
-                            as="select"
-                            name="department"
-                            className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors text-gray-700 text-sm"
-                          >
-                            <option value="">Select Department...</option>
-                            {department.map((dept, index) => (
-                              <option value={dept.departmentName} key={index}>
-                                {dept.departmentName}
-                              </option>
-                            ))}
-                          </Field>
+                        <div className="flex items-center space-x-2 text-gray-600 text-sm mb-1">
+                          <Building className="w-4 h-4" />
+                          <span>Department</span>
                         </div>
-
-                        <div className="space-y-1">
-                          <div className="flex items-center space-x-2 text-gray-600 text-sm mb-1">
-                            <Stethoscope className="w-4 h-4" />
-                            <span>Consultation Type</span>
-                          </div>
-                          <Field
-                            as="select"
-                            name="consultationType"
-                            className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors text-gray-700 text-sm"
-                          >
-                            <option value="">Select Type...</option>
-                            <option value="Both">
-                              Both Online & In-person
+                        <Field
+                          as="select"
+                          name="department"
+                          className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors text-gray-700 text-sm"
+                        >
+                          <option value="">Select Department...</option>
+                          {department.map((dept, index) => (
+                            <option value={dept.departmentName} key={index}>
+                              {dept.departmentName}
                             </option>
-                            <option value="Online">Online Only</option>
-                            <option value="In-person">In-person Only</option>
-                          </Field>
+                          ))}
+                        </Field>
+                        {errors.department && touched.department && (
+                          <div className="text-red-500 text-sm mt-1">{errors.department}</div>
+                        )}
+                      </div>
+
+                      <div className="space-y-1">
+                        <div className="flex items-center space-x-2 text-gray-600 text-sm mb-1">
+                          <Stethoscope className="w-4 h-4" />
+                          <span>Consultation Type</span>
                         </div>
+                        <Field
+                          as="select"
+                          name="consultationType"
+                          className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors text-gray-700 text-sm"
+                        >
+                          <option value="">Select Type...</option>
+                          <option value="Both">Both Online & In-person</option>
+                          <option value="Online">Online Only</option>
+                          <option value="In-person">In-person Only</option>
+                        </Field>
+                        {errors.consultationType && touched.consultationType && (
+                          <div className="text-red-500 text-sm mt-1">{errors.consultationType}</div>
+                        )}
+                      </div>
+
 
                         <div className="space-y-1">
                           <div className="flex items-center space-x-2 text-gray-600 text-sm mb-1">

@@ -126,12 +126,19 @@ const BannerForm = () => {
 
                 <div>
                   <label htmlFor="role" className="block text-sm font-medium text-gray-200 mb-1">Role</label>
-                  <Field as="select" id="role" name="role" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white">
+                  <Field
+                    as="select"
+                    id="role"
+                    name="role"
+                    className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white"
+                  >
                     <option value="">Select Role</option>
                     <option value="Patient">Patient</option>
                     <option value="Doctor">Doctor</option>
                   </Field>
-                  {errors.role && touched.role && <div className="text-red-400 text-sm mt-1">{errors.role}</div>}
+                  {errors.role && touched.role && (
+                    <div className="text-red-400 text-sm mt-1">{errors.role}</div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -147,6 +154,8 @@ const BannerForm = () => {
                     {errors.endDate && touched.endDate && <div className="text-red-400 text-sm mt-1">{errors.endDate}</div>}
                   </div>
                 </div>
+
+                {/* Link */}
 
                 <div>
                   <label htmlFor="link" className="block text-sm font-medium text-gray-200 mb-1">Link</label>

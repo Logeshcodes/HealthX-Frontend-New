@@ -62,15 +62,16 @@ const MyAccount = () => {
           console.log('user Email:', email);
 
           if (email) {
-            const data = await getUserData(email);
-            console.log('users list:', data);
-            setUsers(data);
+            const response = await getUserData(email);
+            console.log('users list:', response);
+            setUsers(response);
           }
         } else {
           console.log('No user data found in localStorage');
         }
       } catch (error) {
         console.log('Error fetching users:', error);
+        
       } finally {
         setLoading(false);
       }

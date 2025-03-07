@@ -1,7 +1,7 @@
 import React from 'react';
 import {  Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { User, Lock, Shield, Edit2,  Cog , Info } from 'lucide-react';
+import { User, Lock, Shield, Edit2,  Cog , Info , Wallet} from 'lucide-react';
 
 const ProfileManagement: React.FC = () => {
  
@@ -9,6 +9,7 @@ const ProfileManagement: React.FC = () => {
   const navItems = [
     { id: 'myAccount', label: 'My Account', icon: User, link: '/user/profile/my-account' },
     { id: 'accountStatus', label: 'Account Status', icon: Shield, link: '/user/profile/account-status' },
+    { id: 'wallet', label: 'Wallet', icon: Wallet, link: '/user/profile/wallet' },
     { id: 'editProfile', label: 'Edit Profile', icon: Edit2, link: '/user/profile/edit-profile' },
     { id: 'changePassword', label: 'Change Password', icon: Lock, link: '/user/profile/change-password' },
     { id: 'settings', label: 'Settings', icon: Cog, link: '/user/profile/settings' },

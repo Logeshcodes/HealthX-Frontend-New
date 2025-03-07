@@ -105,19 +105,20 @@ export const sendVerification=async (formData:FormData)=>{
   }
 }
 
+export const getAllBanner = async (): Promise<any> => {
+  try {
+   
 
-// export const reVerifyRequest=async (formData:FormData)=>{
-//   try {
-//       const response=await API.post(DoctorRoutes.sendReVerifyRequest,formData,{headers:{"Content-Type":"multipart/form-data"},
-//       withCredentials:true})
-      
-//       console.log(response.data,"response verification...")
-//       return response.data
-      
-//   } catch (error) {
-//       console.log(error)
-//   }
-// }
+    const response = await API.get(DoctorRoutes.getAllBanner, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
+    });
+    console.log(response.data, "getBannerData response");
+    return response?.data;
+  } catch (error) {
+    console.error("Error in getBannerData doctor API call:", error);
+  }
+};
 
 
 export const getAllDoctorAppointmentDetails = async (doctorId: string | null, page: number, limit: number , activeTab: string ): Promise<any> => {

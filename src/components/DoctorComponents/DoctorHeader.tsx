@@ -60,8 +60,8 @@ export default function DoctorHeader() {
 
   const navigation = [
     { name: "Home", href: "/doctor", id: "home", icon: Home },
-    { name: "Appointments", href: "/doctor/bookedAppointments", id: "appointments", icon: Users },
     { name: "Slots", href: `/doctor/slots/${userId?.email}`, id: "slots", icon: Calendar }, // i want get email here
+    { name: "Appointments", href: "/doctor/bookedAppointments", id: "appointments", icon: Users },
     { name: "Service", href: "/doctor/services", id: "services", icon: Grid },
     { name: "About Us", href: "/doctor/about", id: "about", icon: Info },
   ];
@@ -176,13 +176,13 @@ export default function DoctorHeader() {
                       </div>
                     </a>
 
-                    <a href="#inbox" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
+                    <a href="/doctor/profile/wallet" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
                       <div className="bg-gray-700 p-2 rounded-lg">
                         <Shield size={20} className="text-cyan-400" />
                       </div>
                       <div>
-                        <div className="font-medium">My Inbox</div>
-                        <div className="text-sm text-gray-400">Messages & Emails</div>
+                        <div className="font-medium">Wallet </div>
+                        <div className="text-sm text-gray-400">Money Bank </div>
                       </div>
                     </a>
 
