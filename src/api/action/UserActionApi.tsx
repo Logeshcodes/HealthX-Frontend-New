@@ -159,22 +159,7 @@ export const getDepartmentData = async (): Promise<any> => {
  
 
 
-  export const getAppointment = async (userId: string): Promise<any> => {
-    try {
-      console.log("Fetching Appointment details with pagination" , userId);
-  
-      const response = await API.get(`${UserRouters.getAppointment}/${userId}`,{ withCredentials : true });
 
-  
-      // console.log(response.data, "get Appointment response");
-      // console.log(response, "resp-2222222222222222");
-  
-      return response?.data;
-  
-    } catch (error) {
-      console.error("Error in Appointment API call:", error);
-    }
-  };
 
 
 

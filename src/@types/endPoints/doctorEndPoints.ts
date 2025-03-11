@@ -18,6 +18,6 @@ const DoctorRoutes={
 
 
     getDoctorAppointmentData: '/booking/doctor/appointments',
-    getAppointment : '/booking/doctor/appointmentData',
+
 }
 export default DoctorRoutes 

@@ -41,12 +41,12 @@ const ResetVerificationOTP = () => {
     setCounter(10)
 
     let email= localStorage.getItem("ForgotPassEmail")|| ""
-    const respone=await forgotResendOtp(email)
+    const response=await forgotResendOtp(email)
 
-    if(respone.success){
-      toast.success(respone.message)
+    if(response.success){
+      toast.success(response.message)
     }else{
-      toast.error(respone.message)
+      toast.error(response.message)
     }
     
     

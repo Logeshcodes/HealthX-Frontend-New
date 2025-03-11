@@ -36,7 +36,6 @@ const UserRouters = {
 
     getUserAppointmentData: '/booking/patient/appointments',
     
-    getAppointment : '/booking/patient/appointmentData',
 
     walletPayment : '/booking/patient/walletPayment',
 

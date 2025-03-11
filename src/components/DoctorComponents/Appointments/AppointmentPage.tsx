@@ -2,8 +2,7 @@ import  { useEffect, useState } from 'react';
 import { Calendar, Clock,  FileText, CheckCircle2, Video,MapPin, TicketCheck, CircleX, CircleCheck, Ban} from 'lucide-react';
 import { CardContent , Card } from '../../../components/DoctorComponents/Appointments/card';
 import { Button } from '../../../components/DoctorComponents/Appointments/button';
-import { getAllDoctorAppointmentDetails } from '../../../api/action/DoctorActionApi';
-import { getDoctorData } from '../../../api/action/DoctorActionApi';
+import { getAllDoctorAppointmentDetails , getDoctorData } from '../../../api/action/DoctorActionApi';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"; 
 import timezone from "dayjs/plugin/timezone";
@@ -26,6 +25,8 @@ interface PatientDetails {
 interface SlotDetails {
   _id: string;
   mode: string;
+  day : string ;
+  date : string ;
   timeSlot: string;
 }
 
@@ -39,7 +40,6 @@ interface Appointment {
   amount: number;
   paymentStatus: string;
   appointmentTime: string;
-  appointmentDate: string;
   department: string;
   mode: string;
   status: string;
@@ -265,12 +265,16 @@ const DoctorAppointmentDashboard = () => {
                       <div className="flex items-center space-x-2 text-gray-600">
                         <Calendar className="w-4 h-4" />
                         <span className="text-sm">
-                          {new Date(appointment.appointmentDate).toLocaleDateString('en-US', {
-                            weekday: 'long',
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                          })}
+                          {appointment?.slotDetails?.day && (
+                            <>
+                              {`${appointment.slotDetails.day}, `}
+                              {appointment?.slotDetails?.date && new Date(appointment.slotDetails.date).toLocaleDateString('en-GB', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                              })}
+                            </>
+                          )}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2 text-gray-600">

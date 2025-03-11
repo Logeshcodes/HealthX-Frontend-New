@@ -10,6 +10,7 @@ interface UserData {
   education: string;
   experience: string;
   description: string;
+  gender: string;
   address: string;
   city: string;
   state: string;
@@ -29,6 +30,7 @@ const MyAccount = () => {
     education: '',
     experience: '',
     description: '',
+    gender: '',
     address: '',
     city: '',
     state: '',
@@ -187,6 +189,14 @@ const MyAccount = () => {
                     <span className="text-sm">Joined</span>
                   </div>
                   <span className="text-sm text-gray-600">{new Date(doctors.createdAt).toLocaleDateString('en-GB')}</span>
+                </div>
+
+                <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <Calendar size={20} className="text-blue-500" />
+                    <span className="text-sm">Gender</span>
+                  </div>
+                  <span className="text-sm text-gray-600">{doctors.gender}</span>
                 </div>
                
 

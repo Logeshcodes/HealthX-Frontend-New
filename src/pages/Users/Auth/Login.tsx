@@ -68,19 +68,7 @@ const LoginPage = () => {
           navigate(`/`);
         }, 1000);
       } else {
-        // Log error and handle different error messages
-        console.log("res msg =>>>>", response?.message);
-        if (response?.message == "access denied") {
-          toast.error("Access denied");
-        } else if (response?.message == "Invalid Password") {
-          toast.error("Invalid Password");
-        } else if (response?.message == "invalid email id") {
-          toast.error("Invalid email");
-        } else if (response.message == "User Blocked !") {
-          toast.error("User Blocked !");
-        } else {
-          toast.error("An unexpected error occured");
-        }
+        toast.error(response?.message);
       }
     } catch (error) {
       console.log(error);
@@ -97,6 +85,7 @@ const LoginPage = () => {
         email: decoded.email,
         password: decoded.sub,
         profilePicture: decoded.picture,
+        mobileNumber : decoded.phoneNumber ,
       });
       console.log(response.user, "responsee");
       const user = response?.user;

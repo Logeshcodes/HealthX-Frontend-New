@@ -20,6 +20,7 @@ import {
   GraduationCap,
   Briefcase,
   FileText,
+  User2,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
@@ -50,6 +51,7 @@ const DoctorSignup = () => {
     email: "",
     Mobile: "",
     department: "",
+    gender: "",
     consultationType: "",
     education: "",
     experience: "",
@@ -70,6 +72,9 @@ const DoctorSignup = () => {
     consultationType: Yup.string()
       .oneOf(["In-person", "Online", "Both"], "Invalid consultation type")
       .required("Consultation type is required"),
+      gender: Yup.string()
+      .oneOf(["Male", "Female", "Others"], "Invalid gender type")
+      .required("Gender type is required"),
     education: Yup.string()
       .min(2, "Education must be at least 2 characters")
       .required("Education is required"),
@@ -263,6 +268,27 @@ const DoctorSignup = () => {
                         )}
                       </div>
 
+
+                        <div className="space-y-1">
+                        <div className="flex items-center space-x-2 text-gray-600 text-sm mb-1">
+                          <User2 className="w-4 h-4" />
+                          <span>Gender</span>
+                        </div>
+                        <Field
+                          as="select"
+                          name="gender"
+                          className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors text-gray-700 text-sm"
+                        >
+                           <option value="">Select Gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Others">Others</option>
+                        </Field>
+                        {errors.gender && touched.gender && (
+                          <div className="text-red-500 text-sm mt-1">{errors.gender}</div>
+                        )}
+                      </div>
+
                       <div className="space-y-1">
                         <div className="flex items-center space-x-2 text-gray-600 text-sm mb-1">
                           <Stethoscope className="w-4 h-4" />
@@ -309,6 +335,8 @@ const DoctorSignup = () => {
                             label=""
                           />
                         </div>
+
+                       
 
                         <div className="md:col-span-2 space-y-1">
                           <div className="flex items-center space-x-2 text-gray-600 text-sm mb-1">

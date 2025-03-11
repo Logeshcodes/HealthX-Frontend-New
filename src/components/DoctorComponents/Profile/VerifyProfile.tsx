@@ -140,7 +140,6 @@ const VerifyProfile  = () => {
             if (response.success) {
 
               toast.success(response.message);
-              // toast.success("Documents submitted successfully");
               navigate(`/doctor/profile/my-account`);
             } else {
               toast.error(response.message || "Failed to update profile");

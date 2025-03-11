@@ -28,9 +28,9 @@ const ResetPassword = () => {
 
   const onSubmit = async (data: { newPassword: string; confirmPassword: string }) => {
     try {
-      const response = await resetPassword(data.newPassword); // Replace with your API call
+      const response = await resetPassword(data.newPassword); 
       if (response.success) {
-        toast.success("Password reset successfully");
+        toast.success(response.message);
         localStorage.removeItem("ForgotPassEmail")
         navigate(`/user/login`)
       } else {

@@ -52,7 +52,6 @@ interface Appointment {
   doctorName: string;
   profilePicture: string;
   appointmentTime: string;
-  appointmentDate: string;
   department: string;
   mode: string;
   location: string;
@@ -291,14 +290,16 @@ const AppointmentDashboard = () => {
                       <div className="flex items-center space-x-2 text-gray-600">
                         <Calendar className="w-4 h-4" />
                         <span className="text-sm">
-                          {new Date(
-                            appointment.appointmentDate
-                          ).toLocaleDateString("en-US", {
-                            weekday: "long",
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
+                          {appointment?.slotDetails?.day && (
+                            <>
+                              {`${appointment.slotDetails.day}, `}
+                              {appointment?.slotDetails?.date && new Date(appointment.slotDetails.date).toLocaleDateString('en-GB', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                              })}
+                            </>
+                          )}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2 text-gray-600">

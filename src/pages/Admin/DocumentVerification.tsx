@@ -243,10 +243,16 @@ const DocumentVerification = () => {
                   <CheckCircle className="h-4 w-4 text-green-600" />
                   <span className="text-green-600">Documents have been approved</span>
                 </>
-              ) : (
+              ) : doctor.status === 'rejected' ? (
                 <>
                   <XCircle className="h-4 w-4 text-red-600" />
                   <span className="text-red-600">Documents have been rejected</span>
+                </>
+              ):
+              (
+                <>
+                  
+                  <span className="text-gray-600">Still Not yet Verified  </span>
                 </>
               )}
             </AlertDescription>
