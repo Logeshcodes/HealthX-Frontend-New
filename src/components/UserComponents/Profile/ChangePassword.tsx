@@ -6,7 +6,8 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { updatePassword } from "../../../api/action/UserActionApi";
 import { useNavigate } from "react-router-dom";
-
+import { ShieldCheck } from "lucide-react";
+import { motion, AnimatePresence } from 'framer-motion';
 
 const ChangePassword = () => {
 
@@ -52,8 +53,18 @@ const ChangePassword = () => {
     };
 
   return (
-    <div className="bg-white rounded-lg p-6 shadow-lg">
+
+
+    <AnimatePresence>
+    <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1 }}
+    className="bg-white rounded-lg p-6 shadow-lg">
       <h2 className="text-xl font-semibold text-gray-800 mb-10">User Account Change Password</h2>
+
+
+      
       
         
 
@@ -88,12 +99,50 @@ const ChangePassword = () => {
             </Form>
           )}
         </Formik>
+
+
+
+        {/* Password security tips */}
+      <div className="mb-8 p-4 rounded-lg bg-blue-50 border border-blue-100 animate-fadeIn">
+          <div className="flex items-start">
+            <div className="mr-3 mt-1">
+              <ShieldCheck size={22} className="text-blue-600" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-blue-800 mb-2">Password Security Tips</h3>
+              <ul className="text-sm text-blue-700 space-y-1">
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>
+                  Use at least 8 characters with a mix of letters, numbers, and symbols
+                </li>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>
+                  Don't reuse passwords from other sites
+                </li>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>
+                  Avoid using easily guessable information
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+        
           
 
         
       
-    </div>
+    </motion.div>
+
+    </AnimatePresence>
+    
   );
 };
 
 export default ChangePassword;
+
+
+
+

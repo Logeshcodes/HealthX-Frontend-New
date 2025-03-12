@@ -14,13 +14,13 @@ import useVideoCall from '../../Common/VideoCall/useVideoCall';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-
 interface PatientDetails {
   _id?: string |  undefined;
   username: string;
   email: string;
   profilePicture: string;
 }
+
 
 interface SlotDetails {
   _id: string;
@@ -48,17 +48,16 @@ interface Appointment {
   slotDetails?: SlotDetails;
 }
 
-
-
 interface Doctor{
   profilePicture : string ;
   name : string ;
   department : string ;
   location : string ;
+  email : string ;
 }
 
 const DoctorAppointmentDashboard = () => {
-  const [activeTab, setActiveTab] = useState('upcoming'); // Default to 'upcoming'
+  const [activeTab, setActiveTab] = useState('upcoming'); 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalAppointments, setTotalAppointments] = useState(0);
@@ -86,7 +85,7 @@ const DoctorAppointmentDashboard = () => {
           const response = await getDoctorData(email);
   
           setDoctor(response);
-          console.log("ooooooo", response);
+     
         }
       } catch (error) {
         console.log('Error fetching doctor data:', error);
@@ -131,6 +130,7 @@ const DoctorAppointmentDashboard = () => {
     fetchAppointments();
   }, [currentPage, activeTab]);
 
+
   const totalPages = Math.ceil(totalAppointments / slotsPerPage);
 
   const getStatusColor = (status: string) => {
@@ -150,8 +150,8 @@ const DoctorAppointmentDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 mt-44">
       {/* Header Section */}
-      {appointments.slice(0, 1).map((appointment) => (
-        <div className="bg-white shadow-sm border-b" key={appointment.paymentId}>
+    
+        <div className="bg-white shadow-sm border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-4">
@@ -170,7 +170,7 @@ const DoctorAppointmentDashboard = () => {
             </div>
           </div>
         </div>
-      ))}
+   
 
       {/* Stats Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

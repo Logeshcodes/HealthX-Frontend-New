@@ -53,10 +53,8 @@ const WalletPage: React.FC = () => {
   
   // Pagination
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const transactionsPerPage = 3;
+  const transactionsPerPage = 1;
 
-
-  console.log("hiii")
 
   useEffect(() => {
     const fetchUserData = async () => {

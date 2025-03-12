@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  FileText,
+import {Calendar,Clock,MapPin,FileText,
   Video,
   CheckCircle2,
   CircleX,
@@ -20,7 +16,7 @@ import {
   Card,
 } from "../../../components/DoctorComponents/Appointments/card";
 import { Button } from "../../../components/DoctorComponents/Appointments/button";
-import { getAllAppointmentDetails , appointmentCancel } from "../../../api/action/UserActionApi";
+import { getAllAppointmentDetails , appointmentCancel, getUserData } from "../../../api/action/UserActionApi";
 import { logout } from "../../../api/auth/UserAuthentication";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -33,10 +29,9 @@ import useVideoCall from "../../../components/Common/VideoCall/useVideoCall";
 
 import AlertDialog2 from "../../../components/UserComponents/common/AlertDialogBox2";
 
-interface PatientDetails {
-  _id?: string | undefined;
+interface UserData {
+  email : string ;
   username: string;
-  email: string;
   profilePicture: string;
 }
 
@@ -57,7 +52,6 @@ interface Appointment {
   location: string;
   status: string;
   patientEmail: string;
-  patientDetails?: PatientDetails;
 }
 
 const AppointmentDashboard = () => {
@@ -147,6 +141,34 @@ const AppointmentDashboard = () => {
     fetchAppointments();
   }, [currentPage, activeTab]);
 
+
+  const [users, setUsers] = useState<UserData>({
+    email :"",
+    username: "",
+    profilePicture: "",
+  });
+
+   useEffect(() => {
+      const fetchUsers = async () => {
+        try {
+          const userDataString = localStorage.getItem('user');
+          if (userDataString) {
+            const user = JSON.parse(userDataString);
+            const email = user?.email;
+  
+            if (email) {
+              const data = await getUserData(email);
+              setUsers(data);
+            }
+          } 
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        } 
+      };
+  
+      fetchUsers();
+    }, []);
+
   const totalPages = Math.ceil(totalAppointments / slotsPerPage) ;
 
   const getStatusColor = (status: string) => {
@@ -166,18 +188,15 @@ const AppointmentDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 mt-36">
       {/* Header Section */}
-      {appointments.slice(0, 1).map((appointment) => (
-        <div
-          className="bg-white shadow-sm border-b"
-          key={appointment.paymentId}
-        >
+      
+        <div className="bg-white shadow-sm border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-4">
                 <div className="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center">
                   <img
                     src={
-                      appointment?.patientDetails?.profilePicture ||
+                      users?.profilePicture ||
                       "/api/placeholder/96/96"
                     }
                     alt="Doctor"
@@ -186,17 +205,17 @@ const AppointmentDashboard = () => {
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900">
-                    {appointment?.patientDetails?.username}
+                    {users?.username}
                   </h1>
                   <p className="text-gray-500">
-                    {appointment?.patientDetails?.email}
+                    {users?.email}
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      ))}
+      
 
       {/* Stats Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
