@@ -1,7 +1,7 @@
 import  { useEffect, useState } from 'react';
 import { Calendar, Clock,  FileText, CheckCircle2, Video,MapPin, TicketCheck, CircleX, CircleCheck, Ban} from 'lucide-react';
-import { CardContent , Card } from '../../../components/DoctorComponents/Appointments/card';
-import { Button } from '../../../components/DoctorComponents/Appointments/button';
+import { CardContent , Card } from '../../Common/card/Card2';
+import { Button } from '../../Common/button/Button2';
 import { getAllDoctorAppointmentDetails , getDoctorData } from '../../../api/action/DoctorActionApi';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"; 
@@ -9,6 +9,7 @@ import timezone from "dayjs/plugin/timezone";
 
 import VideoCallModal from '../../Common/VideoCall/createCall';
 import useVideoCall from '../../Common/VideoCall/useVideoCall';
+import { useNavigate } from 'react-router-dom';
 
 
 dayjs.extend(utc);
@@ -71,6 +72,13 @@ const DoctorAppointmentDashboard = () => {
 
 
   const { showVideoCallModal, sender, handleCall, closeModal } = useVideoCall();
+
+  const navigate = useNavigate();
+
+  const handleAddPrescription = (appointmentId : string) => {
+    navigate(`/doctor/prescription/${appointmentId}`);
+    // navigate(`/doctor/prescription`);
+  };
 
 
 
@@ -349,10 +357,11 @@ const DoctorAppointmentDashboard = () => {
                         {appointment.status === "booked" ? (
                         <div>
                           <Button
+                          onClick={()=> {handleAddPrescription(appointment?._id)}}
                             className={`${getStatusColor(appointment.status)} text-white`}
                           >
                              <TicketCheck className="w-6 h-6 m-2" />
-                            {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)} Appointmnets
+                            Add prescription
                           </Button>
                          
                         </div>

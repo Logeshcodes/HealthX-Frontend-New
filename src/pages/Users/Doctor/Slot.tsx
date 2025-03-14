@@ -1,5 +1,5 @@
-import { CardContent, Card } from '../../../components/DoctorComponents/Appointments/card';
-import { Button } from '../../../components/DoctorComponents/Appointments/button';
+import { CardContent, Card } from '../../../components/Common/card/Card2';
+import { Button } from '../../../components/Common/button/Button2';
 import { getSlotDetails } from '../../../api/action/UserActionApi';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';

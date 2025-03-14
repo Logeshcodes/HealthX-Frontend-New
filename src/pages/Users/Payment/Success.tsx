@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Check,BadgeCheck , Calendar, Clock, User, CreditCard ,  Aperture , MapPin ,BadgeAlert } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent} from '../../../components/DoctorComponents/Appointments/card';
-import { Button } from '../../../components/DoctorComponents/Appointments/button';
+import { Card, CardHeader, CardTitle, CardContent} from '../../../components/Common/card/Card2';
+import { Button } from '../../../components/Common/button/Button2';
 
 import { getAppointmentDetails } from '../../../api/action/UserActionApi';
 import { getSlotDetailsById } from '../../../api/action/UserActionApi';

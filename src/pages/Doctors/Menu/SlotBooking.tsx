@@ -3,8 +3,8 @@ import * as Yup from "yup";
 import {
   Card,
   CardContent,
-} from "../../../components/DoctorComponents/Appointments/card";
-import { Button } from "../../../components/DoctorComponents/Appointments/button";
+} from "../../../components/Common/card/Card2";
+import { Button } from "../../../components/Common/button/Button2";
 import { Calendar, Clock, X, UserRound, CircleCheckBig, ArrowRight, FileText, AlertCircle } from "lucide-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "react-toastify";

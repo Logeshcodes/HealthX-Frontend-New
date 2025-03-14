@@ -26,7 +26,8 @@ import VerifyProfile from '../components/DoctorComponents/Profile/VerifyProfile'
 import SlotBooking from '../pages/Doctors/Menu/SlotBooking';
 import WalletPage from '../components/DoctorComponents/Profile/Wallet';
 import DoctorAppointmentDashboard from '../components/DoctorComponents/Appointments/AppointmentPage';
-
+import DoctorPrescriptionForm from '../components/DoctorComponents/Appointments/Prescription';
+import PrescriptionSuccessPage from '../components/DoctorComponents/Appointments/PrescriptionSuccess';
 const DoctorRouter =() => {
 
 
@@ -50,6 +51,8 @@ const DoctorRouter =() => {
           <Route element={<PrivateRoute />}>
               <Route path="/slots/:email" element={<SlotBooking/>} />
               <Route path="/bookedAppointments" element={<DoctorAppointmentDashboard/>} />
+              <Route path="/prescription/:appointmentId" element={<DoctorPrescriptionForm/>} />
+              <Route path="/prescription/Success" element={<PrescriptionSuccessPage/>} />
               <Route path="/about" element={<AboutPage/>} />
             <Route path="/profile" element={<ProfileManagement />}>
               <Route path="my-account" element={<MyAccount  />} />

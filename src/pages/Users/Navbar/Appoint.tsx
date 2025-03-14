@@ -14,8 +14,8 @@ dayjs.extend(timezone);
 import {
   CardContent,
   Card,
-} from "../../../components/DoctorComponents/Appointments/card";
-import { Button } from "../../../components/DoctorComponents/Appointments/button";
+} from "../../../components/Common/card/Card2";
+import { Button } from "../../../components/Common/button/Button2";
 import { getAllAppointmentDetails , appointmentCancel, getUserData } from "../../../api/action/UserActionApi";
 import { logout } from "../../../api/auth/UserAuthentication";
 import { useNavigate } from "react-router-dom";

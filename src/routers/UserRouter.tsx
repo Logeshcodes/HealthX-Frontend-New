@@ -39,6 +39,7 @@ import PaymentSuccess from '../pages/Users/Payment/Success';
 import PaymentFailurePage from '../pages/Users/Payment/Failed';
 
 
+import DoctorProfile from '../pages/Users/Doctor/sample';
 
 const UserRouter = () => {
   return (
@@ -72,6 +73,7 @@ const UserRouter = () => {
             <Route path="/user/walletPayment/:id" element={<WalletAppointmentConfirmation/>} />
             <Route path="/user/appointments" element={<AppointmentDashboard/>} />
             <Route path="/user/about" element={<About />} />
+            <Route path="/user/services" element={<DoctorProfile />} />
 
 
             {/* Payment */}

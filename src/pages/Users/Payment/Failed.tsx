@@ -1,7 +1,7 @@
 import  {  useState } from 'react';
 import { XCircle, RefreshCcw, MessageCircle, ArrowLeft, } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent} from '../../../components/DoctorComponents/Appointments/card';
-import { Button } from '../../../components/DoctorComponents/Appointments/button';
+import { Card, CardHeader, CardTitle, CardContent} from '../../../components/Common/card/Card2';
+import { Button } from '../../../components/Common/button/Button2';
 import { Alert, AlertDescription } from '../../Admin/Alert';
 
 const PaymentFailurePage = () => {

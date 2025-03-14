@@ -135,4 +135,90 @@ export const getAllDoctorAppointmentDetails = async (doctorId: string | null, pa
   }
 };
 
+export const getAppointmentById = async (appointmentmentId: string ): Promise<any> => {
+  try {
+    console.log("Fetching Appointment details with pagination" , appointmentmentId);
 
+    const response = await API.get(`${DoctorRoutes.getAppointmentById}/${appointmentmentId}`,{ withCredentials : true });
+
+    console.log("Fetching Appointment details with pagination" , response);
+    return response?.data;
+
+  } catch (error) {
+    console.error("Error in Appointment API call:", error);
+  }
+};
+
+
+export const addReview=async(doctorId:string,userId : string , rating:number,comment:string)=>{
+  try {
+
+    console.log("dataa", doctorId , userId , rating , comment);
+    
+    const response=await API.post(DoctorRoutes.addReview,{doctorId,userId , rating,comment},{
+      withCredentials:true
+    })
+    return response.data
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
+export const addReply = async (reviewId: string,userId: string,comment: string) => {
+  try {
+    const response = await API.post(DoctorRoutes.addReply, {reviewId,userId,comment}, { withCredentials: true });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Failed to add reply." };
+  }
+};
+
+export const addPrescription = async (data: any) => {
+  try {
+    const response = await API.post(DoctorRoutes.addPrescription, data, { withCredentials: true });
+    return response.data;
+  } catch (error: any) {
+    console.error("Error adding prescription:", error);
+    return {
+      success: false,
+      message: error.response?.data?.message || "Failed to add prescription."
+    };
+  }
+};
+
+
+
+export const likeReview = async (reviewId: string, userId: string) => {
+  try {
+    const response = await API.post(DoctorRoutes.likeReview, { reviewId, userId }, { withCredentials: true });
+    return response.data;
+  } catch (error) {
+    console.log("Error liking review:", error);
+    return { success: false, message: "Something went wrong" };
+  }
+};
+
+export const likeReply = async (replyId: string, userId: string , reviewId: string ) => {
+  try {
+
+    const response = await API.post(DoctorRoutes.likeReply, { replyId, userId , reviewId }, { withCredentials: true });
+    return response.data;
+  } catch (error) {
+    console.error("Error liking reply:", error);
+    return { success: false, message: "Something went wrong" };
+  }
+};
+
+export const GetDoctorReviews=async(doctorId:string)=>{
+  try {
+    const response=await API.get(`${DoctorRoutes.getReview}${doctorId}`,{
+      withCredentials:true
+    })
+    console.log(response.data.data,"reviews")
+    return response.data
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
