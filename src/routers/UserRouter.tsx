@@ -38,8 +38,10 @@ import SettingsHelpCenter from '../components/UserComponents/Profile/Settings';
 import PaymentSuccess from '../pages/Users/Payment/Success';
 import PaymentFailurePage from '../pages/Users/Payment/Failed';
 
+import PrescriptionDetails from '../pages/Users/Doctor/Prescription';
 
 import DoctorProfile from '../pages/Users/Doctor/sample';
+import ReportDoctorForm from '../pages/Users/Doctor/Report';
 
 const UserRouter = () => {
   return (
@@ -72,7 +74,9 @@ const UserRouter = () => {
             <Route path="/user/slotDetails/:id" element={<SlotDetailsPage/>} />
             <Route path="/user/walletPayment/:id" element={<WalletAppointmentConfirmation/>} />
             <Route path="/user/appointments" element={<AppointmentDashboard/>} />
+            <Route path="/user/prescription/:appointmentId" element={<PrescriptionDetails/>} />
             <Route path="/user/about" element={<About />} />
+            <Route path="/user/addReport/:doctorId" element={<ReportDoctorForm />} />
             <Route path="/user/services" element={<DoctorProfile />} />
 
 

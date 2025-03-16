@@ -53,7 +53,7 @@ const WalletPage: React.FC = () => {
   
   // Pagination
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const transactionsPerPage = 1;
+  const transactionsPerPage = 3;
 
 
   useEffect(() => {
@@ -195,12 +195,8 @@ const WalletPage: React.FC = () => {
         <AnimatePresence>
           {paginatedTransactions.length > 0 ? (
             paginatedTransactions.map((transaction: ITransaction) => (
-              <motion.div 
-                key={transaction.transactionId}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
+              <div 
+               
                 className="bg-white rounded-xl shadow-md p-4 mb-3 flex items-center justify-between hover:shadow-lg transition-all"
               >
                 <div className="flex items-center space-x-4">
@@ -240,7 +236,7 @@ const WalletPage: React.FC = () => {
                   {transaction.type === 'credit' ? '+' : '-'}
                   ₹{transaction.amount.toLocaleString()}
                 </p>
-              </motion.div>
+              </div>
             ))
           ) : (
             <motion.div 

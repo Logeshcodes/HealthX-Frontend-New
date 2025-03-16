@@ -29,6 +29,17 @@ import { Wallet } from "../../@types/WalletPayment";
     }
   };
 
+  export const getDoctorDetailsById = async ( doctorId: string | null): Promise<any> => {
+    try {
+      const response = await API.get(`${UserRouters.getDoctorDetailsById}${doctorId}`,{ withCredentials : true });
+      console.log(response,"datA")
+      return response?.data ;
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   export const getSlotDetailsById = async (id: string | null): Promise<any> => {
     try {
       const response = await API.get(`${UserRouters.getSlotDetailsById}${id}`,{ withCredentials : true });
@@ -40,6 +51,19 @@ import { Wallet } from "../../@types/WalletPayment";
     }
   };
 
+  export const getPrescriptionById = async (appointmentmentId: string ): Promise<any> => {
+    try {
+      console.log("Fetching Appointment details with pagination" , appointmentmentId);
+  
+      const response = await API.get(`${UserRouters.getPrescriptionById}/${appointmentmentId}`,{ withCredentials : true });
+  
+      console.log("Fetching Appointment details with pagination" , response);
+      return response?.data;
+  
+    } catch (error) {
+      console.error("Error in Appointment API call:", error);
+    }
+  };
 
 
   // doctor filter - user side 
@@ -144,10 +168,6 @@ export const getDepartmentData = async (): Promise<any> => {
   
     const response = await API.get(`${UserRouters.getUserAppointmentData}/${userId}?page=${page}&limit=${limit}&activeTab=${activeTab}`,{ withCredentials : true });
 
-  
-      // console.log(response.data, "get Appointment response");
-      // console.log(response, "resp-1");
-  console.log('all appointments_________________|',response)
       return response?.data;
   
     } catch (error) {
@@ -201,3 +221,18 @@ export const getAllBanner = async (): Promise<any> => {
     console.error("Error in getBannerData API call:", error);
   }
 };
+
+export const addReport=async(doctorId:string,userId : string , reportType:string ,description:string)=>{
+  try {
+
+    console.log("dataa", doctorId , userId , reportType , description);
+    
+    const response=await API.post(UserRouters.addReport,{doctorId,userId,reportType,description},{
+      withCredentials:true
+    })
+    return response.data
+    
+  } catch (error) {
+    console.log(error)
+  }
+}

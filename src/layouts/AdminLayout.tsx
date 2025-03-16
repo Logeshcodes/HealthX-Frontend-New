@@ -4,7 +4,7 @@ import AdminSidebar from "../components/AdminComponents/AdminSideBar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Layout, UserCheck, Users, Warehouse, CircleUserIcon, LogOut , Dock } from "lucide-react";
+import { Layout, UserCheck, Users, Warehouse, CircleUserIcon, LogOut , Dock, MessageCircleWarning } from "lucide-react";
 
 import { adminLogout } from "../api/auth/AdminAuthentication";
 
@@ -39,6 +39,7 @@ const sidebarItems = [
   { id: "departments", label: "Departments", icon: Warehouse, href: "/admin/department" },
   { id: "users", label: "Users", icon: CircleUserIcon, href: "/admin/users" },
   { id: "banners", label: "Banners", icon: Dock, href: "/admin/banners" },
+  { id: "reports", label: "Reports", icon: MessageCircleWarning, href: "/admin/reports" },
   { id: "logout", label: "Logout", icon: LogOut, action: () => handleLogout() },
 ];
 

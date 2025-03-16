@@ -13,7 +13,7 @@ import {
   Flag,
   Calendar,
 } from "lucide-react";
-import { Button } from "../../../components/AdminComponents/common/Button";
+
 import {
   Mail,
   Phone,
@@ -146,6 +146,10 @@ const DoctorProfile = () => {
 
   const bookSlot = () => {
     navigate(`/user/slot/${doctor.email}`);
+  };
+
+  const addReport = () => {
+    navigate(`/user/addReport/${doctor._id}`);
   };
 
   const handleLike = async (
@@ -442,6 +446,7 @@ const DoctorProfile = () => {
           transition={{ delay: 0.7 }}
         >
           <motion.button
+            onClick={addReport}
             className="flex items-center justify-center gap-2 bg-red-800 text-white py-4 px-6 rounded-lg font-semibold shadow-lg border border-blue-400 hover:bg-red-900 transition-all duration-300 w-full"
             whileHover={{ scale: 1.03, boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)" }}
             whileTap={{ scale: 0.97 }}

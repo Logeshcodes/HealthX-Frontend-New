@@ -41,6 +41,7 @@ interface Appointment {
   paymentId: string;
   doctorId: string;
   amount: number;
+  prescriptionStatus : Boolean;
   paymentStatus: string;
   patientId: string;
   doctorEmail: string;
@@ -82,6 +83,10 @@ const AppointmentDashboard = () => {
       console.error("Error during logout:", error);
       toast.error("Failed to log out. Please try again.");
     }
+  };
+
+  const handlePrescription = (appointmentId : string) => {
+    navigate(`/user/prescription/${appointmentId}`);
   };
 
   const handleCancel = async (appointmentId : string) =>{
@@ -375,55 +380,60 @@ const AppointmentDashboard = () => {
                         </p>
                       </div>
 
+
                       {appointment.status === "booked" ? (
                         <div>
-                          <Button
-                            className={`${getStatusColor(appointment.status)} text-white`}
-                          >
-                            
-                            {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
-                           
-                          </Button>
+                          {!appointment.prescriptionStatus && (
+                            <Button className={`${getStatusColor(appointment.status)} text-white`}>
+                              {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                            </Button>
+                          )}
+
                           <AlertDialog2
                             title="Confirm Cancellation"
                             alert={`Canceling will deduct 10% from your payment.
 
-                          Are you sure you want to proceed?`}
+                            Are you sure you want to proceed?`}
                             onConfirm={() => handleCancel(appointment._id)}
                           >
                             <Button className="bg-red-600 hover:bg-red-700 text-white ml-2">
                               Cancel
                             </Button>
                           </AlertDialog2>
-
-
                         </div>
                       ) : appointment.status === "completed" ? (
-                        <Button className={`${getStatusColor(appointment.status)} text-white`}>
-                          <CircleCheck className="w-6 h-6 mr-2" />
-                          Completed
-                        </Button>
+                        
+                        <div>
+                          <Button className={`${getStatusColor(appointment.status)} text-white`}>
+                            {/* <CircleCheck className="w-6 h-6 mr-2" /> */}
+                            Done
+                          </Button>
+
+                          {appointment.prescriptionStatus && (
+                            <Button
+                              onClick={() => handlePrescription(appointment?._id)}
+                              className={`${getStatusColor(appointment.status)} text-white ml-2`}
+                            >
+                              Prescription
+                            </Button>
+                          )}
+                        </div>
                       ) : appointment.status === "cancelled" ? (
-                        <Button
-                          className={`${getStatusColor(appointment.status)} text-white`}
-                        >
+                        <Button className={`${getStatusColor(appointment.status)} text-white`}>
                           <CircleX className="w-6 h-6 mr-2" />
                           {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                         </Button>
-                      ) :
-                      (
+                      ) : (
                         <div>
-                          <Button
-                          className={`${getStatusColor(appointment.status)} text-white`}
-                        >
-                          <Ban className="w-6 h-6 mr-2" />
-                          Approve
-                        </Button>
+                          <Button className={`${getStatusColor(appointment.status)} text-white`}>
+                            <Ban className="w-6 h-6 mr-2" />
+                            Approve
+                          </Button>
                         </div>
-                      )
-                      
-                      }
+                      )}
 
+
+                      
                     </div>
                   </div>
                 </CardContent>

@@ -3,7 +3,6 @@ import { API } from "../../service/axios";
 import AdminRoutes from "../../@types/endPoints/adminEndPoints";
 
 import { deptData } from "../../@types/DeptDataType";
-import { BannerData } from "../../@types/BannerDataType";
 
 
   // Admin Side - UserList
@@ -276,3 +275,16 @@ export const toggleBannerStatus = async (id: string | null): Promise<any> => {
   }
 };
 
+export const getAllReports = async ( currentPage: number, limit : number , searchTerm: string | null  ): Promise<any> => {
+  try {
+    console.log("Fetchin Reports details with pagination....." , searchTerm , currentPage);
+
+    const response = await API.get(`${AdminRoutes.getAllReports}?page=${currentPage}&limit=${limit}&search=${searchTerm}`, { withCredentials: true });
+
+    return response?.data;
+
+  } catch (error) {
+    console.error("Error in Reports API call:", error);
+    throw error ;
+  }
+};

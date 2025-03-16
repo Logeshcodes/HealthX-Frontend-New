@@ -14,6 +14,7 @@ import BannerForm from "../pages/Admin/AddBanner";
 import AdminSessionRoute from "../Protecter/AdminSessionRoute";
 import DocumentVerification from "../pages/Admin/DocumentVerification";
 import EditBannerForm from "../pages/Admin/EditBanner";
+import ReportManagement from "../pages/Admin/ReportDoctor";
 
 import AdminLayout from "../layouts/AdminLayout";
 import PrivateRoute from "../Protecter/AdminPrivateRoute";
@@ -39,6 +40,7 @@ const AdminRouter = () => {
             <Route path="documentVerification/:email" element={<DocumentVerification/>} />
             <Route path="editDepartment/:department" element={<EditDepartmentForm isDarkMode={isDarkMode} />} />
             <Route path="editBanner/:id" element={<EditBannerForm />} />
+            <Route path="reports" element={<ReportManagement />} />
             <Route path="addDepartment" element={<AddDepartmentForm isDarkMode={isDarkMode} />} />
             <Route path="verifiedDoctors" element={<DoctorsListTable isDarkMode={isDarkMode} />} />
             <Route path="requestedDoctors" element={<RequestedDoctorList isDarkMode={isDarkMode} />} />

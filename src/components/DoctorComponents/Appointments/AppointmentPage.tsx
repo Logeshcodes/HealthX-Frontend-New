@@ -77,7 +77,6 @@ const DoctorAppointmentDashboard = () => {
 
   const handleAddPrescription = (appointmentId : string) => {
     navigate(`/doctor/prescription/${appointmentId}`);
-    // navigate(`/doctor/prescription`);
   };
 
 

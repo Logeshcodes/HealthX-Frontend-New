@@ -1,8 +1,5 @@
 const AdminRoutes = {
 
-    // adminGetUsers:'/user/patient/getStudents',
-    
-    
     
     adminGetDoctors:'/user/admin/getDoctors',
     adminBlockDoctor:'/user/admin/blockDoctor/', 
@@ -26,7 +23,9 @@ const AdminRoutes = {
     getAllBanner : '/user/admin/banner',
     adminGetBannerById : '/user/admin/editBanner',
     adminUpdateBanner : '/user/admin/editBanner',
-    adminListBanner : '/user/admin/listBanner'
+    adminListBanner : '/user/admin/listBanner',
+
+    getAllReports :'/user/admin/getAllReports',
 }
 
 export default AdminRoutes ;

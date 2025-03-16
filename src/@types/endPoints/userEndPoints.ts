@@ -25,6 +25,7 @@ const UserRouters = {
      // For Doctor Details Page
 
     getDoctorDetails:"/user/patient/doctor_details/",
+    getDoctorDetailsById:"/booking/patient/doctor/",
 
    
 
@@ -49,7 +50,9 @@ const UserRouters = {
 
     // payment -success
 
-    getAppointmentDetails : '/booking/patient/payment-success/'
+    getAppointmentDetails : '/booking/patient/payment-success/',
+    getPrescriptionById : '/booking/patient/prescription/',
+    addReport : 'user/patient/addReport',
    
 }
 
