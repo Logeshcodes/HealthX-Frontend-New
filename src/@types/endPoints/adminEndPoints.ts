@@ -26,6 +26,9 @@ const AdminRoutes = {
     adminListBanner : '/user/admin/listBanner',
 
     getAllReports :'/user/admin/getAllReports',
+    getTotalAppointmentDetails :"booking/admin/totalappointments",
+    generateRevenueData : 'booking/admin/generateRevenueData'
+
 }
 
 export default AdminRoutes ;

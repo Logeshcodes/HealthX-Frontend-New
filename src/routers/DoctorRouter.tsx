@@ -28,6 +28,7 @@ import WalletPage from '../components/DoctorComponents/Profile/Wallet';
 import DoctorAppointmentDashboard from '../components/DoctorComponents/Appointments/AppointmentPage';
 import DoctorPrescriptionForm from '../components/DoctorComponents/Appointments/Prescription';
 import PrescriptionSuccessPage from '../components/DoctorComponents/Appointments/PrescriptionSuccess';
+import DoctorDashboard from '../pages/Doctors/Menu/DoctorDashboard';
 const DoctorRouter =() => {
 
 
@@ -54,6 +55,7 @@ const DoctorRouter =() => {
               <Route path="/prescription/:appointmentId" element={<DoctorPrescriptionForm/>} />
               <Route path="/prescription/Success" element={<PrescriptionSuccessPage/>} />
               <Route path="/about" element={<AboutPage/>} />
+              <Route path="dashboard" element={< DoctorDashboard />} />
             <Route path="/profile" element={<ProfileManagement />}>
               <Route path="my-account" element={<MyAccount  />} />
               <Route path="change-password" element={<ChangePassword />} />

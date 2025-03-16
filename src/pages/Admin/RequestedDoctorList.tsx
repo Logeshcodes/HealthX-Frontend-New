@@ -12,16 +12,11 @@ const RequestedDoctorList: React.FC<UserProps> = ({ isDarkMode }) => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await getAllDoctors();
-
-
+        const response = await getAllDoctors()
         const filteredDoctors = response.filter(
           (doctor: any) => doctor.status === 'pending' || doctor.status === 'rejected' || doctor.status === 'requested'
         );
-
         setDoctors(filteredDoctors)
-
-
       } catch (error) {
         console.error("Error fetching doctors", error);
       }

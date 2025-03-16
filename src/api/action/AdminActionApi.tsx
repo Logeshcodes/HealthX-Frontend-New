@@ -288,3 +288,34 @@ export const getAllReports = async ( currentPage: number, limit : number , searc
     throw error ;
   }
 };
+
+
+
+
+export const getTotalAppointmentDetails = async (   ): Promise<any> => {
+  try {
+
+
+    const response = await API.get(`${AdminRoutes.getTotalAppointmentDetails}`, { withCredentials: true });
+
+    console.log("Fetching Appointment details with pagination " , response);
+    return response?.data;
+
+  } catch (error) {
+    console.error("Error in Appointment API call:", error);
+  }
+};
+
+
+
+export const generateRevenueDataFilter = async (timeFilter: 'day' | 'month' | 'year'): Promise<any> => {
+  try {
+    const response = await API.get(`${AdminRoutes.generateRevenueData}?timeFilter=${timeFilter}`, { withCredentials: true });
+    console.log("Fetching generateRevenueData:", response);
+    return response?.data;
+  } catch (error) {
+    console.error("Error in generateRevenueData API call:", error);
+  }
+};
+
+

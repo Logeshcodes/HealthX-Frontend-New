@@ -34,6 +34,7 @@ const AdminLayout = () => {
  
 const sidebarItems = [
   { id: "dashboard", label: "Dashboard", icon: Layout, href: "/admin/dashboard" },
+  // { id: "sample", label: "Sample", icon: Layout, href: "/admin/sample" },
   { id: "verifiedDoctors", label: "Verified Doctors", icon: UserCheck, href: "/admin/verifiedDoctors" },
   { id: "requestedDoctors", label: "Requested Doctors", icon: Users, href: "/admin/requestedDoctors" },
   { id: "departments", label: "Departments", icon: Warehouse, href: "/admin/department" },

@@ -186,12 +186,12 @@ export default function DoctorHeader() {
                       </div>
                     </a>
 
-                    <a href="#tasks" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
+                    <a href="/doctor/dashboard" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
                       <div className="bg-gray-700 p-2 rounded-lg">
                         <ListTodo size={20} className="text-yellow-400" />
                       </div>
                       <div>
-                        <div className="font-medium">My Tasks</div>
+                        <div className="font-medium">Dashboard</div>
                         <div className="text-sm text-gray-400">To-do and Daily Tasks</div>
                       </div>
                     </a>

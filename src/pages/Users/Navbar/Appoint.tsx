@@ -99,7 +99,7 @@ const AppointmentDashboard = () => {
           toast.success(response.message);
           setAppointments((prevAppointment) => prevAppointment.filter((appointment) => appointment._id !== appointmentId))
         } else {
-          toast.error(response.message || "Failed to Cancel Requested");
+          toast.success(response.message || "Failed to Cancel Requested");
         }
         
       } catch (error) {
@@ -127,7 +127,7 @@ const AppointmentDashboard = () => {
               activeTab
             );
 
-            console.log("Fetched Appointments:", response.data);
+            console.log("Fetched Appointments:", response);
 
             setAppointments(response.data);
             setTotalAppointments(response.total);
@@ -251,7 +251,7 @@ const AppointmentDashboard = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm opacity-80">Total Earnings</p>
+                  <p className="text-sm opacity-80">Total Spending</p>
                   <p className="text-3xl font-bold mt-2">₹{totalEarnings}</p>
                 </div>
                 <FileText className="w-8 h-8 opacity-80" />
@@ -391,7 +391,7 @@ const AppointmentDashboard = () => {
 
                           <AlertDialog2
                             title="Confirm Cancellation"
-                            alert={`Canceling will deduct 10% from your payment.
+                            alert={`Canceling will deduct 20% from your payment.
 
                             Are you sure you want to proceed?`}
                             onConfirm={() => handleCancel(appointment._id)}
