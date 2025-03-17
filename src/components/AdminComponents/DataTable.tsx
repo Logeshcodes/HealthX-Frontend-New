@@ -19,7 +19,6 @@ interface DataTableProps {
   showActions: boolean;
   showVerify: boolean;
   setDoctors:Function
-
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -49,10 +48,6 @@ const DataTable: React.FC<DataTableProps> = ({
     setCurrentPage(page);
   };
 
-
-
-
-
   const handleBlock = useCallback(
       async (email: string) => {
         try {
@@ -70,7 +65,6 @@ const DataTable: React.FC<DataTableProps> = ({
                   : doctor
               )
             );
-            
           } else {
             toast.error(response.message);
           }

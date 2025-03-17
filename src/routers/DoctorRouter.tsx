@@ -14,21 +14,21 @@ import DoctorSessionRoute from '../Protecter/DoctorSessionRouter';
 import DoctorLayout from '../layouts/DoctorLayout';
 import PrivateRoute from '../Protecter/DoctorPrivateRoute';
 import NotFoundPage from '../pages/Doctors/NotFoundPage';
-import AboutPage from '../components/DoctorComponents/About/AboutPage';
+import About from '../pages/Doctors/Navbar/About';
 
-import ProfileManagement from '../components/DoctorComponents/Profile/ProfileManagement';
-import MyAccount from '../components/DoctorComponents/Profile/MyAccount';
-import ChangePassword from '../components/DoctorComponents/Profile/ChangePassword';
-import AccountStatus from '../components/DoctorComponents/Profile/AccountStatus';
-import EditProfile from '../components/DoctorComponents/Profile/EditProfile';
-import VerifyProfile from '../components/DoctorComponents/Profile/VerifyProfile';
+import ProfileManagement from '../pages/Doctors/Profile/ProfileManagement';
+import MyAccount from '../pages/Doctors/Profile/MyAccount';
+import ChangePassword from '../pages/Doctors/Profile/ChangePassword';
+import AccountStatus from '../pages/Doctors/Profile/AccountStatus';
+import EditProfile from '../pages/Doctors/Profile/EditProfile';
+import VerifyProfile from '../pages/Doctors/Profile/VerifyProfile';
 
-import SlotBooking from '../pages/Doctors/Menu/SlotBooking';
-import WalletPage from '../components/DoctorComponents/Profile/Wallet';
-import DoctorAppointmentDashboard from '../components/DoctorComponents/Appointments/AppointmentPage';
-import DoctorPrescriptionForm from '../components/DoctorComponents/Appointments/Prescription';
-import PrescriptionSuccessPage from '../components/DoctorComponents/Appointments/PrescriptionSuccess';
-import DoctorDashboard from '../pages/Doctors/Menu/DoctorDashboard';
+import SlotBooking from '../pages/Doctors/Navbar/SlotBooking';
+import WalletPage from '../pages/Doctors/Profile/Wallet';
+import DoctorAppointmentDashboard from '../pages/Doctors/Navbar/AppointmentPage';
+import DoctorPrescriptionForm from '../pages/Doctors/Appointments/AddPrescription';
+import PrescriptionSuccessPage from '../pages/Doctors/Appointments/PrescriptionSuccess';
+import DoctorDashboard from '../pages/Doctors/Navbar/DoctorDashboard';
 const DoctorRouter =() => {
 
 
@@ -54,7 +54,7 @@ const DoctorRouter =() => {
               <Route path="/bookedAppointments" element={<DoctorAppointmentDashboard/>} />
               <Route path="/prescription/:appointmentId" element={<DoctorPrescriptionForm/>} />
               <Route path="/prescription/Success" element={<PrescriptionSuccessPage/>} />
-              <Route path="/about" element={<AboutPage/>} />
+              <Route path="/about" element={<About/>} />
               <Route path="dashboard" element={< DoctorDashboard />} />
             <Route path="/profile" element={<ProfileManagement />}>
               <Route path="my-account" element={<MyAccount  />} />

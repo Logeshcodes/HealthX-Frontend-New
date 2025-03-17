@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+
 import DataTable from '../../components/AdminComponents/DataTable';
+
 import { getAllDoctors } from '../../api/action/AdminActionApi';
 
 interface UserProps {

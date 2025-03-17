@@ -20,7 +20,8 @@ const navigation = [
   { name: 'Home', href: '/', id: 'home', icon: Home },
   { name: 'Doctors', href: '/user/doctor_list' , id: 'doctors', icon: Users },
   { name: 'Appointments', href: '/user/appointments', id: 'appointments', icon: Calendar },
-  { name: 'Service', href: '/user/services', id: 'services', icon: Grid },
+  // { name: 'Service', href: '/user/services', id: 'services', icon: Grid },
+  { name: 'Service', href: '/user/service', id: 'services', icon: Grid },
   { name: 'About Us', href: '/user/about', id: 'about', icon: Info },
 ];
 
@@ -240,8 +241,8 @@ export default function Header() {
                         <ListTodo size={20} className="text-yellow-400" />
                       </div>
                       <div>
-                        <div className="font-medium">My Tasks</div>
-                        <div className="text-sm text-gray-400">To-do and Daily Tasks</div>
+                        <div className="font-medium">MemberShip</div>
+                        <div className="text-sm text-gray-400">Add upto five members</div>
                       </div>
                     </a>
                   </div>
@@ -276,8 +277,8 @@ export default function Header() {
           <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-blue-600 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <a href="/" className="-m-1.5 p-1.5">
-                {/* <span className="sr-only">HealthX</span> */}
-                <span className="sr-only">Welliy</span>
+                <span className="sr-only">HealthX</span>
+                {/* <span className="sr-only">Welliy</span> */}
                 <img alt="HealthX" src="../../../Logo.png" className="h-8 w-auto" />
               </a>
               <button

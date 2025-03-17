@@ -1,20 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from './Card';
-import { Button } from '../../components/AdminComponents/common/Button';
-import { Textarea } from '../../components/AdminComponents/common/Textarea';
 import { CheckCircle, XCircle, X } from 'lucide-react';
-import { Alert, AlertDescription } from './Alert';
-import { getDoctorByEmail , rejectDoctorDocuments , approveDoctorDocuments} from '../../api/action/AdminActionApi';
-
-
-
-
-
-
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
+import { Button } from '../../components/AdminComponents/common/Button';
+import { Textarea } from '../../components/AdminComponents/common/Textarea';
+import { Alert, AlertDescription } from '../../components/AdminComponents/common/Alert';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '../../components/AdminComponents/common/DocumentCard';
 
+import { getDoctorByEmail , rejectDoctorDocuments , approveDoctorDocuments} from '../../api/action/AdminActionApi';
 
 interface DoctorData {
   name: string;
@@ -28,6 +22,10 @@ interface DoctorData {
 
 const DocumentVerification = () => {
 
+
+  const [showRejectReason, setShowRejectReason] = useState(false);
+  const [rejectReason, setRejectReason] = useState('');
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [previewImage, setPreviewImage] = useState<{ src: string; title: string } | null>(null);
   const [doctor, setDoctor] = useState<DoctorData>({
     name: '',
@@ -62,21 +60,14 @@ const DocumentVerification = () => {
   const closePreview = () => {
     setPreviewImage(null);
   };
-
-
   const navigate =  useNavigate()
 
-
- 
   const confirmApproval = 
 
     async () => {
       try {
-        
+    
         const email = decodeURI(location.pathname.split('/').pop() || '');
-
-       console.log(email , 'email')
-  
         const response = await approveDoctorDocuments(email);
   
         if (response.success) {
@@ -87,36 +78,18 @@ const DocumentVerification = () => {
         }
       } catch (error: any) {
         toast.error(error.message || 'Unknown Error Occurred!');
-      } finally {
-       
-      }
+      } 
     } 
     
-
-
   const handleApprove = () => {
-    setShowConfirmModal(true);
+      setShowConfirmModal(true);
   };
-
-  const [showRejectReason, setShowRejectReason] = useState(false);
-  const [rejectReason, setRejectReason] = useState('');
-
-
-
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  
-
-  
-
 
   const handleReject =
     async () => {
       try {
         
         const email = decodeURI(location.pathname.split('/').pop() || '');
-
-       
-  
         const response = await rejectDoctorDocuments(email, rejectReason);
   
         if (response.success) {
@@ -127,15 +100,8 @@ const DocumentVerification = () => {
         }
       } catch (error: any) {
         toast.error(error.message || 'Unknown Error Occurred!');
-      } finally {
-       
-      }
+      } 
     }
-
- 
-
- 
-
 
   return (
     <div className="min-h-screen bg-slate-800 p-6">
@@ -275,9 +241,6 @@ const DocumentVerification = () => {
           </Card>
         )}
 
-
-
-
          {/* Confirm Approval Modal */}
          {showConfirmModal && (
           <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
@@ -302,11 +265,6 @@ const DocumentVerification = () => {
           </div>
         )}
 
-
-
-
-
-
         {/* Action Buttons */}
         <Card>
           <CardFooter className="flex justify-end gap-4 p-6">
@@ -315,7 +273,6 @@ const DocumentVerification = () => {
             ) : doctor.status === 'rejected' ?(
               <p className="text-red-600 font-medium">Already these documents are rejected.</p>
             ) 
-            
             : (
               !showRejectReason ? (
                 <>
@@ -366,8 +323,6 @@ const DocumentVerification = () => {
             )}
           </CardFooter>
         </Card>
-
-
 
       </div>
     </div>

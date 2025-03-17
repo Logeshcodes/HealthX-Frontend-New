@@ -14,7 +14,7 @@ import AdminSessionRoute from "../Protecter/AdminSessionRoute";
 import DocumentVerification from "../pages/Admin/DocumentVerification";
 import EditBannerForm from "../pages/Admin/EditBanner";
 import ReportManagement from "../pages/Admin/ReportDoctor";
-import AdminDashboard from "../pages/Admin/newDash";
+import AdminDashboard from "../pages/Admin/Dashboard";
 import AdminLayout from "../layouts/AdminLayout";
 import PrivateRoute from "../Protecter/AdminPrivateRoute";
 import NotFoundPage from "../pages/Admin/NotFoundPage";
@@ -31,7 +31,6 @@ const AdminRouter = () => {
         {/* Protected Routes */}
         <Route element={<PrivateRoute />}>
           <Route path="" element={<AdminLayout />}>
-            {/* <Route path="dashboard" element={<Dashboard isDarkMode={isDarkMode} />} /> */}
             <Route path="department" element={<Department isDarkMode={isDarkMode} />} />
             <Route path="users" element={<UserList isDarkMode={isDarkMode} />} />
             <Route path="banners" element={<BannerManagement/>} />

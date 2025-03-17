@@ -62,7 +62,7 @@ const UserList: React.FC<UserProps> = ({ isDarkMode }) => {
     []
   );
 
-  // Filter and Search Logic
+  // Filter - Search 
   const filteredUsers = users
     .filter((user) =>
       filterStatus === 'All' ? true : user.status === filterStatus
@@ -72,7 +72,7 @@ const UserList: React.FC<UserProps> = ({ isDarkMode }) => {
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  // Pagination Logic
+  // Pagination 
   const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
@@ -86,7 +86,6 @@ const UserList: React.FC<UserProps> = ({ isDarkMode }) => {
           <h1 className="text-2xl font-bold text-blue-500">User List</h1>
         </div>
 
-        {/* Search and Filter Controls */}
         <div className="flex justify-between items-center mb-4">
         <Search className="absolute  transform -translate-y-1/1 text-gray-400 p-1" />
           <input

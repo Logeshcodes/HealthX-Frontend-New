@@ -24,9 +24,9 @@ const AdminSidebar = ({ isSidebarOpen, toggleSidebar, isDarkMode, sidebarItems, 
               key={item.id}
               onClick={() => {
                 if (item.href) {
-                  handleNavigation(item.href, item.id); // Pass href and id to handleNavigation
+                  handleNavigation(item.href, item.id); 
                 } else {
-                  item.action && item.action(); // Execute action (logout) if provided
+                  item.action && item.action(); 
                 }
               }}
               className={`

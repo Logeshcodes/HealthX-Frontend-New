@@ -3,9 +3,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getDepartmentByName, updateDepartment } from '../../api/action/AdminActionApi';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { decodeURI } from '../../utils/decodeURI';
+
+import { getDepartmentByName, updateDepartment } from '../../api/action/AdminActionApi';
 
 interface EditDepartmentFormProps {
   isDarkMode: boolean;
@@ -20,26 +22,16 @@ const EditDepartmentForm: React.FC<EditDepartmentFormProps> = ({ isDarkMode }) =
   
   const [loader, setLoader] = useState(false);
   const { departmentName } = useParams<{ departmentName: string }>();
-  const navigate = useNavigate();
-
-  
-
-
-
-  const location = useLocation(); 
-
+  const navigate = useNavigate(); 
 
   useEffect(()=> {
 
     const fetchDepartmentDetails = async()=> {
       try {
         const department = decodeURI(location.pathname.split('/').pop() || '');
-       
-        console.log("inside fetch dept",department)
         const response = await getDepartmentByName(department)
    
-         formik.setValues({ departmentName: response?.data[0].departmentName });
-        console.log(response)
+        formik.setValues({ departmentName: response?.data[0].departmentName });
       } catch (error) {
         console.log(error)
       }
@@ -47,15 +39,11 @@ const EditDepartmentForm: React.FC<EditDepartmentFormProps> = ({ isDarkMode }) =
     fetchDepartmentDetails()
   },[])
 
-
-
   const handleSubmit = useCallback(
     async (values: DepartmentFormValues) => {
       try {
         setLoader(true);
         const departmentName = decodeURI(location.pathname.split('/').pop() || '');
-        console.log(departmentName, "....")
-        console.log(values, "....")
         const response = await updateDepartment(departmentName!, values);
         if (response.success) {
           toast.success(response.message);

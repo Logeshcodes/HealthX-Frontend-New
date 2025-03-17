@@ -1,14 +1,14 @@
 import  { useEffect, useState } from 'react';
 import { Calendar, Clock,  FileText, CheckCircle2, Video,MapPin, TicketCheck, CircleX, CircleCheck, Ban} from 'lucide-react';
-import { CardContent , Card } from '../../Common/card/Card2';
-import { Button } from '../../Common/button/Button2';
+import { CardContent , Card } from '../../../components/Common/card/Card2';
+import { Button } from '../../../components/Common/button/Button2';
 import { getAllDoctorAppointmentDetails , getDoctorData } from '../../../api/action/DoctorActionApi';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"; 
 import timezone from "dayjs/plugin/timezone";
 
-import VideoCallModal from '../../Common/VideoCall/createCall';
-import useVideoCall from '../../Common/VideoCall/useVideoCall';
+import VideoCallModal from '../../../components/Common/VideoCall/createCall';
+import useVideoCall from '../../../components/Common/VideoCall/useVideoCall';
 import { useNavigate } from 'react-router-dom';
 
 

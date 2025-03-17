@@ -13,5 +13,5 @@ export default function PrimaryButton({ name ,type="button" }: {
      hover:shadow-[5px_5px_0px_0px_rgba(88,22,135)] 
         hover:translate-x-1 transition-all ease-in-out duration-300">
             {name}
-            </button>
+    </button>
 }

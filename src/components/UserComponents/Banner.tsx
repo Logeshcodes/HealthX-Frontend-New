@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight, Calendar, ExternalLink } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
 
-import { getAllBanner } from '../../../api/action/UserActionApi';
+import { getAllBanner } from '../../api/action/UserActionApi';
 
 
 

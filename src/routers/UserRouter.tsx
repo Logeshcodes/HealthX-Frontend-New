@@ -13,7 +13,7 @@ import ResetPassword from '../pages/Users/Auth/ResetPassword';
 
 
 import DoctorListingPage from '../pages/Users/Navbar/DoctorList';
-import DoctorDetailPage from '../pages/Users/Navbar/DoctorDetailsPage';
+import DoctorDetailPage from '../pages/Users/Doctor/DoctorDetailsPage';
 import Slot from '../pages/Users/Doctor/Slot';
 import SlotDetailsPage from '../pages/Users/Doctor/SlotDetailsPage';
 
@@ -26,21 +26,20 @@ import UserSessionRoute from '../Protecter/UserSessionRoute';
 import NotFoundPage from '../pages/Users/NotFoundPage';
 
 
-import ProfileManagement from '../components/UserComponents/Profile/ProfileManagement';
-import MyAccount from '../components/UserComponents/Profile/MyAccount';
-import ChangePassword from '../components/UserComponents/Profile/ChangePassword';
-import EditProfile from '../components/UserComponents/Profile/EditProfile';
-import AccountStatus from '../components/UserComponents/Profile/AccountStatus';
-import WalletApp from '../components/UserComponents/Profile/Wallet';
+import ProfileManagement from '../pages/Users/Profile/ProfileManagement';
+import MyAccount from '../pages/Users/Profile/MyAccount';
+import ChangePassword from '../pages/Users/Profile/ChangePassword';
+import EditProfile from '../pages/Users/Profile/EditProfile';
+import AccountStatus from '../pages/Users/Profile/AccountStatus';
+import WalletApp from '../pages/Users/Profile/Wallet';
 import WalletAppointmentConfirmation from '../pages/Users/Doctor/WalletSlotBooking';
-import SettingsHelpCenter from '../components/UserComponents/Profile/Settings';
+import SettingsHelpCenter from '../pages/Users/Profile/Settings';
 
 import PaymentSuccess from '../pages/Users/Payment/Success';
 import PaymentFailurePage from '../pages/Users/Payment/Failed';
 
 import PrescriptionDetails from '../pages/Users/Doctor/Prescription';
 
-import DoctorProfile from '../pages/Users/Doctor/sample';
 import ReportDoctorForm from '../pages/Users/Doctor/Report';
 
 const UserRouter = () => {
@@ -77,7 +76,6 @@ const UserRouter = () => {
             <Route path="/user/prescription/:appointmentId" element={<PrescriptionDetails/>} />
             <Route path="/user/about" element={<About />} />
             <Route path="/user/addReport/:doctorId" element={<ReportDoctorForm />} />
-            <Route path="/user/services" element={<DoctorProfile />} />
 
 
             {/* Payment */}

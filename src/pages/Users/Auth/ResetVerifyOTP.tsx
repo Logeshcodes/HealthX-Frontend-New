@@ -9,32 +9,23 @@ const ResetVerificationOTP = () => {
   const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
   const [counter, setCounter] = useState<number>(10);
   const [resendAtive,setResendActive]=useState(false)
- 
 
   const navigate = useNavigate();
 
-  console.log("otp", otp)
-
-
-
   useEffect(()=>{
     
-     
     if(counter>0){
       const timer=setInterval(()=>{
         setCounter(prev=>prev-1)
       },1000)
-      return()=>    clearInterval(timer)
+
+      return()=> clearInterval(timer);
+
     }else{
-      setResendActive(true)
+        setResendActive(true);
     }
-   
     }
-
   ,[counter,otp])
-
-
-
 
    const handleResend=async()=>{
     setResendActive(false)
@@ -42,21 +33,16 @@ const ResetVerificationOTP = () => {
 
     let email= localStorage.getItem("ForgotPassEmail")|| ""
     const response=await forgotResendOtp(email)
-
     if(response.success){
       toast.success(response.message)
     }else{
       toast.error(response.message)
     }
-    
-    
   }
-
 
   const handleChange=(e:React.ChangeEvent<HTMLInputElement>,index:number)=>{
     
     const value=e.target.value
-
     const newOTP= [...otp]
     newOTP[index]=value
     setOtp(newOTP)
@@ -68,9 +54,6 @@ const ResetVerificationOTP = () => {
       const prevSibling = document.getElementById(`otpInput-${index - 1}`);
       prevSibling?.focus();
     }
-
-    
-
   }
 
 
@@ -80,21 +63,18 @@ const ResetVerificationOTP = () => {
     }
   }
 
-
-
   const handleSubmit=async ()=>{
     let OTP=otp.join("")
     if(OTP.length==4){
       console.log("submit Clicked")
     }else{
-     toast.error("enter full OTP")
+     toast.error("Please enter the full OTP !")
       return 
     }
     let email= localStorage.getItem("ForgotPassEmail")|| ""
     let response=await verifyResetOtp(email,OTP)
     if(response.success){
       toast.success(response.message)
-      
       navigate('/user/resetPassword')
 
     }else{
@@ -103,10 +83,6 @@ const ResetVerificationOTP = () => {
     
   }
 
-
-
-
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center p-4">
       <div className="w-full max-w-4xl bg-white rounded-3xl shadow-xl overflow-hidden flex">
@@ -114,18 +90,11 @@ const ResetVerificationOTP = () => {
         <div className="w-full md:w-1/2 p-8">
           <div className="mb-8">
             <div className="h-12 w-12  rounded-xl flex items-center justify-center mb-4">
-              {/* <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg> */}
               <img src="../../../Logo.png" alt="Logo" />
             </div>
             <h2 className="text-2xl font-bold text-gray-800"> Verify Your Email Address</h2>
             <p className="text-gray-600 mt-2">Email verification OTP has been sent to your Email. Please enter the OTP below</p>
           </div>
-          
-
-
-
             <div className="flex space-x-2 p-3 pl-24">
             
             {
@@ -155,12 +124,7 @@ const ResetVerificationOTP = () => {
               Continue
             </button>
           </span>
-          
-          
         </div>
-
-
-
         <div className="text-center">
           {
             resendAtive?<button typeof="button" onClick={handleResend} className="text-red-600">Resend OTP</button>:<span className="text-red-500">{counter} seconds</span>

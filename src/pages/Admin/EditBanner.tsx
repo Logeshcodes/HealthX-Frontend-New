@@ -1,13 +1,13 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from "yup";
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/AdminComponents/common/Card';
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
+
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/AdminComponents/common/Card';
+
 import { getBannerById, updateBanner } from '../../api/action/AdminActionApi'; 
 
-
-// Validation Schema
 const validationSchema = Yup.object().shape({
   bannerTitle: Yup.string()
     .required('Banner title is required')
@@ -35,6 +35,8 @@ interface BannerData {
 }
 
 const EditBannerForm = () => {
+
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const { id: bannerId } = useParams<{ id: string }>(); 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -47,9 +49,6 @@ const EditBannerForm = () => {
     role: '',
     bannerImage: null,
   });
-
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
 
   useEffect(() => {
     const fetchBannerDetails = async () => {
@@ -75,11 +74,10 @@ const EditBannerForm = () => {
   
           // Set Image Preview
           if (banner.bannerImage) {
-            setImagePreview(banner.bannerImage); // Assuming backend returns a URL
+            setImagePreview(banner.bannerImage); 
           }
         }
       } catch (error) {
-        console.error("Error fetching banner details:", error);
         toast.error("Failed to load banner details.");
       } finally {
         setLoading(false);
@@ -89,10 +87,6 @@ const EditBannerForm = () => {
   }, [bannerId]);
   
 
-  
-
-
-  // Submit Handler
   const handleSubmit = async (values: BannerData) => {
     try {
       setLoading(true);
@@ -110,17 +104,8 @@ const EditBannerForm = () => {
           formData.append(key, value);
         }
       });
-
       
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
-
-     
-
-
-
-      // API Call
+  
       const response = await updateBanner(bannerId!, formData);
       if (response.success) {
         toast.success(response.message);
@@ -253,8 +238,6 @@ const EditBannerForm = () => {
                         />
                     </div>
                     )}
-
-
                   {/* Submit Button */}
                   <button type="submit" disabled={isSubmitting} className="w-full bg-blue-500 text-white py-3 rounded-lg">
                     {isSubmitting ? "Saving..." : "Save Changes"}
@@ -264,10 +247,9 @@ const EditBannerForm = () => {
             </Formik>
           ) : (
            
-           
-                <div className="min-h-[400px] flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-                </div>
+            <div className="min-h-[400px] flex items-center justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
              
           )}
         </CardContent>

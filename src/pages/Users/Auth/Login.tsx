@@ -1,22 +1,23 @@
-import { Card } from "../../../components/Common/card/Card";
+import { motion } from "framer-motion";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { login, UserGoogleLogin } from "../../../api/auth/UserAuthentication";
-import { setUser } from "../../../redux/slices/userSlice";
-import { Login } from "../../../@types/LoginData";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
-import PasswordField from "../../../components/UserComponents/common/passwordField";
-
-import { motion } from "framer-motion";
-
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
-
 import { jwtDecode } from "jwt-decode";
 
-// Validation Schema
+import { Card } from "../../../components/Common/card/Card";
+import PasswordField from "../../../components/UserComponents/common/passwordField";
+
+
+import { setUser } from "../../../redux/slices/userSlice";
+import { Login } from "../../../@types/LoginData";
+
+import { login, UserGoogleLogin } from "../../../api/auth/UserAuthentication";
+
+
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
@@ -38,20 +39,14 @@ const LoginPage = () => {
 
   const onSubmit = async (data: Login) => {
     try {
-      // Perform the login request
-      console.log("Response received:", data);
+
       const response = await login(data.email, data.password, data.role);
-      console.log("Response received:>", response.message);
 
       const user = response?.user;
 
       if (user) {
-        // Store user data in localStorage and show success toast
         localStorage.setItem("user", JSON.stringify(user));
         toast.success(response?.message);
-        // toast.success("Welcome to HealthX");
-        console.log("user data ___________>", user);
-
         dispatch(
           setUser({
             userId: user._id,
@@ -63,7 +58,6 @@ const LoginPage = () => {
           })
         );
 
-        // Redirect to home page after a  delay
         setTimeout(() => {
           navigate(`/`);
         }, 1000);
@@ -76,10 +70,9 @@ const LoginPage = () => {
   };
 
   const googleSubmit = async (credentialResponse: any) => {
-    console.log("gooogle");
+
     try {
       const decoded: any = jwtDecode(credentialResponse.credential);
-      console.log("decoded", decoded.name);
       let response = await UserGoogleLogin({
         name: decoded.name,
         email: decoded.email,
@@ -87,9 +80,9 @@ const LoginPage = () => {
         profilePicture: decoded.picture,
         mobileNumber : decoded.phoneNumber ,
       });
-      console.log(response.user, "responsee");
+    
       const user = response?.user;
-      console.log(user, "USERRRRR");
+
       if (response) {
         dispatch(
           setUser({
@@ -107,7 +100,7 @@ const LoginPage = () => {
         const { message } = response.response?.data;
         toast.error(message);
       }
-      // const user = response.data.user;
+
     } catch (error) {
       console.log(error);
     }
@@ -124,7 +117,7 @@ const LoginPage = () => {
           {/* Left Side - Login Form */}
           <div className="w-full md:w-3/5 p-8 md:p-12">
             <div className="flex items-center gap-2 mb-8">
-              {/* <Shield className="w-6 h-6 text-blue-600" /> */}
+              
               <img
                 src="../../../Logo.png"
                 alt="Healthcare professional"

@@ -1,8 +1,8 @@
 import  {  useState } from 'react';
-import { XCircle, RefreshCcw, MessageCircle, ArrowLeft, } from 'lucide-react';
+import { XCircle,  MessageCircle, ArrowLeft, } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent} from '../../../components/Common/card/Card2';
 import { Button } from '../../../components/Common/button/Button2';
-import { Alert, AlertDescription } from '../../Admin/Alert';
+import { Alert, AlertDescription } from '../../../components/AdminComponents/common/Alert';
 
 const PaymentFailurePage = () => {
     
@@ -10,10 +10,6 @@ const PaymentFailurePage = () => {
 
    console.log(setShowAnimation)
 
-    // const handleRetryPayment = () => {
-    //     // Implement retry payment logic
-    //     console.log("Retrying payment...");
-    // };
 
     const handleContactSupport = () => {
         window.location.href = '/user/about';

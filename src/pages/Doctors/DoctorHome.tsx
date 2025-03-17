@@ -1,6 +1,6 @@
 import DoctorBanner from "../../components/DoctorComponents/Banner";
-import DoctorCarousel from "../../components/UserComponents/Home/DoctorCarousel";
-import Departments from "../../components/UserComponents/Home/DepartmentList";
+import DoctorCarousel from "../../components/Common/Home/DoctorCarousel";
+import Departments from "../../components/Common/Home/DepartmentList";
 
 
 

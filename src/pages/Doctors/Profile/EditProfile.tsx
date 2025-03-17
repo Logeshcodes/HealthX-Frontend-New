@@ -3,7 +3,7 @@ import { Edit2, FileText, DollarSign, Briefcase , GraduationCap , Phone , Mail ,
 import { getDoctorData , updateProfile } from '../../../api/action/DoctorActionApi';
 
 
-import AlertDialog2 from '../../UserComponents/common/AlertDialogBox2';
+import AlertDialog2 from '../../../components/UserComponents/common/AlertDialogBox2';
 import { toast } from "react-toastify";
 
 import { Formik, Form , Field } from "formik";

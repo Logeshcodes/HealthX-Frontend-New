@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Check,BadgeCheck , Calendar, Clock, User, CreditCard ,  Aperture , MapPin ,BadgeAlert } from 'lucide-react';
+import { Check,BadgeCheck , Calendar, Clock, User, CreditCard ,  Aperture  ,BadgeAlert } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent} from '../../../components/Common/card/Card2';
 import { Button } from '../../../components/Common/button/Button2';
 
@@ -22,10 +22,6 @@ interface Slot {
     date : string ,
     timeSlot : string ,
     mode : string ,
-}
-
-interface Doctor{
-    location : string ,
 }
 
 const PaymentSuccessPage = () => {

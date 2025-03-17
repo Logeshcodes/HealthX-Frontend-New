@@ -1,10 +1,11 @@
-import { Save, XCircle } from 'lucide-react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify'; 
-import { addDepartment } from '../../api/action/AdminActionApi';
 import { useNavigate } from 'react-router-dom';
+import { Save, XCircle } from 'lucide-react';
+
+import { addDepartment } from '../../api/action/AdminActionApi';
 
 interface AddDepartmentFormProps {
   isDarkMode: boolean;
@@ -15,6 +16,7 @@ interface DepartmentFormValues {
 }
 
 const AddDepartmentForm: React.FC<AddDepartmentFormProps> = ({ isDarkMode }) => {
+  
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
 

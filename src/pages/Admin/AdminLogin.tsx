@@ -1,17 +1,14 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup"
 import {toast} from 'react-toastify'
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import PasswordField from "../../components/UserComponents/common/passwordField";
+
 import { adminLogin } from "../../api/auth/AdminAuthentication";
 
-import { motion } from "framer-motion";
-
-
 const AdminLogin = () => {
-
-
 
   const loginSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -32,7 +29,6 @@ const AdminLogin = () => {
   const handleSubmit = async(values: { email: string; password: string }) => {
 
     const response= await adminLogin(values) ;
-    console.log("Response ...: ",response.data.email)
     const email = response.data.email ;
     if(response.success){
       localStorage.setItem("admin", JSON.stringify(email));
@@ -42,23 +38,18 @@ const AdminLogin = () => {
     }else{
       toast.error(response.message)
     }
-    console.log("Form Values:", response);
    
   };
-
-
-  
 
 
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
        < motion.div
-
-initial={{opacity:0 , x:200}}
-animate={{opacity:100,x:0}}
-transition={{duration:1 , ease:'easeInOut'}}
->
+        initial={{opacity:0 , x:200}}
+        animate={{opacity:100,x:0}}
+        transition={{duration:1 , ease:'easeInOut'}}
+        >
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
@@ -145,9 +136,6 @@ transition={{duration:1 , ease:'easeInOut'}}
                                <span className="px-2 bg-white text-gray-500">Admin Credentials</span>
                              </div>
                            </div>
-             
-                          
-                           
                          </Form>
                        )}
                  </Formik>

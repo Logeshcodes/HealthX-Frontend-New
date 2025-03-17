@@ -1,9 +1,10 @@
-
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+
 import PasswordField from '../../../components/UserComponents/common/passwordField';
+
 import { resetPassword } from '../../../api/auth/UserAuthentication';
 
 const ResetPassword = () => {
@@ -18,7 +19,6 @@ const ResetPassword = () => {
       .oneOf([Yup.ref("newPassword")], "Passwords must match")
       .required("Confirm password is required"),
   });
-
 
   const initialValues = {
     newPassword: "",
@@ -37,7 +37,6 @@ const ResetPassword = () => {
         toast.error(response.message || "Failed to reset password");
       }
     } catch (error) {
-      console.error(error);
       toast.error("An unexpected error occurred");
     }
   };
@@ -69,13 +68,9 @@ const ResetPassword = () => {
               <div>
                 <PasswordField name="newPassword" placeholder="New Password" />
               </div>
-
-              
               <div>
                 <PasswordField  name="confirmPassword" placeholder="Confirm Password" />
               </div>
-
-           
               <button
               type="submit"
               className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
@@ -83,8 +78,6 @@ const ResetPassword = () => {
             >
               Confirm
             </button>
-
-             
             </Form>
           )}
         </Formik>

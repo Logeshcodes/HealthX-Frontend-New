@@ -107,10 +107,7 @@ useEffect(() => {
                             {format(new Date(banner.startDate), 'MMM dd')} - {format(new Date(banner.endDate), 'MMM dd, yyyy')}
                           </span>
                         </div>
-                        {/* <div className="flex items-center">
-                          <Clock className="w-4 h-4 mr-2" />
-                          <span>{banner.role}</span>
-                        </div> */}
+                      
                       </div>
 
                       <a 

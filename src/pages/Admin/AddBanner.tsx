@@ -1,8 +1,9 @@
+import { toast } from "react-toastify";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from "yup";
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/AdminComponents/common/Card';
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/AdminComponents/common/Card';
 
 import { addBanner } from '../../api/action/AdminActionApi';
 
@@ -17,6 +18,7 @@ const validationSchema = Yup.object().shape({
   endDate: Yup.date()
     .required('End date is required')
     .min(Yup.ref('startDate'), 'End date must be after start date'),
+  role: Yup.string().required('Role is required'),
   link: Yup.string().required('Link is required'),
   bannerImage: Yup.mixed().required('Banner image is required'),
 });
@@ -28,7 +30,7 @@ interface BannerData {
   endDate: string;
   link: string;
   role: string;
-  bannerImage: File | null; // Store as a File object
+  bannerImage: File | null; 
 }
 
 const BannerForm = () => {
@@ -39,14 +41,13 @@ const BannerForm = () => {
     endDate: '',
     link: '',
     role: '',
-    bannerImage: null, // Initialize as null
+    bannerImage: null, 
   };
 
   const navigate = useNavigate();
 
   const handleSubmit = async (data: BannerData) => {
     try {
-      console.log("Form submitted:", data);
 
       const formData = new FormData();
       if (data.bannerImage) {
@@ -59,12 +60,9 @@ const BannerForm = () => {
         }
       });
 
-     
       for (const [key, value] of formData.entries()) {
         console.log(`${key}:`, value);
       }
-
-      console.log("form...***" , formData)
 
       const response = await addBanner(formData);
 
@@ -75,7 +73,6 @@ const BannerForm = () => {
         toast.error(response.message || "Failed to add banner");
       }
     } catch (error) {
-      console.error(error);
       toast.error("An unexpected error occurred");
     }
   };
@@ -154,8 +151,6 @@ const BannerForm = () => {
                     {errors.endDate && touched.endDate && <div className="text-red-400 text-sm mt-1">{errors.endDate}</div>}
                   </div>
                 </div>
-
-                {/* Link */}
 
                 <div>
                   <label htmlFor="link" className="block text-sm font-medium text-gray-200 mb-1">Link</label>

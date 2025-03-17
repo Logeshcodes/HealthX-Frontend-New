@@ -1,6 +1,6 @@
-import Banner from "../../components/UserComponents/Home/Banner";
-import DoctorCarousel from "../../components/UserComponents/Home/DoctorCarousel";
-import Departments from "../../components/UserComponents/Home/DepartmentList";
+import Banner from "../../components/UserComponents/Banner";
+import DoctorCarousel from "../../components/Common/Home/DoctorCarousel";
+import Departments from "../../components/Common/Home/DepartmentList";
 
 
 const Home = () => {

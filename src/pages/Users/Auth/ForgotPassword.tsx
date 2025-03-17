@@ -1,11 +1,12 @@
 import  { useState } from 'react';
-
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
+
 import Loader from '../../../components/Common/Fallbacks/Loader';
 import InputField from '../../../components/UserComponents/common/inputField';
-import { useNavigate } from 'react-router-dom';
+
 import { verifyEmail } from '../../../api/auth/UserAuthentication';
 
 const ForgotPassword = () => {
@@ -20,37 +21,24 @@ const ForgotPassword = () => {
 
   const onSubmit = async (data: { email: string }) => {
     try {
-      console.log("Submitting forgot password request for:", data.email);
   
       setLoader(true); 
-  
       const response = await verifyEmail(data.email);
-  
-      console.log("Response received:", response.message);
-  
       if (response?.success) {
         
         localStorage.setItem("ForgotPassEmail", response.data.email);
-  
         toast.success(response.message);
-        
-        
         navigate(`/user/forgot-password-otp`);
       } else {
-        toast.error(
-          response?.message || "An error occurred. Please try again."
-        );
+        toast.error(response?.message || "An error occurred. Please try again.");
       }
     } catch (error) {
       console.error("Error during password reset request:", error);
       toast.error("Something went wrong. Please try again later.");
     } finally {
-      setLoader(false); // Ensure the loader is always stopped
+      setLoader(false); 
     }
   };
-  
-
-
 
   const emailSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -73,7 +61,7 @@ const ForgotPassword = () => {
           
          
 
-<Formik
+        <Formik
           initialValues={initialValues}
           validationSchema={emailSchema}
           onSubmit={onSubmit}

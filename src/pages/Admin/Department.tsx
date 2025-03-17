@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Pencil, Plus, Search } from 'lucide-react';
-import { getAllDepartment } from '../../api/action/AdminActionApi';
 import { debounce } from 'lodash';
+
+import { getAllDepartment } from '../../api/action/AdminActionApi';
 
 interface DepartmentProps {
   isDarkMode: boolean;
@@ -67,7 +68,6 @@ const Department: React.FC<DepartmentProps> = ({ isDarkMode }) => {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-blue-500">Departments List</h1>
 
-          {/* Add More button */}
           <a href="/admin/addDepartment">
             <button
               className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg

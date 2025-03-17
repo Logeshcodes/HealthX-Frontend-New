@@ -23,17 +23,7 @@ API.interceptors.request.use(
   }
 );
 
-// API.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response) {
-//       console.log(error.response.data.message);
-//     } else {
-//       console.log(error);
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+
 
 API.interceptors.response.use(
   (response) => response,
