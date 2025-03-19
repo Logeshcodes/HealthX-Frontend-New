@@ -325,16 +325,42 @@ const DoctorProfile = () => {
     interactive = false,
     onStarClick?: (rating: number) => void
   ) => {
-    return Array.from({ length: 5 }, (_, index) => (
-      <Star
-        key={index}
-        className={`h-5 w-5 cursor-pointer ${
-          index < Math.floor(rating) ? "text-yellow-500" : "text-gray-300"
-        }`}
-        fill={index < Math.floor(rating) ? "#FFD700" : "none"}
-        onClick={() => interactive && onStarClick && onStarClick(index + 1)}
-      />
-    ));
+    return Array.from({ length: 5 }, (_, index) => {
+      const starValue = index + 1;
+      const difference = starValue - rating;
+      
+      let fillPercentage = "100%";
+      if (difference > 0 && difference < 1) {
+        // Calculate fill percentage for partial stars
+        fillPercentage = `${(1 - difference) * 100}%`;
+      }
+
+      return (
+        <Star
+          key={index}
+          className={`h-5 w-5 cursor-pointer ${
+            rating >= starValue ? "text-yellow-500" : "text-gray-300"
+          }`}
+          style={{
+            fill: rating >= starValue
+              ? "#FFD700"
+              : difference < 1
+              ? `url(#partialFill-${index})`
+              : "none"
+          }}
+          onClick={() => interactive && onStarClick && onStarClick(starValue)}
+        >
+          {difference > 0 && difference < 1 && (
+            <defs>
+              <linearGradient id={`partialFill-${index}`} x1="0" x2="100%" y1="0" y2="0">
+                <stop offset={fillPercentage} stopColor="#FFD700" />
+                <stop offset={fillPercentage} stopColor="#E5E7EB" />
+              </linearGradient>
+            </defs>
+          )}
+        </Star>
+      );
+    });
   };
 
   const [toggeleReview, setToggeleReview] = useState(false);
@@ -391,6 +417,25 @@ const DoctorProfile = () => {
           >
             {doctor.name}
           </motion.h1>
+
+          {/* Add Rating Display */}
+          <motion.div
+            className="flex items-center justify-center gap-2 mb-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+          >
+            <div className="flex">
+              {renderStars(averageRating)}
+            </div>
+            <span className="text-white font-semibold">
+              {averageRating > 0 ? averageRating.toFixed(1) : 'No ratings'}
+            </span>
+            <span className="text-blue-100">
+              ({reviews.length} {reviews.length === 1 ? 'review' : 'reviews'})
+            </span>
+          </motion.div>
+
           <motion.p
             className="text-blue-100 mb-4 text-center flex items-center gap-2 justify-center"
             initial={{ opacity: 0 }}
@@ -398,7 +443,9 @@ const DoctorProfile = () => {
             transition={{ delay: 0.4 }}
           >
             <Stethoscope className="w-5 h-5" />
-            {doctor?.department} Specialist
+            <span className="bg-blue-700/50 px-3 py-1 rounded-full">
+              {doctor?.department} Specialist
+            </span>
           </motion.p>
 
           <motion.div
@@ -407,7 +454,7 @@ const DoctorProfile = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <div className="flex items-center gap-3 p-3 bg-white/10 rounded-lg backdrop-blur-sm">
+            <div className="flex items-center gap-3 p-3 bg-white/10 rounded-lg backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
               <Mail className="w-5 h-5" />
               <span>{doctor.email}</span>
             </div>

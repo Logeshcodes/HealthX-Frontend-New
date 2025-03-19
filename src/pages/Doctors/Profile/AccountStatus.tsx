@@ -1,9 +1,10 @@
-import { CheckCircle, Clock , UserPlus , AlertCircle , XCircle } from 'lucide-react';
-import { getDoctorData } from '../../../api/action/DoctorActionApi';
+import { CheckCircle, Clock , UserPlus , AlertCircle , XCircle, Star } from 'lucide-react';
+import { getDoctorData, GetDoctorReviews } from '../../../api/action/DoctorActionApi';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface UserData {
+  _id : string ;
   name: string;
   department: string;
   isVerified: string;
@@ -12,10 +13,13 @@ interface UserData {
   profilePicture : string
 }
 
+
+
 const AccountStatus = () => {
   const navigate = useNavigate();
 
   const [doctors, setDoctors] = useState<UserData>({
+    _id : "",
     name: "",
     department: "",
     isVerified: "",
@@ -24,6 +28,7 @@ const AccountStatus = () => {
     profilePicture: ""
   });
 
+  const [averageRating, setAverageRating] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
 
   const [imgSrc, setImgSrc] = useState(
@@ -64,6 +69,58 @@ const AccountStatus = () => {
     fetchDoctors();
   }, []);
 
+
+    useEffect(() => {
+  
+      const fetchAverageRating = async () => {
+        try {
+          const updatedReviews = await GetDoctorReviews(doctors._id);
+          setAverageRating(updatedReviews.data.averageRating);
+        } catch (error) {
+          console.log("Error fetching average rating:", error);
+        }
+      }
+  
+      fetchAverageRating();
+    }, [doctors]);
+
+
+
+
+    
+  const renderStars = (rating: number) => {
+    return (
+      <div className="flex">
+        {[1, 2, 3, 4, 5].map((index) => {
+          const difference = rating - index + 1;
+          return (
+            <div key={index} className="relative">
+              {difference >= 1 ? (
+                // Full star
+                <Star className="h-5 w-5 text-yellow-500" fill="#FFD700" />
+              ) : difference > 0 ? (
+                // Partial star
+                <div className="relative">
+                  <Star className="h-5 w-5 text-gray-300" />
+                  <div className="absolute top-0 overflow-hidden" style={{ width: `${difference * 100}%` }}>
+                    <Star className="h-5 w-5 text-yellow-500" fill="#FFD700" />
+                  </div>
+                </div>
+              ) : (
+                // Empty star
+                <Star className="h-5 w-5 text-gray-300" />
+              )}
+            </div>
+          );
+        })}
+        <span className="ml-2 text-sm text-gray-600">
+          {averageRating > 0 ? averageRating.toFixed(1) : 'No ratings'}
+        </span>
+      </div>
+    );
+  };
+
+
   return (
     <div className="bg-white rounded-lg p-6 shadow-lg">
       {loading ? (
@@ -80,6 +137,10 @@ const AccountStatus = () => {
             />
             <h3 className="text-xl font-medium text-gray-800 mb-2">{doctors.name}</h3>
             <p className="text-gray-500 mb-6">{doctors.department}</p>
+
+            
+              {renderStars(averageRating)}
+          
 
             <div className="flex items-center space-x-2">
                 {(() => {

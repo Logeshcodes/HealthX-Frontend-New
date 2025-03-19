@@ -1,9 +1,64 @@
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Star } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GetDoctorReviews } from '../../../api/action/DoctorActionApi';
+
+
 
 const DoctorCard = ({ doctor }: { doctor: any }) => {
 
+  const [averageRating, setAverageRating] = useState(0);
+  
   const navigate = useNavigate()
+
+
+  useEffect(() => {
+
+    const fetchAverageRating = async () => {
+      try {
+        const updatedReviews = await GetDoctorReviews(doctor._id);
+        setAverageRating(updatedReviews.data.averageRating);
+      } catch (error) {
+        console.log("Error fetching average rating:", error);
+      }
+    }
+
+    fetchAverageRating();
+  }, [doctor]);
+
+
+  const renderStars = (rating: number) => {
+    return (
+      <div className="flex">
+        {[1, 2, 3, 4, 5].map((index) => {
+          const difference = rating - index + 1;
+          return (
+            <div key={index} className="relative">
+              {difference >= 1 ? (
+                // Full star
+                <Star className="h-5 w-5 text-yellow-500" fill="#FFD700" />
+              ) : difference > 0 ? (
+                // Partial star
+                <div className="relative">
+                  <Star className="h-5 w-5 text-gray-300" />
+                  <div className="absolute top-0 overflow-hidden" style={{ width: `${difference * 100}%` }}>
+                    <Star className="h-5 w-5 text-yellow-500" fill="#FFD700" />
+                  </div>
+                </div>
+              ) : (
+                // Empty star
+                <Star className="h-5 w-5 text-gray-300" />
+              )}
+            </div>
+          );
+        })}
+        <span className="ml-2 text-sm text-gray-600">
+          {averageRating > 0 ? averageRating.toFixed(1) : 'No ratings'}
+        </span>
+      </div>
+    );
+  };
+
   return (
     <div className="p-6">
       <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
@@ -29,6 +84,10 @@ const DoctorCard = ({ doctor }: { doctor: any }) => {
               <h3 className="text-xl font-semibold text-blue-500 mb-1">{doctor.name}</h3>
             </a>
             
+              <div className="flex">
+              {renderStars(averageRating)}
+            </div>
+        
               <p className="text-gray-600 mb-1">{doctor.department}</p>
               <p className="text-gray-600 mb-1">{doctor.education}</p>
               <p className="text-gray-500 text-sm mb-2">{doctor.experience} years experience overall</p>

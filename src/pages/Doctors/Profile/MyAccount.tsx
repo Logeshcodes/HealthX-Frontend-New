@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { User, Phone, Mail, Briefcase, GraduationCap, Clock, BadgeIndianRupeeIcon, Calendar , BadgeCheck , Store} from 'lucide-react';
-import { getDoctorData } from '../../../api/action/DoctorActionApi';
+import { User, Phone, Mail, Briefcase, GraduationCap, Clock, BadgeIndianRupeeIcon, Calendar , BadgeCheck , Store, Star} from 'lucide-react';
+import { getDoctorData, GetDoctorReviews } from '../../../api/action/DoctorActionApi';
 
 interface UserData {
+  _id : string ;
   name: string;
   email: string;
   Mobile: string;
@@ -23,6 +24,7 @@ interface UserData {
 
 const MyAccount = () => {
   const [doctors, setDoctors] = useState<UserData>({
+    _id : "",
     name: '',
     email: '',
     Mobile: '',
@@ -41,7 +43,7 @@ const MyAccount = () => {
     profilePicture :""
   });
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [averageRating, setAverageRating] = useState(0);
 
   const [imgSrc, setImgSrc] = useState(
     doctors.profilePicture || "../../../profile.jpg"
@@ -80,6 +82,55 @@ const MyAccount = () => {
 
     fetchDoctors();
   }, []);
+
+
+  useEffect(() => {
+  
+    const fetchAverageRating = async () => {
+      try {
+        const updatedReviews = await GetDoctorReviews(doctors._id);
+        setAverageRating(updatedReviews.data.averageRating);
+      } catch (error) {
+        console.log("Error fetching average rating:", error);
+      }
+    }
+
+    fetchAverageRating();
+  }, [doctors]);
+
+
+  const renderStars = (rating: number) => {
+    return (
+      <div className="flex">
+        {[1, 2, 3, 4, 5].map((index) => {
+          const difference = rating - index + 1;
+          return (
+            <div key={index} className="relative">
+              {difference >= 1 ? (
+                // Full star
+                <Star className="h-5 w-5 text-yellow-500" fill="#FFD700" />
+              ) : difference > 0 ? (
+                // Partial star
+                <div className="relative">
+                  <Star className="h-5 w-5 text-gray-300" />
+                  <div className="absolute top-0 overflow-hidden" style={{ width: `${difference * 100}%` }}>
+                    <Star className="h-5 w-5 text-yellow-500" fill="#FFD700" />
+                  </div>
+                </div>
+              ) : (
+                // Empty star
+                <Star className="h-5 w-5 text-gray-300" />
+              )}
+            </div>
+          );
+        })}
+        <span className="ml-2 text-sm text-gray-600">
+          {averageRating > 0 ? averageRating.toFixed(1) : 'No ratings'}
+        </span>
+      </div>
+    );
+  };
+
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-lg">
@@ -161,49 +212,48 @@ const MyAccount = () => {
           </div>
 
           {/* Right Section */}
-          <div className="lg:w-1/3 bg-gray-50 rounded-lg p-6">
-            <div className="flex flex-col items-center">
-            <img
-              src={imgSrc}
-              alt="Profile"
-              className="w-28 h-28 rounded-full object-cover border-blue-100"
-              onError={(e) => (e.currentTarget.src = "../../../profile.jpg")}
-            />
-              <h3 className="font-medium text-gray-800">{doctors.name}</h3>
-              <p className="text-gray-500">{doctors.department}</p>
+          <div className="lg:w-1/3 bg-white shadow-lg rounded-2xl p-6">
+  <div className="flex flex-col items-center">
+    <img
+      src={imgSrc}
+      alt="Profile"
+      className="w-28 h-28 rounded-full object-cover border-4 border-blue-200 shadow-md"
+      onError={(e) => (e.currentTarget.src = "../../../profile.jpg")}
+    />
+    <h3 className="mt-4 text-lg font-semibold text-gray-900">{doctors.name}</h3>
+    <p className="text-sm text-blue-600">{doctors.department}</p>
+    {renderStars(averageRating)}
 
-              <div className="w-full mt-6 space-y-4">
+    <div className="w-full mt-6 space-y-4">
+      <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow">
+        <div className="flex items-center space-x-3">
+          <Store size={20} className="text-blue-500" />
+          <span className="text-sm font-medium">Bio</span>
+        </div>
+        <span className="text-sm text-gray-700">{doctors.description}</span>
+      </div>
 
-              <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <Store size={20} className="text-blue-500" />
-                    <span className="text-sm">Bio</span>
-                  </div>
-                  <span className="text-sm text-gray-600">{doctors.description}</span>
-                </div>
+      <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow">
+        <div className="flex items-center space-x-3">
+          <Calendar size={20} className="text-blue-500" />
+          <span className="text-sm font-medium">Joined</span>
+        </div>
+        <span className="text-sm text-gray-700">
+          {new Date(doctors.createdAt).toLocaleDateString("en-GB")}
+        </span>
+      </div>
 
+      <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow">
+        <div className="flex items-center space-x-3">
+          <Calendar size={20} className="text-blue-500" />
+          <span className="text-sm font-medium">Gender</span>
+        </div>
+        <span className="text-sm text-gray-700">{doctors.gender}</span>
+      </div>
+    </div>
+  </div>
+</div>
 
-                <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <Calendar size={20} className="text-blue-500" />
-                    <span className="text-sm">Joined</span>
-                  </div>
-                  <span className="text-sm text-gray-600">{new Date(doctors.createdAt).toLocaleDateString('en-GB')}</span>
-                </div>
-
-                <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <Calendar size={20} className="text-blue-500" />
-                    <span className="text-sm">Gender</span>
-                  </div>
-                  <span className="text-sm text-gray-600">{doctors.gender}</span>
-                </div>
-               
-
-
-              </div>
-            </div>
-          </div>
         </div>
       )}
     </div>

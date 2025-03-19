@@ -1,6 +1,7 @@
 const AdminRoutes = {
 
     
+    GetAdminData:'/user/admin/getAdminData',
     adminGetDoctors:'/user/admin/getDoctors',
     adminBlockDoctor:'/user/admin/blockDoctor/', 
 

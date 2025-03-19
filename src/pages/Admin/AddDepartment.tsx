@@ -31,6 +31,7 @@ const AddDepartmentForm: React.FC<AddDepartmentFormProps> = ({ isDarkMode }) => 
         toast.error(response.message);
       }
     } catch (error: any) {
+      console.error("Error adding department:", error); 
       toast.error(error.message || "Unknown Error Occurred!");
     } finally {
       setLoader(false);
@@ -68,11 +69,12 @@ const AddDepartmentForm: React.FC<AddDepartmentFormProps> = ({ isDarkMode }) => 
           <input
             type="text"
             name="departmentName"
+            aria-label="Department Name"
             value={formik.values.departmentName}
             onChange={handleInputChange}
             onBlur={formik.handleBlur}
-            className={`w-full p-2 text-black rounded border ${
-              formik.touched.departmentName && formik.errors.departmentName ? 'border-red-500' : ''
+            className={`w-full p-2 rounded border ${
+              formik.touched.departmentName && formik.errors.departmentName ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-blue-500'
             }`}
             placeholder="Enter department name"
             required
@@ -97,7 +99,7 @@ const AddDepartmentForm: React.FC<AddDepartmentFormProps> = ({ isDarkMode }) => 
         <button
           type="button"
           onClick={() => navigate('/admin/department')}
-          className="px-4 py-2 bg-gray-500 text-black rounded-lg shadow hover:bg-gray-600"
+          className="px-4 py-2 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600"
         >
           <XCircle className="h-4 w-4 inline mr-2" />
           Cancel

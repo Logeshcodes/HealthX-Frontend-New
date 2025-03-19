@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import DoctorCard from "../../../components/Common/card/DoctorCard";
 import { getDoctorData } from "../../../api/action/UserActionApi";
 import { getDepartmentData } from "../../../api/action/UserActionApi";
@@ -8,13 +8,29 @@ interface Department {
   departmentName: string;
 }
 
+interface Doctor {
+  _id: string;
+  name: string;
+  department: string;
+  experience: number;
+  education: string;
+  description: string;
+  consultationType: string;
+  consultationFee : number ;
+  profilePicture: string;
+
+}
+
 const DoctorListingPage = () => {
-  const [doctors, setDoctors] = useState<any[]>([]);
-  const [filteredDoctors, setFilteredDoctors] = useState<any[]>([]);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  
   const [selectedDepartment, setSelectedDepartment] = useState<string>("All Department");
   const [departments, setDepartments] = useState<Department[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const doctorsPerPage = 5;
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -22,6 +38,8 @@ const DoctorListingPage = () => {
         const data = await getDoctorData();
         setDoctors(data.users || []);
         setFilteredDoctors(data.users || []);
+
+         
       } catch (error) {
         console.log("Error fetching doctors:", error);
       } finally {
@@ -31,6 +49,9 @@ const DoctorListingPage = () => {
 
     fetchDoctors();
   }, []);
+
+
+
 
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -67,8 +88,14 @@ const DoctorListingPage = () => {
     }
   
     setFilteredDoctors(filtered);
+    setCurrentPage(1); // Reset to first page when filtering
   };
-  
+
+  // Calculate pagination
+  const indexOfLastDoctor = currentPage * doctorsPerPage;
+  const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
+  const currentDoctors = filteredDoctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
+  const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage);
 
   const clearFilters = () => {
     setSearchTerm("");
@@ -134,18 +161,77 @@ const DoctorListingPage = () => {
         {/* Doctor Cards */}
         <div className="space-y-4">
           {loading ? (
-            <div>Loading...</div>
-          ) : filteredDoctors && filteredDoctors.length > 0 ? (
-            filteredDoctors.map((doctor: any) => (
-              <div
-                key={doctor.email}
-                className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
-              >
-                <DoctorCard doctor={doctor} />
+            <div className="space-y-4">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="bg-white rounded-xl p-6 animate-pulse">
+                  <div className="flex gap-6">
+                    <div className="w-24 h-24 rounded-full bg-gray-200"></div>
+                    <div className="flex-1 space-y-3">
+                      <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                      <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                      <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : currentDoctors.length > 0 ? (
+            <>
+              {currentDoctors.map((doctor: any) => (
+                <div
+                  key={doctor.email}
+                  className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                >
+                  <DoctorCard doctor={doctor}  />
+                </div>
+              ))}
+              
+              {/* Pagination Controls */}
+              <div className="flex justify-between items-center mt-6 border-t pt-4">
+                <p className="text-sm text-gray-600">
+                  Showing {indexOfFirstDoctor + 1} to {Math.min(indexOfLastDoctor, filteredDoctors.length)} of {filteredDoctors.length} doctors
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className={`p-2 rounded ${currentPage === 1 ? 'text-gray-400' : 'text-blue-600 hover:bg-blue-50'}`}
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`px-3 py-1 rounded ${
+                        currentPage === i + 1
+                          ? 'bg-blue-600 text-white'
+                          : 'text-gray-600 hover:bg-blue-50'
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className={`p-2 rounded ${currentPage === totalPages ? 'text-gray-400' : 'text-blue-600 hover:bg-blue-50'}`}
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
-            ))
+            </>
           ) : (
-            <div>No doctors available.</div>
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No doctors found matching your criteria.</p>
+              <button
+                onClick={clearFilters}
+                className="mt-4 text-blue-600 hover:text-blue-700"
+              >
+                Clear all filters
+              </button>
+            </div>
           )}
         </div>
       </main>

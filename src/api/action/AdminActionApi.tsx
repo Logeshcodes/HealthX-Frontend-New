@@ -48,7 +48,20 @@ import { deptData } from "../../@types/DeptDataType";
       console.log(response?.data?.doctors,"response getAllDoctors")
       return response?.data?.doctors;
     } catch (error) {
-      console.error("Error in updateProfile API call:", error);
+      console.error("Error in getAlldoctor API call:", error);
+    }
+  };
+  
+  export const getAdminData = async (): Promise<any> => {
+    try {
+      console.log("response getAdminData")
+      const response = await API.get(AdminRoutes.GetAdminData ,{
+        withCredentials:true
+      });
+      console.log("response getAdminData" , response)
+      return response?.data;
+    } catch (error) {
+      console.error("Error in getAdminData API call:", error);
     }
   };
   

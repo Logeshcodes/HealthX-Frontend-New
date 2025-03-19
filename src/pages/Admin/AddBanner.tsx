@@ -48,7 +48,6 @@ const BannerForm = () => {
 
   const handleSubmit = async (data: BannerData) => {
     try {
-
       const formData = new FormData();
       if (data.bannerImage) {
         formData.append("bannerImage", data.bannerImage);
@@ -73,6 +72,7 @@ const BannerForm = () => {
         toast.error(response.message || "Failed to add banner");
       }
     } catch (error) {
+      console.error("Error adding banner:", error); // Log error details
       toast.error("An unexpected error occurred");
     }
   };
@@ -98,6 +98,7 @@ const BannerForm = () => {
                   <Field
                     id="bannerTitle"
                     name="bannerTitle"
+                    aria-label="Banner Title"
                     className={`w-full px-3 py-2 rounded-md border bg-slate-800 text-white ${
                       errors.bannerTitle && touched.bannerTitle ? 'border-red-500' : 'border-blue-500 focus:ring-2 focus:ring-blue-500'
                     }`}
@@ -113,6 +114,7 @@ const BannerForm = () => {
                     as="textarea"
                     id="description"
                     name="description"
+                    aria-label="Description"
                     rows="4"
                     className={`w-full px-3 py-2 rounded-md border bg-slate-800 text-white ${
                       errors.description && touched.description ? 'border-red-500' : 'border-blue-500 focus:ring-2 focus:ring-blue-500'
@@ -127,6 +129,7 @@ const BannerForm = () => {
                     as="select"
                     id="role"
                     name="role"
+                    aria-label="Role"
                     className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white"
                   >
                     <option value="">Select Role</option>
@@ -141,20 +144,20 @@ const BannerForm = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="startDate" className="block text-sm font-medium text-gray-200 mb-1">Start Date</label>
-                    <Field type="date" id="startDate" name="startDate" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
+                    <Field type="date" id="startDate" name="startDate" aria-label="Start Date" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
                     {errors.startDate && touched.startDate && <div className="text-red-400 text-sm mt-1">{errors.startDate}</div>}
                   </div>
 
                   <div>
                     <label htmlFor="endDate" className="block text-sm font-medium text-gray-200 mb-1">End Date</label>
-                    <Field type="date" id="endDate" name="endDate" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
+                    <Field type="date" id="endDate" name="endDate" aria-label="End Date" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
                     {errors.endDate && touched.endDate && <div className="text-red-400 text-sm mt-1">{errors.endDate}</div>}
                   </div>
                 </div>
 
                 <div>
                   <label htmlFor="link" className="block text-sm font-medium text-gray-200 mb-1">Link</label>
-                  <Field id="link" name="link" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
+                  <Field id="link" name="link" aria-label="Link" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
                   {errors.link && touched.link && <div className="text-red-400 text-sm mt-1">{errors.link}</div>}
                 </div>
 
@@ -169,6 +172,15 @@ const BannerForm = () => {
                     onChange={(event) => {
                       const file = event.currentTarget.files?.[0];
                       if (file) {
+                        const maxSize = 3 * 1024 * 1024; // 3MB
+                        if (!file.type.startsWith("image/")) {
+                          toast.error("Only image files are allowed");
+                          return;
+                        }
+                        if (file.size > maxSize) {
+                          toast.error("File size must be less than 3MB");
+                          return;
+                        }
                         setFieldValue("bannerImage", file);
                       }
                     }}

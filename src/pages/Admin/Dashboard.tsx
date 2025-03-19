@@ -4,7 +4,7 @@ import {
   PieChart, Pie, Cell, BarChart, Bar
 } from 'recharts';
 import { motion } from 'framer-motion';
-import { getAllDepartment, getAllDoctors, getAllUser, getTotalAppointmentDetails } from '../../api/action/AdminActionApi';
+import { getAllDepartment, getAllDoctors, getAllUser, getTotalAppointmentDetails , getAllBanner , getAdminData } from '../../api/action/AdminActionApi';
 
 
 interface User {
@@ -30,12 +30,12 @@ interface Department {
   description: string;
 }
 
-// interface Banner {
-//   _id: string;
-//   title: string;
-//   imageUrl: string;
-//   isActive: boolean;
-// }
+interface Banner {
+  _id: string;
+  title: string;
+  imageUrl: string;
+  isActive: boolean;
+}
 
 interface Appointment {
   _id: string;
@@ -56,10 +56,25 @@ interface DashboardCounts {
   doctorCount: number;
   userCount: number;
   appointmentCount: number;
+  bannerCount: number;
   totalRevenue: number;
   activeAppointments: number;
   cancelledAppointments: number;
 }
+
+interface Transaction {
+  amount: number;
+  type: string;
+  description: string;
+  transactionId: string;
+  date: string;
+}
+
+interface AdminWallet {
+  balance: number;
+  transactions: Transaction[];
+}
+
 
 const AdminDashboard: React.FC = () => {
   
@@ -68,13 +83,14 @@ const AdminDashboard: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
-  // const [banners, setBanners] = useState<Banner[]>([]);
+  const [banners, setBanners] = useState<Banner[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [revenueData, setRevenueData] = useState<RevenueData[]>([]);
   const [dashboardCounts, setDashboardCounts] = useState<DashboardCounts>({
     doctorCount: 0,
     userCount: 0,
     appointmentCount: 0,
+    bannerCount: 0,
     totalRevenue: 0,
     activeAppointments: 0,
     cancelledAppointments: 0
@@ -83,6 +99,18 @@ const AdminDashboard: React.FC = () => {
   const [doctorsCount, setDoctorsCount] = useState(0);
   const [usersCount, setUsersCount] = useState(0);
   const [appointmentsCount, setAppointmentsCount] = useState(0);
+  const [adminWallet, setAdminWallet] = useState<AdminWallet | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const transactionsPerPage = 5;
+  
+  const indexOfLastTransaction = currentPage * transactionsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+  const currentTransactions = adminWallet?.transactions.slice(indexOfFirstTransaction, indexOfLastTransaction) || [];
+  const totalPages = Math.ceil((adminWallet?.transactions.length || 0) / transactionsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   // Colors - charts
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#a64dff'];
@@ -141,11 +169,22 @@ const AdminDashboard: React.FC = () => {
         const doctorsData = await getAllDoctors();
         const len2 = doctorsData.length;
         setDoctorsCount(len2);
+
+
+        const adminData = await getAdminData();
+        console.log("Admin Data: ", adminData);
+        if (adminData.success && adminData.admin.wallet) {
+          setAdminWallet(adminData.admin.wallet);
+        }
         
         const departmentsResponse = await getAllDepartment();
        
         const departmentsData = departmentsResponse?.data?.departments || [];
         setDepartments(departmentsData);
+
+        const bannersData = await getAllBanner();
+        console.log("Banners: ", bannersData.data);
+        setBanners(bannersData.data || []);
 
         const appointmentsData = await getTotalAppointmentDetails();
         setAppointmentsCount(appointmentsData.totalCount);
@@ -196,6 +235,7 @@ const AdminDashboard: React.FC = () => {
       doctorCount: doctors.length,
       userCount: users.length,
       appointmentCount: appointments.length,
+      bannerCount: banners.length,
       totalRevenue,
       activeAppointments,
       cancelledAppointments
@@ -260,83 +300,66 @@ const AdminDashboard: React.FC = () => {
     hover: { scale: 1.03, transition: { duration: 0.3 } }
   };
 
-  return (
-    <div className="admin-dashboard bg-gray-900 text-white min-h-screen">
-      <div className="container mx-auto px-4 py-6">
-        <motion.div 
-          className="flex justify-between items-center mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <div className="user-profile flex items-center">
-            <div className="bg-blue-500 h-10 w-10 rounded-full flex items-center justify-center">
-              <span className="text-white">A</span>
-            </div>
+  const renderStatsCards = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <motion.div 
+        className="bg-gray-800 rounded-lg p-6 shadow-lg"
+        whileHover={cardVariants.hover}
+        {...fadeInUp}
+        transition={{ delay: 0.1 }}
+      >
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-gray-400 text-sm">Doctor Count</h2>
+            <p className="text-3xl font-bold">{doctorsCount}</p>
           </div>
-        </motion.div>
+          <div className="bg-indigo-500 h-12 w-12 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+        </div>
+      </motion.div>
 
-        {/* Main Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <motion.div 
-            className="bg-gray-800 rounded-lg p-6 shadow-lg"
-            whileHover={cardVariants.hover}
-            {...fadeInUp}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="flex justify-between items-center">
-              <div>
-                <h2 className="text-gray-400 text-sm">Doctor Count</h2>
-                <p className="text-3xl font-bold">{doctorsCount}</p>
-              </div>
-              <div className="bg-indigo-500 h-12 w-12 rounded-full flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
-            </div>
-          </motion.div>
+      <motion.div 
+        className="bg-gray-800 rounded-lg p-6 shadow-lg"
+        whileHover={cardVariants.hover}
+        {...fadeInUp}
+        transition={{ delay: 0.2 }}
+      >
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-gray-400 text-sm">Users Count</h2>
+            <p className="text-3xl font-bold">{usersCount}</p>
+          </div>
+          <div className="bg-yellow-500 h-12 w-12 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </div>
+        </div>
+      </motion.div>
 
-          <motion.div 
-            className="bg-gray-800 rounded-lg p-6 shadow-lg"
-            whileHover={cardVariants.hover}
-            {...fadeInUp}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="flex justify-between items-center">
-              <div>
-                <h2 className="text-gray-400 text-sm">Users Count</h2>
-                <p className="text-3xl font-bold">{usersCount}</p>
-              </div>
-              <div className="bg-yellow-500 h-12 w-12 rounded-full flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              </div>
-            </div>
-          </motion.div>
+      <motion.div 
+        className="bg-gray-800 rounded-lg p-6 shadow-lg"
+        whileHover={cardVariants.hover}
+        {...fadeInUp}
+        transition={{ delay: 0.3 }}
+      >
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-gray-400 text-sm">Appointmments</h2>
+            <p className="text-3xl font-bold">{appointmentsCount}</p>
+          </div>
+          <div className="bg-green-500 h-12 w-12 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+        </div>
+      </motion.div>
 
-          <motion.div 
-            className="bg-gray-800 rounded-lg p-6 shadow-lg"
-            whileHover={cardVariants.hover}
-            {...fadeInUp}
-            transition={{ delay: 0.3 }}
-          >
-            <div className="flex justify-between items-center">
-              <div>
-                <h2 className="text-gray-400 text-sm">Appointmments</h2>
-                <p className="text-3xl font-bold">{appointmentsCount}</p>
-              </div>
-              <div className="bg-green-500 h-12 w-12 rounded-full flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div 
+      <motion.div 
             className="bg-gray-800 rounded-lg p-6 shadow-lg"
             whileHover={cardVariants.hover}
             {...fadeInUp}
@@ -354,10 +377,66 @@ const AdminDashboard: React.FC = () => {
               </div>
             </div>
           </motion.div>
-        </div>
+
+     
+    </div>
+  );
+
+  
+    <motion.div 
+      className="bg-gray-800 rounded-lg p-6 shadow-lg"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1.2 }}
+    >
+      <h2 className="text-xl font-semibold mb-4">Recent Transactions</h2>
+      <div className="space-y-4">
+        {adminWallet?.transactions.slice(0, 5).map((transaction, index) => (
+          <div key={transaction.transactionId || index} className="bg-gray-700 rounded-lg p-4 flex justify-between items-center">
+            <div>
+              <h3 className="font-medium">{transaction.description}</h3>
+              <p className="text-sm text-gray-400">
+                Amount: ₹{transaction.amount} - {new Date(transaction.date).toLocaleDateString()}
+              </p>
+            </div>
+            <span className={`px-2 py-1 rounded-full text-xs ${
+              transaction.type === 'credit' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`}>
+              {transaction.type.toUpperCase()}
+            </span>
+          </div>
+        ))}
+        
+        {(!adminWallet?.transactions || adminWallet.transactions.length === 0) && (
+          <div className="text-center text-gray-400 py-4">
+            No recent transactions to display
+          </div>
+        )}
+      </div>
+    </motion.div>
+
+
+  return (
+    <div className="admin-dashboard bg-gray-900 text-white min-h-screen">
+      <div className="container mx-auto px-4 py-6">
+        <motion.div 
+          className="flex justify-between items-center mb-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <div className="user-profile flex items-center">
+            <div className="bg-blue-500 h-10 w-10 rounded-full flex items-center justify-center">
+              <span className="text-white">A</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {renderStatsCards()}
 
         {/* Additional Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1.5 gap-6 mb-8">
           <motion.div 
             className="bg-gray-800 rounded-lg p-6 shadow-lg"
             whileHover={cardVariants.hover}
@@ -371,6 +450,23 @@ const AdminDashboard: React.FC = () => {
             <div className="flex justify-between items-center">
               <div className="w-full bg-gray-700 rounded-full h-2.5">
                 <div className="bg-blue-500 h-2.5 rounded-full" style={{ width: `${Math.min(departments.length * 5, 100)}%` }}></div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            className="bg-gray-800 rounded-lg p-6 shadow-lg"
+            whileHover={cardVariants.hover}
+            {...fadeInUp}
+            transition={{ delay: 0.6 }}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-medium">Active Banners</h2>
+              <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">{dashboardCounts.bannerCount}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="w-full bg-gray-700 rounded-full h-2.5">
+                <div className="bg-yellow-500 h-2.5 rounded-full" style={{ width: `${Math.min((dashboardCounts.bannerCount / dashboardCounts.appointmentCount || 0) * 100, 100)}%` }}></div>
               </div>
             </div>
           </motion.div>
@@ -586,46 +682,139 @@ const AdminDashboard: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Recent Activity / Summary Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Recent Activity */}
-          <motion.div 
-            className="bg-gray-800 rounded-lg p-6 shadow-lg"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.2 }}
-          >
-            <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
-            <div className="space-y-4">
-              {appointments.slice(0, 5).map((appointment, index) => (
-                <div key={appointment._id || index} className="bg-gray-700 rounded-lg p-4 flex justify-between items-center">
+
+
+        <h2 className="text-2xl font-bold mb-4">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+            Wallet Overview
+          </span>
+        </h2>
+
+        <motion.div 
+          className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-lg rounded-xl p-8 mb-8 shadow-xl border border-gray-700/30"
+          whileHover={{ scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          <div className="flex justify-between items-center">
+            <div>
+              <h2 className="text-gray-300 text-lg mb-2">Current Balance</h2>
+              <div className="flex items-baseline">
+                <span className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                  ₹ {adminWallet?.balance || 0}
+                </span>
+                <span className="ml-2 text-green-400 text-sm">Available</span>
+              </div>
+            </div>
+            <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-16 w-16 rounded-2xl flex items-center justify-center shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-lg rounded-xl p-6 shadow-xl border border-gray-700/30"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.2 }}
+        >
+          <h2 className="text-xl font-semibold mb-6 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Recent Transactions
+          </h2>
+          <div className="space-y-4">
+            {currentTransactions.map((transaction, index) => (
+              <motion.div 
+                key={transaction.transactionId || index} 
+                className="bg-gradient-to-r from-gray-800 to-gray-700/30 rounded-xl p-4 hover:from-gray-700 hover:to-gray-600/30 transition-all duration-300"
+                whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+              >
+                <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="font-medium">New Appointment</h3>
-                    <p className="text-sm text-gray-400">
-                      Amount: ${appointment.amount} - {new Date(appointment.createdAt).toLocaleDateString()}
+                    <h3 className="font-medium text-gray-200">{transaction.description}</h3>
+                    <p className="text-sm text-gray-400 mt-1">
+                      <span className="text-gray-500">Amount:</span> 
+                      <span className={transaction.type === 'credit' ? 'text-green-400' : 'text-red-400'}>
+                        ₹{transaction.amount}
+                      </span> 
+                      <span className="mx-2">•</span> 
+                      {new Date(transaction.date).toLocaleDateString('en-US', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric'
+                      })}
                     </p>
                   </div>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    appointment.status === 'booked' ? 'bg-green-500 text-white' :
-                    appointment.status === 'cancelled' ? 'bg-red-500 text-white' : 
-                    'bg-yellow-500 text-white'
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    transaction.type === 'credit' 
+                      ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                      : 'bg-red-500/20 text-red-400 border border-red-500/30'
                   }`}>
-                    {appointment.status}
+                    {transaction.type.toUpperCase()}
                   </span>
                 </div>
-              ))}
-              
-              {appointments.length === 0 && (
-                <div className="text-center text-gray-400 py-4">
-                  No recent activity to display
-                </div>
-              )}
-            </div>
-          </motion.div>
+              </motion.div>
+            ))}
+            
+            {(!adminWallet?.transactions || adminWallet.transactions.length === 0) && (
+              <div className="text-center py-8">
+                <div className="text-gray-400 mb-2">No recent transactions</div>
+                <div className="text-sm text-gray-500">Your transaction history will appear here</div>
+              </div>
+            )}
 
-        {/* Department Summary */}
-          <motion.div 
-            className="bg-gray-800 rounded-lg p-6 shadow-lg mb-8"
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center space-x-2 mt-6">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className={`px-3 py-1 rounded-md text-sm ${
+                    currentPage === 1
+                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`}
+                >
+                  Previous
+                </button>
+                
+                {[...Array(totalPages)].map((_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={`px-3 py-1 rounded-md text-sm ${
+                      currentPage === index + 1
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className={`px-3 py-1 rounded-md text-sm ${
+                    currentPage === totalPages
+                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+      
+         {/* Department Summary */}
+         <motion.div 
+            className="bg-gray-800 rounded-lg p-6 shadow-lg mb-8 mt-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1.3 }}
@@ -662,8 +851,6 @@ const AdminDashboard: React.FC = () => {
               </ResponsiveContainer>
             </div>
           </motion.div>
-
-        </div>
       </div>
     </div>
   );
