@@ -1,27 +1,27 @@
 const DoctorRoutes={
 
     // profile
-    getDoctorData:"/user/doctor/",
-    updateProfile:'/user/doctor/profile/edit-profile' ,
-    updatePassword:'/user/doctor/profile/change-password',
-    getAllBanner : '/user/doctor/banner_list',
+    getDoctorData:"/api/user/doctor/",
+    updateProfile:'/api/user/doctor/profile/edit-profile' ,
+    updatePassword:'/api/user/doctor/profile/change-password',
+    getAllBanner : '/api/user/doctor/banner_list',
     
     //verification
-    sendVerification:'/verification/doctor/verificationRequest',
+    sendVerification:'/api/verification/doctor/verificationRequest',
 
     // Booking
-    SlotBooking : '/booking/doctor/slotBooking' ,
-    getDoctorSlotData: '/booking/doctor/slotBooking',
-    deleteSlot : 'booking/doctor/slotBooking',
-    getDoctorAppointmentData: '/booking/doctor/appointments',
-    getAppointmentById : "booking/doctor/appointmentData",
-    addPrescription:"booking/doctor/addPrescription",
+    SlotBooking : '/api/booking/doctor/slotBooking' ,
+    getDoctorSlotData: '/api/booking/doctor/slotBooking',
+    deleteSlot : '/api/booking/doctor/slotBooking', // mark
+    getDoctorAppointmentData: '/api/booking/doctor/appointments',   
+    getAppointmentById : "/api/booking/doctor/appointmentData",  // mark
+    addPrescription:"/api/booking/doctor/addPrescription", // mark
     // Review
-    addReview : '/user/review/addReview',
-    getReview : '/user/review/',
-    likeReview : 'user/review/likeReview',
-    addReply : 'user/review/addReply',
-    likeReply : 'user/review/likeReply',
+    addReview : '/api/user/review/addReview',
+    getReview : '/api/user/review/',
+    likeReview : '/api/user/review/likeReview', // mark
+    addReply : '/api/user/review/addReply', // mark
+    likeReply : '/api/user/review/likeReply',    // mark
 
 }
 export default DoctorRoutes 

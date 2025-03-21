@@ -56,37 +56,54 @@ const Departments = () => {
   const displayedSpecialists = showAll ? specialists : specialists.slice(0, 8);
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center mb-8 text-blue-900">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <motion.h1 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"
+      >
         Find By Specialisation
-      </h1>
+      </motion.h1>
 
       <motion.div
-        initial={{ opacity: 0, x: 200 }}
-        animate={{ opacity: 100, x: 0 }}
-        transition={{ duration: 1, ease: 'easeInOut' }}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, staggerChildren: 0.1 }}
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
       >
         {displayedSpecialists.map((specialist, index) => (
-          <Card key={index}>
-            <div className="flex flex-col items-center text-center">
-              <specialist.icon className="w-12 h-12 text-blue-400 mb-4" />
-              <h3 className="font-semibold text-gray-800 mb-2">{specialist.name}</h3>
-              <p className="text-sm text-gray-600">{specialist.description}</p>
-            </div>
-          </Card>
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <Card className="h-full hover:shadow-lg transition-shadow duration-300 hover:bg-blue-50/50">
+              <div className="flex flex-col items-center text-center p-6 space-y-4">
+                <div className="p-4 bg-blue-100 rounded-full">
+                  <specialist.icon className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="font-semibold text-gray-800 text-lg">{specialist.name}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{specialist.description}</p>
+              </div>
+            </Card>
+          </motion.div>
         ))}
       </motion.div>
 
       {specialists.length > 8 && (
-        <div className="text-center mt-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mt-12"
+        >
           <button
             onClick={() => setShowAll(!showAll)}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition-colors"
+            className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-8 py-3 rounded-full font-medium hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
           >
             {showAll ? 'Show Less' : 'View All'}
           </button>
-        </div>
+        </motion.div>
       )}
     </div>
   );

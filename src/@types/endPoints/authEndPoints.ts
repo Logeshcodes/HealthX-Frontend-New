@@ -3,22 +3,19 @@ const authentictaionRoutes = {
 
     // Users
 
+    signup_user:"/api/auth/user/signup",
+    verifyOtp_user:'/api/auth/user/verify_otp',
+    resendOtp_user:'/api/auth/user/resendOtp',
 
-   
+    googleLogin_User : '/api/auth/user/googleLogin',
 
-    signup_user:"/auth/user/signup",
-    verifyOtp_user:'/auth/user/verify_otp',
-    resendOtp_user:'/auth/user/resendOtp',
-
-    googleLogin_User : '/auth/user/googleLogin',
-
-    login_user:'/auth/user/login',
-    verifyEmail_user:'/auth/user/verifyEmail',
-    verifyResetOtp_user:'/auth/user/verifyResetOtp',
-    forgotResendOtp_user:'/auth/user/forgotResendOtp',
-    resetPassword_user:'/auth/user/resetPassword',
+    login_user:'/api/auth/user/login',
+    verifyEmail_user:'/api/auth/user/verifyEmail',
+    verifyResetOtp_user:'/api/auth/user/verifyResetOtp',
+    forgotResendOtp_user:'/api/auth/user/forgotResendOtp',
+    resetPassword_user:'/api/auth/user/resetPassword',
     
-    logout_user:'/auth/user/logout',
+    logout_user:'/api/auth/user/logout',
     
     
     
@@ -32,24 +29,24 @@ const authentictaionRoutes = {
 
     
 
-    signup_Doctor:"/auth/doctor/register",
-    resendOtp_Doctor:'/auth/doctor/resendOtp',
-    verifyOtp_Doctor:'/auth/doctor/createUser',
+    signup_Doctor:"/api/auth/doctor/register",
+    resendOtp_Doctor:'/api/auth/doctor/resendOtp',
+    verifyOtp_Doctor:'/api/auth/doctor/createUser',
 
-    googleLogin_doctor : "/auth/doctor/googleLogin" ,
+    googleLogin_doctor : "/api/auth/doctor/googleLogin" ,
     
-    login_Doctor:'/auth/doctor/login',
-    verifyEmail_doctor:'/auth/doctor/verifyEmail',
-    verifyResetOtp_doctor:'/auth/doctor/verifyResetOtp',
-    forgotResendOtp_doctor:'/auth/doctor/forgotResendOtp',
-    resetPassword_doctor:'/auth/doctor/resetPassword', 
-    logout_Doctor:'/auth/doctor/logout',
-    Get_All_Department : "/user/patient/department_list",
+    login_Doctor:'/api/auth/doctor/login',
+    verifyEmail_doctor:'/api/auth/doctor/verifyEmail',
+    verifyResetOtp_doctor:'/api/auth/doctor/verifyResetOtp',
+    forgotResendOtp_doctor:'/api/auth/doctor/forgotResendOtp',
+    resetPassword_doctor:'/api/auth/doctor/resetPassword', 
+    logout_Doctor:'/api/auth/doctor/logout',
+    Get_All_Department : "/api/user/patient/department_list",
 
 
     //admin
-    adminLogin:'/auth/admin/login',
-    adminLogout:'/auth/admin/logout',
+    adminLogin:'/api/auth/admin/login',
+    adminLogout:'/api/auth/admin/logout',
 
     
 }

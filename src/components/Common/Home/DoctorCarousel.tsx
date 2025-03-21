@@ -52,8 +52,10 @@ const DoctorCarousel = () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold text-center mb-12">Our Medical Specialists</h2>
-
+      <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Medical Specialists</h2>
+          <p className="text-lg text-gray-600">Expert healthcare professionals at your service</p>
+        </div>
       <div className="relative">
         {/* Navigation Buttons */}
         <button

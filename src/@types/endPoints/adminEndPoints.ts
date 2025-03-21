@@ -1,34 +1,34 @@
 const AdminRoutes = {
 
     
-    GetAdminData:'/user/admin/getAdminData',
-    adminGetDoctors:'/user/admin/getDoctors',
-    adminBlockDoctor:'/user/admin/blockDoctor/', 
+    GetAdminData:'/api/user/admin/getAdminData',
+    adminGetDoctors:'/api/user/admin/getDoctors',
+    adminBlockDoctor:'/api/user/admin/blockDoctor/', 
 
-    adminRejectDouments : '/user/admin/rejectDocuments/',
-    adminApproveDouments : '/user/admin/approveDocuments/',
-
-
-    adminAddDepartment:'/user/admin/addDepartment',
-    adminGetAllDepartment : '/user/admin/department',
-    adminGetAllusers : '/user/admin/users',
-    adminBlockUser: '/user/admin/blockUser/',
+    adminRejectDouments : '/api/user/admin/rejectDocuments/',
+    adminApproveDouments : '/api/user/admin/approveDocuments/',
 
 
-    adminGetDepartmentByName: '/user/admin/editDepartment',
-    adminUpdateDepartment: '/user/admin/editDepartment',
+    adminAddDepartment:'/api/user/admin/addDepartment',
+    adminGetAllDepartment : '/api/user/admin/department',
+    adminGetAllusers : '/api/user/admin/users',
+    adminBlockUser: '/api/user/admin/blockUser/',
 
-    adminGetDoctorByEmail : '/user/admin/getDoctorByEmail',
 
-    addBanner : '/user/admin/banner',
-    getAllBanner : '/user/admin/banner',
-    adminGetBannerById : '/user/admin/editBanner',
-    adminUpdateBanner : '/user/admin/editBanner',
-    adminListBanner : '/user/admin/listBanner',
+    adminGetDepartmentByName: '/api/user/admin/editDepartment',
+    adminUpdateDepartment: '/api/user/admin/editDepartment',
 
-    getAllReports :'/user/admin/getAllReports',
-    getTotalAppointmentDetails :"booking/admin/totalappointments",
-    generateRevenueData : 'booking/admin/generateRevenueData'
+    adminGetDoctorByEmail : '/api/user/admin/getDoctorByEmail',
+
+    addBanner : '/api/user/admin/banner',
+    getAllBanner : '/api/user/admin/banner',
+    adminGetBannerById : '/api/user/admin/editBanner',
+    adminUpdateBanner : '/api/user/admin/editBanner',
+    adminListBanner : '/api/user/admin/listBanner',
+
+    getAllReports :'/api/user/admin/getAllReports',
+    getTotalAppointmentDetails :"/api/booking/admin/totalappointments",  // mark
+    generateRevenueData : '/api/booking/admin/generateRevenueData' , // mark
 
 }
 

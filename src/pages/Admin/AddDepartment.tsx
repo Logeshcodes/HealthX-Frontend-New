@@ -74,7 +74,11 @@ const AddDepartmentForm: React.FC<AddDepartmentFormProps> = ({ isDarkMode }) => 
             onChange={handleInputChange}
             onBlur={formik.handleBlur}
             className={`w-full p-2 rounded border ${
-              formik.touched.departmentName && formik.errors.departmentName ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-blue-500'
+              isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+            } ${
+              formik.touched.departmentName && formik.errors.departmentName 
+                ? 'border-red-500' 
+                : 'border-gray-300 focus:ring-2 focus:ring-blue-500'
             }`}
             placeholder="Enter department name"
             required

@@ -1,26 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Home, Users, Calendar, Grid, Info, LogIn, ChevronDown,   Shield, DollarSign, ListTodo , X } from 'lucide-react';
-
-
+import { Home, Users, Calendar, Grid, Info, LogIn, ChevronDown, Shield, DollarSign, ListTodo, X } from 'lucide-react';
 
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { logout } from '../../api/auth/UserAuthentication';
 
-import {useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
-
-import { setUser , clearUserDetails } from "../../redux/slices/userSlice";
-
+import { setUser, clearUserDetails } from "../../redux/slices/userSlice";
 
 const navigation = [
   { name: 'Home', href: '/', id: 'home', icon: Home },
-  { name: 'Doctors', href: '/user/doctor_list' , id: 'doctors', icon: Users },
+  { name: 'Doctors', href: '/user/doctor_list', id: 'doctors', icon: Users },
   { name: 'Appointments', href: '/user/appointments', id: 'appointments', icon: Calendar },
-  // { name: 'Service', href: '/user/services', id: 'services', icon: Grid },
   { name: 'Service', href: '/user/service', id: 'services', icon: Grid },
   { name: 'About Us', href: '/user/about', id: 'about', icon: Info },
 ];
@@ -28,22 +23,12 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
-
-
-
-
   const [userId, setUserId] = useState(null);
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleDropdown = () => setIsOpen(!isOpen);
-
   const [profilePicture, setProfilePicture] = useState("");
-
   const [imgSrc, setImgSrc] = useState('../../../profile.jpg');
 
   useEffect(() => {
@@ -51,9 +36,7 @@ export default function Header() {
       setImgSrc(profilePicture);
     }
   }, [profilePicture]);
-  
-  
-  
+
   useEffect(() => {
     const userDataString = localStorage.getItem("user");
     if (userDataString) {
@@ -79,33 +62,25 @@ export default function Header() {
       }
     }
   }, [dispatch]);
-  
-
 
   useEffect(() => {
     const currentPath = window.location.pathname;
-  
-    // Check if current path includes any navigation href
-    const activeNavItem = navigation.find((item) => 
+    const activeNavItem = navigation.find((item) =>
       currentPath === item.href || currentPath.startsWith(item.href.replace('/list', ''))
     );
-  
     if (activeNavItem) {
       setActiveTab(activeNavItem.id);
     }
   }, []);
-  
 
   const handleNavigation = (href: string, id: string) => {
     setActiveTab(id);
-    navigate(href); 
+    navigate(href);
   };
-  
 
-
-   const handleLogout = async () => {
+  const handleLogout = async () => {
     try {
-      await logout(); 
+      await logout();
       dispatch(clearUserDetails());
       toast.success("Logged out successfully");
       navigate("/user/login");
@@ -114,68 +89,51 @@ export default function Header() {
       toast.error("Failed to log out. Please try again.");
     }
   };
-  
-  
-
-  // const [isDropdownOpen, setDropdownOpen] = useState(false);
-  // const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
 
   return (
-
-
-
-    <div 
-    
-    
-    className="bg-white">
+    <div className="bg-white">
       <header className="absolute inset-x-0 top-0 z-50">
-        <nav
-          aria-label="Global"
-          className="flex items-center justify-between p-6 lg:px-8 bg-blue-600"
-        >
+        <nav className="flex items-center justify-between p-8 lg:px-8 bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg">
           <div className="flex lg:flex-1">
-            <a href="/" className="-m-1.5 p-1.5">
+            <a href="/" className="transition-transform hover:scale-105">
               <span className="sr-only">HealthX</span>
               <img
                 alt="HealthX"
                 src="../../../Logo.png"
                 title="HealthX"
-                className="h-16 w-auto"
+                className="h-12 sm:h-16 w-auto"
               />
             </a>
           </div>
+
           <div className="flex lg:hidden">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+              className="rounded-lg p-2 text-white hover:bg-blue-700 transition-colors"
             >
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon aria-hidden="true" className="size-6" />
+              <Bars3Icon className="size-6" />
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:gap-x-12">
+          <div className="hidden lg:flex lg:gap-x-6">
             {navigation.map(({ name, href, id, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => handleNavigation(href, id)}
-                className={`flex items-center space-x-1 px-4 py-2 rounded-lg transition-colors duration-200 ${
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 ${
                   activeTab === id
-                    ? 'bg-white text-indigo-600'
-                    : 'text-white hover:bg-indigo-500'
+                    ? 'bg-white text-blue-600 shadow-lg'
+                    : 'text-white hover:bg-blue-700'
                 }`}
               >
                 <Icon className="w-5 h-5" />
-                <span>{name}</span>
+                <span className="font-medium">{name}</span>
               </button>
             ))}
           </div>
 
-        
-
-
-            <div className="hidden lg:flex lg:flex-1 lg:justify-end ">
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end ">
             {userId ? (
               
 
@@ -187,12 +145,14 @@ export default function Header() {
                <img
                   src={imgSrc}
                   alt="Profile"
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-12 h-12 rounded-full object-cover border-2 border-white"
                   onError={() => setImgSrc('../../../profile.jpg')}
                 />
-                <ChevronDown size={24} className='mt-8' />
+                <ChevronDown size={24} className='mt-8 text-white' />
                 {/* <span className="text-gray-700"> User </span> */}
               </button>
+
+
 
 
 
@@ -268,17 +228,14 @@ export default function Header() {
               </a>
             )}
           </div>
-         
         </nav>
 
-        {/* Mobile Menu */}
         <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
           <div className="fixed inset-0 z-50" />
           <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-blue-600 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <a href="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">HealthX</span>
-                {/* <span className="sr-only">Welliy</span> */}
                 <img alt="HealthX" src="../../../Logo.png" className="h-8 w-auto" />
               </a>
               <button
@@ -309,7 +266,6 @@ export default function Header() {
                 </div>
                 <div className="py-6">
                   <a
-                   
                     className="flex w-full items-center rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-indigo-500"
                     onClick={handleLogout}
                   >
