@@ -42,14 +42,13 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-xl overflow-hidden flex">
+    <div className="min-h-screen bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center px-4 py-8 sm:p-4">
+      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
         {/* Left side - Form */}
-        <div className="w-full md:w-1/2 p-8">
-          <div className="mb-8">
-            <div className="h-12 w-12  rounded-xl flex items-center justify-center mb-4">
-             
-              <img src="../../../Logo.png" alt="Logo" />
+        <div className="w-full md:w-1/2 p-4 sm:p-8">
+          <div className="mb-6 sm:mb-8">
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl flex items-center justify-center mb-4">
+              <img src="../../../Logo.png" alt="Logo" className="w-full h-full" />
             </div>
             <h2 className="text-2xl font-bold text-gray-800">Reset Password</h2>
             <p className="text-gray-600 mt-2">Enter the new password below to change your password</p>

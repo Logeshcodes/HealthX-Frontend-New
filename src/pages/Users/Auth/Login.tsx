@@ -107,28 +107,26 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-700 via-indigo-600 to-blue-500 p-6 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-500 to-cyan-400 px-4 py-8 sm:p-4 flex items-center justify-center">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full max-w-6xl"
+        initial={{ opacity: 0, x: 200 }}
+        animate={{ opacity: 100, x: 0 }}
+        transition={{ duration: 1, ease: "easeInOut" }}
       >
-        <Card className="overflow-hidden flex flex-col md:flex-row bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl">
+        <Card className="max-w-6xl overflow-hidden flex flex-col md:flex-row bg-white rounded-3xl shadow-xl w-full">
           {/* Left Side - Login Form */}
-          <div className="w-full md:w-3/5 p-8 md:p-14">
-            <div className="flex items-center gap-3 mb-10">
+          <div className="w-full md:w-3/5 p-4 sm:p-8 md:p-12">
+            <div className="flex items-center gap-2 mb-6 sm:mb-8">
+              
               <img
                 src="../../../Logo.png"
                 alt="Healthcare professional"
-                className="rounded-lg w-12 h-12 object-cover"
+                className="rounded-lg mb-2 sm:mb-4 w-8 h-8 sm:w-10 sm:h-10"
               />
-              <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-                Health X
-              </span>
+              <span className="text-xl font-bold">Health X</span>
             </div>
 
-            <h2 className="text-3xl font-bold mb-8 text-gray-800">Hi, Welcome Back! 👋</h2>
+            <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">Hi, Welcome Back! 👋</h2>
 
             <Formik
               initialValues={initialValues}
@@ -144,11 +142,14 @@ const LoginPage = () => {
                         name="email"
                         type="email"
                         placeholder="Email"
-                        className="w-full px-4 py-3.5 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 transition-all duration-300 ease-in-out
-                        ${errors.email && touched.email ? 'focus:ring-red-500 border-red-300' : 'focus:ring-purple-500 hover:bg-gray-100'}"
+                        className={`w-full px-4 py-3 bg-gray-50 rounded-lg focus:outline-none focus:ring-2 ${
+                          errors.email && touched.email
+                            ? "focus:ring-red-500"
+                            : "focus:ring-purple-500"
+                        }`}
                       />
                       {errors.email && touched.email && (
-                        <div className="text-red-500 text-sm mt-2 ml-1">
+                        <div className="text-red-500 text-sm mt-1">
                           {errors.email}
                         </div>
                       )}
@@ -158,12 +159,12 @@ const LoginPage = () => {
                   {/* Password Field */}
                   <div>
                     <div className="relative">
-                      <PasswordField name="password" placeholder="Password" />
+                      <PasswordField name="password" placeholder="password" />
                     </div>
-                    <div className="text-right mt-2">
+                    <div className="text-right">
                       <a
                         href="/user/verifyEmail"
-                        className="text-purple-600 hover:text-purple-700 text-sm font-medium transition-colors"
+                        className="text-red-500 hover:text-red-600 text-sm"
                       >
                         Forgot Password?
                       </a>
@@ -173,42 +174,41 @@ const LoginPage = () => {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-purple-600 to-blue-500 text-white py-3.5 rounded-xl
-                    hover:from-purple-700 hover:to-blue-600 transition-all duration-300 ease-in-out transform hover:scale-[1.02] 
-                    active:scale-[0.98] font-medium text-lg shadow-lg"
+                    className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors"
                   >
                     Login Now
                   </button>
 
                   {/* Divider */}
-                  <div className="relative my-8">
+                  <div className="relative my-6">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-4 bg-white text-gray-500">Or continue with</span>
+                      <span className="px-2 bg-white text-gray-500">
+                        Or With
+                      </span>
                     </div>
                   </div>
 
                   {/* Google Login */}
-                  <div className="flex justify-center">
-                    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+                  <GoogleOAuthProvider
+                    clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+                  >
+                    <div>
                       <GoogleLogin
                         onSuccess={googleSubmit}
                         onError={() => console.error("Google Login Failed")}
-                        theme="outline"
-                        size="large"
-                        shape="rectangular"
                       />
-                    </GoogleOAuthProvider>
-                  </div>
+                    </div>
+                  </GoogleOAuthProvider>
 
                   {/* Sign Up Link */}
-                  <p className="text-center text-gray-600 mt-8">
+                  <p className="text-center text-sm">
                     Don't have an account?{" "}
                     <a
                       href="/user/signup"
-                      className="text-purple-600 hover:text-purple-700 font-semibold transition-colors"
+                      className="text-purple-600 hover:text-purple-700 font-medium"
                     >
                       Sign Up
                     </a>
@@ -219,33 +219,22 @@ const LoginPage = () => {
           </div>
 
           {/* Right Section */}
-          <div className="hidden md:block relative bg-gradient-to-br from-purple-600 to-blue-500 p-16">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-center text-white"
-            >
-              <h2 className="text-4xl font-bold mb-10">Patient Login</h2>
-              <div className="bg-white/15 backdrop-blur-md rounded-2xl p-8 ml-8 max-w-sm 
-                shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/20">
+          <div className="hidden md:block relative bg-gradient-to-br from-purple-600 to-blue-500  p-14">
+            <div className="text-center text-white p-4">
+              <h2 className="text-3xl font-bold mb-8 ">Patient Login</h2>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-14 ml-8 max-w-sm">
                 <img
                   src="../../../Login-template.png"
                   alt="Healthcare professional"
-                  className="rounded-xl mb-4 w-full h-auto transform hover:scale-105 transition-transform duration-300"
+                  className="rounded-lg mb-4"
                 />
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute bottom-10 right-10"
-                >
-                  <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center 
-                    shadow-lg transform hover:rotate-12 transition-transform">
-                    <span className="text-2xl">⚡</span>
+                <div className="absolute bottom-8 right-8">
+                  <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <span className="text-xl">⚡</span>
                   </div>
-                </motion.div>
+                </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </Card>
       </motion.div>

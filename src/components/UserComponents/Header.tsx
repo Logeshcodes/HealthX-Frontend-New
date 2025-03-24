@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Home, Users, Calendar, Grid, Info, LogIn, ChevronDown, Shield, DollarSign, ListTodo, X } from 'lucide-react';
-
+import { Home, Users, Calendar, Grid, Info, LogIn, ChevronDown, Shield, DollarSign, ListTodo, X, LogOut } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -55,7 +55,6 @@ export default function Header() {
         }
         if (userData?.profilePicture) {
           setProfilePicture(userData.profilePicture);
-          console.log("pic", userData.profilePicture);
         }
       } catch (error) {
         console.error("Error parsing user data from localStorage:", error);
@@ -93,7 +92,7 @@ export default function Header() {
   return (
     <div className="bg-white">
       <header className="absolute inset-x-0 top-0 z-50">
-        <nav className="flex items-center justify-between p-8 lg:px-8 bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg">
+        <nav className="flex items-center justify-between p-4 md:p-6 lg:p-8 bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg">
           <div className="flex lg:flex-1">
             <a href="/" className="transition-transform hover:scale-105">
               <span className="sr-only">HealthX</span>
@@ -101,7 +100,7 @@ export default function Header() {
                 alt="HealthX"
                 src="../../../Logo.png"
                 title="HealthX"
-                className="h-12 sm:h-16 w-auto"
+                className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto"
               />
             </a>
           </div>
@@ -111,129 +110,128 @@ export default function Header() {
               type="button"
               onClick={() => setMobileMenuOpen(true)}
               className="rounded-lg p-2 text-white hover:bg-blue-700 transition-colors"
+              aria-label="Open mobile menu"
             >
-              <Bars3Icon className="size-6" />
+              <Bars3Icon className="w-6 h-6" />
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:gap-x-6">
+          <div className="hidden lg:flex lg:gap-x-4 xl:gap-x-6">
             {navigation.map(({ name, href, id, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => handleNavigation(href, id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 ${
+                className={`flex items-center space-x-1 xl:space-x-2 px-3 xl:px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 ${
                   activeTab === id
                     ? 'bg-white text-blue-600 shadow-lg'
                     : 'text-white hover:bg-blue-700'
                 }`}
               >
-                <Icon className="w-5 h-5" />
-                <span className="font-medium">{name}</span>
+                <Icon className="w-4 h-4 xl:w-5 xl:h-5" />
+                <span className="font-medium text-sm xl:text-base">{name}</span>
               </button>
             ))}
           </div>
 
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end ">
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             {userId ? (
-              
-
-              <div className="flex items-center gap-2 mr-14 ">
-              <button
-                onClick={toggleDropdown}
-                className="flex items-center space-x-2 p-2 rounded-lg "
-              >
-               <img
-                  src={imgSrc}
-                  alt="Profile"
-                  className="w-12 h-12 rounded-full object-cover border-2 border-white"
-                  onError={() => setImgSrc('../../../profile.jpg')}
-                />
-                <ChevronDown size={24} className='mt-8 text-white' />
-                {/* <span className="text-gray-700"> User </span> */}
-              </button>
-
-
-
-
-
-              {/* Dropdown menu */}
-              {isOpen && (
-                <div className="absolute right-0 mt-96 w-72 bg-gray-800 rounded-lg shadow-lg p-4 z-50 -mb-20">
-                  {/* Close button */}
-                  <button
-                    onClick={toggleDropdown}
-                    className="absolute right-4 top-4 text-gray-400 hover:text-gray-200"
-                  >
-                   <X className="text-gray-400 hover:text-gray-200 cursor-pointer" onClick={toggleDropdown} />
-
-                  </button>
-
-                  {/* User info section */}
-                  <div className="flex items-center space-x-4 mb-6">
-                  
-                  
-                  </div>
-
-                  {/* Menu items */}
-                  <div className="space-y-4">
-                    <a href="/user/profile/my-account" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
-                      <div className="bg-gray-700 p-2 rounded-lg">
-                        <DollarSign size={20} className="text-cyan-400" />
-                      </div>
-                      <div>
-                        <div className="font-medium">My Profile</div>
-                        <div className="text-sm text-gray-400">Account Settings</div>
-                      </div>
-                    </a>
-
-                    <a href="/user/profile/wallet" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
-                      <div className="bg-gray-700 p-2 rounded-lg">
-                        <Shield size={20} className="text-cyan-400" />
-                      </div>
-                      <div>
-                        <div className="font-medium">Wallet </div>
-                        <div className="text-sm text-gray-400">Money Bank </div>
-                      </div>
-                    </a>
-
-                    <a href="#tasks" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
-                      <div className="bg-gray-700 p-2 rounded-lg">
-                        <ListTodo size={20} className="text-yellow-400" />
-                      </div>
-                      <div>
-                        <div className="font-medium">MemberShip</div>
-                        <div className="text-sm text-gray-400">Add upto five members</div>
-                      </div>
-                    </a>
-                  </div>
-
-                  {/* Logout button */}
-                  <button
-                    className="w-full mt-6 bg-cyan-400 text-white py-3 rounded-lg hover:bg-cyan-500 transition-colors"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-            ) : (
-              <a href="/user/login">
+              <div className="flex items-center gap-2 relative">
                 <button
-                  type="button"
-                  className="mr-3 inline-block px-6 py-3 font-bold text-center bg-gradient-to-tl from-blue-600 to-cyan-400 uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs text-white"
+                  onClick={toggleDropdown}
+                  className="flex items-center space-x-2 p-2 rounded-lg"
+                  aria-label="Open user menu"
                 >
-                  Login
+                  <img
+                    src={imgSrc}
+                    alt="Profile"
+                    className="w-10 h-10 xl:w-12 xl:h-12 rounded-full object-cover border-2 border-white"
+                    onError={() => setImgSrc('../../../profile.jpg')}
+                  />
+                  <ChevronDown size={20} className="text-white" />
                 </button>
-              </a>
+
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute right-0 top-full mt-2 w-72 bg-gray-800 rounded-lg shadow-lg p-4 z-50"
+                    >
+                      <button
+                        onClick={toggleDropdown}
+                        className="absolute right-4 top-4 text-gray-400 hover:text-gray-200"
+                        aria-label="Close menu"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+
+                      <div className="space-y-4 mt-2">
+                        <a href="/user/profile/my-account" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
+                          <div className="bg-gray-700 p-2 rounded-lg">
+                            <DollarSign size={20} className="text-cyan-400" />
+                          </div>
+                          <div>
+                            <div className="font-medium">My Profile</div>
+                            <div className="text-sm text-gray-400">Account Settings</div>
+                          </div>
+                        </a>
+
+                        <a href="/user/profile/wallet" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
+                          <div className="bg-gray-700 p-2 rounded-lg">
+                            <Shield size={20} className="text-cyan-400" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Wallet</div>
+                            <div className="text-sm text-gray-400">Money Bank</div>
+                          </div>
+                        </a>
+
+                        <a href="#tasks" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
+                          <div className="bg-gray-700 p-2 rounded-lg">
+                            <ListTodo size={20} className="text-yellow-400" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Membership</div>
+                            <div className="text-sm text-gray-400">Add up to five members</div>
+                          </div>
+                        </a>
+                      </div>
+
+                      <button
+                        className="w-full mt-6 bg-cyan-400 text-white py-3 rounded-lg hover:bg-cyan-500 transition-colors"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <motion.div
+                initial={{ x: 100 }}
+                animate={{ x: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <a href="/user/login">
+                  <button
+                    type="button"
+                    className="inline-block px-5 py-2.5 lg:px-6 lg:py-3 font-bold text-center bg-gradient-to-tl from-blue-600 to-cyan-400 uppercase align-middle transition-all rounded-lg cursor-pointer leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs text-white"
+                  >
+                    Login
+                  </button>
+                </a>
+              </motion.div>
             )}
           </div>
         </nav>
 
         <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
-          <div className="fixed inset-0 z-50" />
-          <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-blue-600 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-            <div className="flex items-center justify-between">
+          <div className="fixed inset-0 z-50 bg-black/30" aria-hidden="true" />
+          <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-blue-600 px-6 py-6 sm:max-w-sm">
+            <div className="flex items-center justify-between mb-6">
               <a href="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">HealthX</span>
                 <img alt="HealthX" src="../../../Logo.png" className="h-8 w-auto" />
@@ -241,14 +239,14 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="-m-2.5 rounded-md p-2.5 text-gray-700"
+                className="rounded-md p-2.5 text-white hover:bg-blue-700"
+                aria-label="Close menu"
               >
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon aria-hidden="true" className="size-6" />
+                <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
-            <div className="mt-6 flow-root">
-              <div className="-my-6 divide-y divide-gray-500/10">
+            <div className="flow-root">
+              <div className="divide-y divide-blue-500/30">
                 <div className="space-y-2 py-6">
                   {navigation.map(({ name, href, id, icon: Icon }) => (
                     <button
@@ -257,21 +255,45 @@ export default function Header() {
                         handleNavigation(href, id);
                         setMobileMenuOpen(false);
                       }}
-                      className="flex w-full items-center rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-indigo-500"
+                      className={`flex w-full items-center rounded-lg px-3 py-2.5 text-base font-semibold ${
+                        activeTab === id
+                          ? 'bg-white text-blue-600'
+                          : 'text-white hover:bg-blue-700'
+                      }`}
                     >
-                      <Icon className="mr-2 h-5 w-5 text-gray-500" />
+                      <Icon className="mr-3 h-5 w-5" />
                       {name}
                     </button>
                   ))}
                 </div>
                 <div className="py-6">
-                  <a
-                    className="flex w-full items-center rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-indigo-500"
-                    onClick={handleLogout}
-                  >
-                    <LogIn className="mr-2 h-5 w-5 text-gray-500" />
-                    Logout
-                  </a>
+                  {userId ? (
+                    <motion.button
+                      initial={{ x: 100, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex w-full items-center justify-center rounded-lg px-3 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:opacity-90"
+                      onClick={() => {
+                        handleLogout();
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      <LogOut className="mr-2 h-5 w-5 text-white" />
+                      Logout
+                    </motion.button>
+                  ) : (
+                    <motion.a
+                      initial={{ x: 100, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      href="/user/login"
+                      className="flex w-full items-center justify-center rounded-lg px-3 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:opacity-90"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <LogIn className="mr-2 h-5 w-5 text-white" />
+                      Login
+                    </motion.a>
+                  )}
                 </div>
               </div>
             </div>

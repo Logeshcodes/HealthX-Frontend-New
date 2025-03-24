@@ -57,20 +57,20 @@ const SignupPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-500 to-cyan-400 p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-500 to-cyan-400 px-4 py-8 sm:p-4 flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, x: 200 }}
         animate={{ opacity: 100, x: 0 }}
         transition={{ duration: 1, ease: "easeInOut" }}
       >
-        <Card className="w-full max-w-6xl grid md:grid-cols-2 overflow-hidden bg-white rounded-xl shadow-xl">
+        <Card className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 overflow-hidden bg-white rounded-xl shadow-xl">
           {/* Left Section */}
-          <div className="p-8 flex flex-col justify-center">
-            <div className="flex items-center gap-2 mb-6">
+          <div className="p-4 sm:p-8 flex flex-col justify-center">
+            <div className="flex items-center gap-2 mb-4 sm:mb-6">
               <img
                 src="../../../Logo.png"
                 alt="Healthcare professional"
-                className="rounded-lg mb-4 w-10 h-10"
+                className="rounded-lg mb-2 sm:mb-4 w-8 h-8 sm:w-10 sm:h-10"
               />
               <h1 className="text-xl font-semibold">Health X</h1>
             </div>
@@ -142,7 +142,7 @@ const SignupPage = () => {
               )}
             </Formik>
 
-            <div className="flex items-center gap-4 m-5">
+            <div className="flex items-center gap-4 my-3 sm:m-5">
               <div className="flex-1 h-px bg-gray-300"></div>
               <span className="text-gray-500">Or With</span>
               <div className="flex-1 h-px bg-gray-300"></div>

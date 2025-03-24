@@ -1,14 +1,9 @@
 import axios from "axios";
-import dotenv from "dotenv";
-if(process.env.NODE_ENV === "development") {
-  dotenv.config({path: ".env.development"});
-  
-} else {
 
-  dotenv.config({path: ".env.production"});
-}
+const baseURL = import.meta.env.VITE_BASE_URL ;
+
 export const API = axios.create({
-  baseURL: process.env.BASE_URL,
+  baseURL,
   withCredentials: true, 
   headers: {
     "Content-Type": "application/json",
@@ -28,8 +23,6 @@ API.interceptors.request.use(
     console.log(error);
   }
 );
-
-
 
 API.interceptors.response.use(
   (response) => response,
