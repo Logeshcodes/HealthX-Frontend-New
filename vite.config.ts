@@ -18,5 +18,6 @@ export default defineConfig({
   },
   preview: {
     port: 3000,
+    allowedHosts: ["healthx.live"], // Added to allow the host
   },
 });
