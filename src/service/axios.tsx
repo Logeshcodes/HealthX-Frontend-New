@@ -1,8 +1,14 @@
 import axios from "axios";
+import dotenv from "dotenv";
+if(process.env.NODE_ENV === "development") {
+  dotenv.config({path: ".env.development"});
+  
+} else {
 
-
+  dotenv.config({path: ".env.production"});
+}
 export const API = axios.create({
-  baseURL: "http://localhost:5000", 
+  baseURL: process.env.BASE_URL,
   withCredentials: true, 
   headers: {
     "Content-Type": "application/json",
