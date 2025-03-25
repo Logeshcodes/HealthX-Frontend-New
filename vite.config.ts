@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
     },
     preview: {
       port: 3000,
-      allowedHosts: ["healthx.live"], // Added to allow the host
+      allowedHosts: ["healthx.live"],
     },
   };
 });

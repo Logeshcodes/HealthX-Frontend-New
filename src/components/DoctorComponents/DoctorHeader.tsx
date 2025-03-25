@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Home, Users, Calendar, Grid, Info, Shield, DollarSign, ListTodo, ChevronDown, LogIn, LogOut, X } from "lucide-react";
+import { Home, Users, Calendar, Grid, Info, Shield, DollarSign, ListTodo, ChevronDown, LogIn, LogOut, X, UserPen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -50,7 +50,8 @@ export default function DoctorHeader() {
 
   const navigation = [
     { name: "Home", href: "/doctor", id: "home", icon: Home },
-    { name: "Slots", href: `/doctor/slots/${userId?.email}`, id: "slots", icon: Calendar },
+    { name: "Profile", href: "/profile/my-account", id: "profile", icon: UserPen },
+    { name: "Slot Booking", href: `/doctor/slots/${userId?.email}`, id: "slots", icon: Calendar },
     { name: "Appointments", href: "/doctor/bookedAppointments", id: "appointments", icon: Users },
     { name: "Service", href: "/doctor/services", id: "services", icon: Grid },
     { name: "About Us", href: "/doctor/about", id: "about", icon: Info },
