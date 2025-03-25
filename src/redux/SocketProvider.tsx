@@ -19,6 +19,7 @@ const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =
     const socketInstance = io(SOCKET_URI, {
       withCredentials: true,
       transports: ["websocket", "polling"],
+      path : "/socket.io",
       reconnection: true, 
       reconnectionAttempts: 5, 
       reconnectionDelay: 1000, 

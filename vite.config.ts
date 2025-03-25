@@ -10,8 +10,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/socket.io": {
-        // target: isProduction ? "https://healthx.live" : "http://localhost:5006",
-        target: isProduction ? "http://video-call-service-srv:5006" : "http://video-call-service-srv:5006",
+        target: isProduction ? "https://healthx.live" : "http://localhost:5000",
         ws: true,
         changeOrigin: true,
       },
