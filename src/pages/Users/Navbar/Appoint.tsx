@@ -27,6 +27,7 @@ import useVideoCall from "../../../components/Common/VideoCall/useVideoCall";
 
 
 import AlertDialog2 from "../../../components/UserComponents/common/AlertDialogBox2";
+import LoadingSpinner from "../../../components/AdminComponents/LoadingSpinner";
 
 interface UserData {
   email : string ;
@@ -62,6 +63,8 @@ const AppointmentDashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalAppointments, setTotalAppointments] = useState(0);
 
+  const [loader, setLoader] = useState(false);
+
   const { showVideoCallModal, sender, handleCall, closeModal } = useVideoCall();
 
   const slotsPerPage = 5;
@@ -75,6 +78,7 @@ const AppointmentDashboard = () => {
 
   const handleLogout = async () => {
     try {
+     
       await logout();
       dispatch(clearUserDetails());
       navigate("/user/login");
@@ -95,6 +99,7 @@ const AppointmentDashboard = () => {
         const response =  await appointmentCancel(appointmentId);
 
         if (response.success) {
+        
           toast.success(response.message);
           setAppointments((prevAppointment) => prevAppointment.filter((appointment) => appointment._id !== appointmentId))
         } else {
@@ -117,6 +122,7 @@ const AppointmentDashboard = () => {
           const userId = user?.userId;
 
           if (userId) {
+            setLoader(true);
             console.log("Fetching data for:", userId, currentPage, activeTab);
 
             const response = await getAllAppointmentDetails(
@@ -139,6 +145,8 @@ const AppointmentDashboard = () => {
       } catch (error: any) {
         console.log("Error fetching appointments:", error.response?.status);
         if (error.response?.status === 401) await handleLogout();
+      }finally {
+        setLoader(false);
       }
     };
 
@@ -190,6 +198,10 @@ const AppointmentDashboard = () => {
   };
 
   return (
+
+    <>
+
+   
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 mt-36">
       {/* Header Section */}
       
@@ -277,6 +289,12 @@ const AppointmentDashboard = () => {
           ))}
         </div>
       </div>
+
+      {loader ? (
+      <LoadingSpinner />
+    ) : (
+
+      <>
 
       {/* Appointments List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -447,6 +465,14 @@ const AppointmentDashboard = () => {
           )}
         </div>
       </div>
+      </>
+
+    )}
+
+
+
+
+
 
       {/* Video Call Modal */}
       {showVideoCallModal && (
@@ -482,6 +508,8 @@ const AppointmentDashboard = () => {
         </Button>
       </div>
     </div>
+   
+  </> 
   );
 };
 

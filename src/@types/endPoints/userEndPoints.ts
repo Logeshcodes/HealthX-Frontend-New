@@ -18,6 +18,8 @@ const UserRouters = {
 
     getAllDoctors : '/api/user/patient/doctor_list',
 
+    getAllHomeDoctors : '/api/user/patient/home_doctor_list',
+
     getAllBanner : '/api/user/patient/banner_list',
 
    

@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import DoctorCard from './DoctorCard';
 import PaginationDots from './PaginationDots';
 
-import { getDoctorData } from "../../../api/action/UserActionApi";
+import {  getDoctorHomeData } from "../../../api/action/UserActionApi";
 
 interface Doctor{
   name : string ,
@@ -20,8 +20,7 @@ const DoctorCarousel = () => {
   useEffect(()=>{
 
     const fetchDoctors = async ()=>{
-
-      const response = await getDoctorData()
+      const response = await getDoctorHomeData();
       setDoctors(response.users)
 
     }

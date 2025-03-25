@@ -141,6 +141,17 @@ export const getDepartmentData = async (): Promise<any> => {
     }
   };
 
+  export const getDoctorHomeData = async (): Promise<any> => {
+    try {
+      const response = await API.get(`${UserRouters.getAllHomeDoctors}`,{ withCredentials : true });
+
+      console.log("return home ", response.data)
+      return response?.data; 
+    } catch (error) {
+      console.log("Error fetching doctor data:", error);
+    }
+  };
+
  
   // get slots userside 
 

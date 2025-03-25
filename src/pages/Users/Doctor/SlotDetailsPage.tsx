@@ -202,13 +202,13 @@ const SlotDetailsPage = () => {
 
     // Development mode 
 
-    // const surl = `http://localhost:5000/booking/patient/payment-success`;
-    // const furl = `http://localhost:5000/booking/patient/payment-failure`;
+    const surl = `http://localhost:5000/api/booking/patient/payment-success`;
+    const furl = `http://localhost:5000/api/booking/patient/payment-failure`;
 
     // Production mode 
 
-    const surl = `http://api-gateway-srv/booking/patient/payment-success`;
-    const furl = `http://api-gateway-srv/booking/patient/payment-failure`;
+    // const surl = `http://api-gateway-srv/api/booking/patient/payment-success`;
+    // const furl = `http://api-gateway-srv/api/booking/patient/payment-failure`;
 
     const formData = {
       key: 't4VOu4',
