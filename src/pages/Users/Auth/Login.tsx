@@ -193,7 +193,7 @@ const LoginPage = () => {
 
                   {/* Google Login */}
                   <GoogleOAuthProvider
-                    clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+                    clientId="820976220458-vffcl6e1rc5t6urg4hasroqjovhufpac.apps.googleusercontent.com"
                   >
                     <div>
                       <GoogleLogin
