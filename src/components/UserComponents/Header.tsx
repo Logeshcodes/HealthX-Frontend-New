@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Home, Users, Calendar, Grid, Info, LogIn, ChevronDown, Shield, DollarSign, ListTodo, X, LogOut } from 'lucide-react';
+import { Home, Users, Calendar, Info, LogIn, ChevronDown, Shield, DollarSign, ListTodo, X, LogOut, UserPen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -14,9 +14,9 @@ import { setUser, clearUserDetails } from "../../redux/slices/userSlice";
 
 const navigation = [
   { name: 'Home', href: '/', id: 'home', icon: Home },
+  { name: "Profile", href: "user/profile/my-account", id: "profile", icon: UserPen },
   { name: 'Doctors', href: '/user/doctor_list', id: 'doctors', icon: Users },
   { name: 'Appointments', href: '/user/appointments', id: 'appointments', icon: Calendar },
-  { name: 'Service', href: '/user/service', id: 'services', icon: Grid },
   { name: 'About Us', href: '/user/about', id: 'about', icon: Info },
 ];
 

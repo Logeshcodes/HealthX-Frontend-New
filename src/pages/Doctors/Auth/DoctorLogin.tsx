@@ -194,7 +194,7 @@ transition={{duration:1 , ease:'easeInOut'}}
                   </div>
 
 
-                  <GoogleOAuthProvider clientId="241293973300-q7m09ls0fgqv5u72ft5707edbfnnn1qc.apps.googleusercontent.com">
+                  <GoogleOAuthProvider clientId="820976220458-vffcl6e1rc5t6urg4hasroqjovhufpac.apps.googleusercontent.com">
                     <div>
                       <GoogleLogin
                         onSuccess={googleSubmit}
