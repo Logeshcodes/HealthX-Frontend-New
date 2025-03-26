@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/AdminComponents/common/Card';
-
 import { addBanner } from '../../api/action/AdminActionApi';
 
 const validationSchema = Yup.object().shape({
@@ -14,7 +13,15 @@ const validationSchema = Yup.object().shape({
   description: Yup.string()
     .required('Description is required')
     .min(10, 'Description must be at least 10 characters'),
-  startDate: Yup.date().required('Start date is required'),
+  startDate: Yup.date()
+    .required('Start date is required')
+    .test(
+      'is-future',
+      'Selected date cannot be in the past',
+      function(value) {
+        return new Date(value) >= new Date(new Date().setHours(0, 0, 0, 0));
+      }
+    ),
   endDate: Yup.date()
     .required('End date is required')
     .min(Yup.ref('startDate'), 'End date must be after start date'),
@@ -45,6 +52,7 @@ const BannerForm = () => {
   };
 
   const navigate = useNavigate();
+  const today = new Date().toISOString().split('T')[0]; // For date input min attribute
 
   const handleSubmit = async (data: BannerData) => {
     try {
@@ -59,10 +67,6 @@ const BannerForm = () => {
         }
       });
 
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
-
       const response = await addBanner(formData);
 
       if (response.success) {
@@ -72,7 +76,7 @@ const BannerForm = () => {
         toast.error(response.message || "Failed to add banner");
       }
     } catch (error) {
-      console.error("Error adding banner:", error); // Log error details
+      console.error("Error adding banner:", error);
       toast.error("An unexpected error occurred");
     }
   };
@@ -91,6 +95,7 @@ const BannerForm = () => {
           >
             {({ errors, touched, setFieldValue, isSubmitting }) => (
               <Form className="space-y-6">
+                {/* Banner Title Field */}
                 <div>
                   <label htmlFor="bannerTitle" className="block text-sm font-medium text-gray-200 mb-1">
                     Banner Title
@@ -106,6 +111,7 @@ const BannerForm = () => {
                   {errors.bannerTitle && touched.bannerTitle && <div className="text-red-400 text-sm mt-1">{errors.bannerTitle}</div>}
                 </div>
 
+                {/* Description Field */}
                 <div>
                   <label htmlFor="description" className="block text-sm font-medium text-gray-200 mb-1">
                     Description
@@ -123,6 +129,7 @@ const BannerForm = () => {
                   {errors.description && touched.description && <div className="text-red-400 text-sm mt-1">{errors.description}</div>}
                 </div>
 
+                {/* Role Field */}
                 <div>
                   <label htmlFor="role" className="block text-sm font-medium text-gray-200 mb-1">Role</label>
                   <Field
@@ -141,29 +148,65 @@ const BannerForm = () => {
                   )}
                 </div>
 
+                {/* Date Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="startDate" className="block text-sm font-medium text-gray-200 mb-1">Start Date</label>
-                    <Field type="date" id="startDate" name="startDate" aria-label="Start Date" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
-                    {errors.startDate && touched.startDate && <div className="text-red-400 text-sm mt-1">{errors.startDate}</div>}
+                    <label htmlFor="startDate" className="block text-sm font-medium text-gray-200 mb-1">
+                      Start Date
+                    </label>
+                    <Field 
+                      type="date" 
+                      id="startDate" 
+                      name="startDate" 
+                      aria-label="Start Date" 
+                      min={today}
+                      className={`w-full px-3 py-2 rounded-md border bg-slate-800 text-white ${
+                        errors.startDate && touched.startDate ? 'border-red-500' : 'border-blue-500'
+                      }`}
+                    />
+                    {errors.startDate && touched.startDate && (
+                      <div className="text-red-400 text-sm mt-1">{errors.startDate}</div>
+                    )}
                   </div>
 
                   <div>
-                    <label htmlFor="endDate" className="block text-sm font-medium text-gray-200 mb-1">End Date</label>
-                    <Field type="date" id="endDate" name="endDate" aria-label="End Date" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
-                    {errors.endDate && touched.endDate && <div className="text-red-400 text-sm mt-1">{errors.endDate}</div>}
+                    <label htmlFor="endDate" className="block text-sm font-medium text-gray-200 mb-1">
+                      End Date
+                    </label>
+                    <Field 
+                      type="date" 
+                      id="endDate" 
+                      name="endDate" 
+                      aria-label="End Date" 
+                      className={`w-full px-3 py-2 rounded-md border bg-slate-800 text-white ${
+                        errors.endDate && touched.endDate ? 'border-red-500' : 'border-blue-500'
+                      }`}
+                    />
+                    {errors.endDate && touched.endDate && (
+                      <div className="text-red-400 text-sm mt-1">{errors.endDate}</div>
+                    )}
                   </div>
                 </div>
 
+                {/* Link Field */}
                 <div>
                   <label htmlFor="link" className="block text-sm font-medium text-gray-200 mb-1">Link</label>
-                  <Field id="link" name="link" aria-label="Link" className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white" />
+                  <Field 
+                    id="link" 
+                    name="link" 
+                    aria-label="Link" 
+                    className={`w-full px-3 py-2 rounded-md border bg-slate-800 text-white ${
+                      errors.link && touched.link ? 'border-red-500' : 'border-blue-500'
+                    }`}
+                  />
                   {errors.link && touched.link && <div className="text-red-400 text-sm mt-1">{errors.link}</div>}
                 </div>
 
                 {/* File Upload Field */}
                 <div>
-                  <label htmlFor="bannerImage" className="block text-sm font-medium text-gray-200 mb-1">Choose Banner Image</label>
+                  <label htmlFor="bannerImage" className="block text-sm font-medium text-gray-200 mb-1">
+                    Choose Banner Image
+                  </label>
                   <input
                     type="file"
                     id="bannerImage"
@@ -186,10 +229,17 @@ const BannerForm = () => {
                     }}
                     className="w-full px-3 py-2 rounded-md border bg-slate-800 text-white"
                   />
-                  {errors.bannerImage && touched.bannerImage && <div className="text-red-400 text-sm mt-1">{errors.bannerImage}</div>}
+                  {errors.bannerImage && touched.bannerImage && (
+                    <div className="text-red-400 text-sm mt-1">{errors.bannerImage}</div>
+                  )}
                 </div>
 
-                <button type="submit" disabled={isSubmitting} className="w-full bg-blue-500 text-white py-3 rounded-lg">
+                {/* Submit Button */}
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting} 
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg transition-colors"
+                >
                   {isSubmitting ? "Saving..." : "Save Changes"}
                 </button>
               </Form>

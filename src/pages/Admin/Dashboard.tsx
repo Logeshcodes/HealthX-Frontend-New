@@ -35,6 +35,8 @@ interface Banner {
   title: string;
   imageUrl: string;
   isActive: boolean;
+  startDate : Date ;
+  endDate : Date ;
 }
 
 interface Appointment {
@@ -183,8 +185,8 @@ const AdminDashboard: React.FC = () => {
         setDepartments(departmentsData);
 
         const bannersData = await getAllBanner();
-        console.log("Banners: ", bannersData.data);
-        setBanners(bannersData.data || []);
+        console.log("Banners*****************************************: ", bannersData.data);
+        setBanners(bannersData.data);
 
         const appointmentsData = await getTotalAppointmentDetails();
         setAppointmentsCount(appointmentsData.totalCount);
@@ -197,7 +199,7 @@ const AdminDashboard: React.FC = () => {
         const generatedRevenueData = generateRevenueData(appointmentsData.data || [], timeFilter);
         setRevenueData(generatedRevenueData);
         
-        calculateDashboardCounts(usersData, doctorsData, appointmentsData.data);
+        calculateDashboardCounts(usersData, doctorsData, appointmentsData.data , bannersData.data);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {
@@ -217,7 +219,8 @@ const AdminDashboard: React.FC = () => {
   const calculateDashboardCounts = (
     users: User[], 
     doctors: Doctor[], 
-    appointments: Appointment[]
+    appointments: Appointment[],
+    banners: Banner[]
   ) => {
     const totalRevenue = appointments.reduce((sum, appointment) => {
       return appointment.paymentStatus === 'success' ? sum + appointment.amount : sum;
@@ -231,16 +234,26 @@ const AdminDashboard: React.FC = () => {
       app => app.status === 'cancelled'
     ).length;
 
+    const today = new Date();
+
+    const activeBanners = banners.filter(banner => 
+      new Date(banner.startDate) <= today && new Date(banner.endDate) >= today
+    ).length;
+    
+
     setDashboardCounts({
       doctorCount: doctors.length,
       userCount: users.length,
       appointmentCount: appointments.length,
-      bannerCount: banners.length,
+      bannerCount: activeBanners,
       totalRevenue,
       activeAppointments,
       cancelledAppointments
     });
   };
+
+
+  console.log("banners: ", banners);
 
   // => Helper functions
   const prepareUserStatusData = () => {

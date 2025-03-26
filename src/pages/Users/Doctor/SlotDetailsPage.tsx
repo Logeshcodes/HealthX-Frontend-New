@@ -207,8 +207,8 @@ const SlotDetailsPage = () => {
 
     // Production mode 
 
-    const surl = `http://api-gateway-srv/api/booking/patient/payment-success`;
-    const furl = `http://api-gateway-srv/api/booking/patient/payment-failure`;
+    const surl = `https://api-gateway-srv/api/booking/patient/payment-success`;
+    const furl = `https://api-gateway-srv/api/booking/patient/payment-failure`;
 
     const formData = {
       key: 't4VOu4',

@@ -5,9 +5,13 @@ import PasswordField from '../../../components/UserComponents/common/passwordFie
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { updatePassword } from "../../../api/action/DoctorActionApi";
+import { ShieldCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 
 const ChangePassword = () => {
+
+  const navigate = useNavigate();
 
   
   const changePasswordSchema = Yup.object().shape({
@@ -38,6 +42,7 @@ const ChangePassword = () => {
 
         if (response.success) {
           toast.success("Password changed successfully");
+          navigate(`/doctor/profile/my-account`)
           
         } else {
           toast.error(response.message || "Failed to changed password");
@@ -85,6 +90,34 @@ const ChangePassword = () => {
             </Form>
           )}
         </Formik>
+
+
+
+          {/* Password security tips */}
+      <div className="mb-8 p-4 rounded-lg bg-blue-50 border border-blue-100 animate-fadeIn">
+          <div className="flex items-start">
+            <div className="mr-3 mt-1">
+              <ShieldCheck size={22} className="text-blue-600" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-blue-800 mb-2">Password Security Tips</h3>
+              <ul className="text-sm text-blue-700 space-y-1">
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>
+                  Use at least 8 characters with a mix of letters, numbers, and symbols
+                </li>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>
+                  Don't reuse passwords from other sites
+                </li>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>
+                  Avoid using easily guessable information
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
           
 
         

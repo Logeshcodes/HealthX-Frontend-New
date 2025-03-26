@@ -6,7 +6,7 @@ import { resendOtp, verifyOtp } from "../../../api/auth/UserAuthentication";
 
 const verificationOTP = () => {
   const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
-  const [counter, setCounter] = useState<number>(10);
+  const [counter, setCounter] = useState<number>(30);
   const [resendAtive, setResendActive] = useState(false);
 
   const navigate = useNavigate();
@@ -110,7 +110,7 @@ const verificationOTP = () => {
             </p>
           </div>
 
-          <div className="flex space-x-2 p-3 justify-center sm:pl-24">
+          <div className="flex space-x-2 p-3 sm:pl-24">
             {otp.map((value, index) => (
               <input
                 type="text"

@@ -81,7 +81,7 @@ const [activeTab, setActiveTab] = useState('personal');
   }, []);
 
   return (
-    <div className="bg-white rounded-lg p-6 shadow-lg">
+    <div className="bg-white rounded-lg p-6 shadow-lg mt-2">
       {loading ? (
         <p>Loading...</p>
       ) : (

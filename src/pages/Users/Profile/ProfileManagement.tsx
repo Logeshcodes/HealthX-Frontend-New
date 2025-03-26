@@ -17,7 +17,7 @@ const ProfileManagement: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 p-6 m-6">
       <div className="bg-blue-500 text-white p-4 rounded-lg mb-6 flex justify-between items-center">
         <h1 className="text-2xl font-bold">Settings</h1>
         <div className="text-sm">Dashboard / Settings</div>

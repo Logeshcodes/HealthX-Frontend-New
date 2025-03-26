@@ -7,7 +7,7 @@ import { verifyResetOtp , forgotResendOtp } from '../../../api/auth/UserAuthenti
 const ResetVerificationOTP = () => {
   
   const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
-  const [counter, setCounter] = useState<number>(10);
+  const [counter, setCounter] = useState<number>(30);
   const [resendAtive,setResendActive]=useState(false)
 
   const navigate = useNavigate();
@@ -95,7 +95,7 @@ const ResetVerificationOTP = () => {
             <h2 className="text-2xl font-bold text-gray-800"> Verify Your Email Address</h2>
             <p className="text-gray-600 mt-2">Email verification OTP has been sent to your Email. Please enter the OTP below</p>
           </div>
-            <div className="flex space-x-2 p-3 justify-center sm:pl-24">
+            <div className="flex space-x-2 p-3 sm:pl-24">
             
             {
                 otp.map((value,index)=>(

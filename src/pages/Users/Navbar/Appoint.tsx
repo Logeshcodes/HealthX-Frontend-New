@@ -215,7 +215,7 @@ const AppointmentDashboard = () => {
                       users?.profilePicture ||
                       "/api/placeholder/96/96"
                     }
-                    alt="Doctor"
+                    alt="Patient"
                     className="w-20 h-20 rounded-full object-cover"
                   />
                 </div>

@@ -29,6 +29,7 @@ import DoctorAppointmentDashboard from '../pages/Doctors/Navbar/AppointmentPage'
 import DoctorPrescriptionForm from '../pages/Doctors/Appointments/AddPrescription';
 import PrescriptionSuccessPage from '../pages/Doctors/Appointments/PrescriptionSuccess';
 import DoctorDashboard from '../pages/Doctors/Navbar/DoctorDashboard';
+import PrescriptionDetails from '../pages/Users/Doctor/Prescription';
 const DoctorRouter =() => {
 
 
@@ -54,6 +55,7 @@ const DoctorRouter =() => {
               <Route path="/bookedAppointments" element={<DoctorAppointmentDashboard/>} />
               <Route path="/prescription/:appointmentId" element={<DoctorPrescriptionForm/>} />
               <Route path="/prescription/Success" element={<PrescriptionSuccessPage/>} />
+              <Route path="/viewPrescription/:appointmentId" element={<PrescriptionDetails/>} />
               <Route path="/about" element={<About/>} />
               <Route path="dashboard" element={< DoctorDashboard />} />
             <Route path="/profile" element={<ProfileManagement />}>

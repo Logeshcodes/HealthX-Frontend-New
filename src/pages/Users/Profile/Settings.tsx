@@ -245,7 +245,7 @@ const SettingsHelpCenter = () => {
       {/* Footer */}
       <div className="mt-8 pt-4 border-t">
         <p className={`text-sm text-center ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-          Need additional help? <a href="#" className={darkMode ? 'text-blue-400' : 'text-blue-600'}>Contact Support</a>
+          Need additional help? <a href="/user/about" className={darkMode ? 'text-blue-400' : 'text-blue-600'}>Contact Support</a>
         </p>
       </div>
     </div>

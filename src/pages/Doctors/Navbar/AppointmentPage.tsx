@@ -12,6 +12,9 @@ import useVideoCall from '../../../components/Common/VideoCall/useVideoCall';
 import { useNavigate } from 'react-router-dom';
 
 
+
+
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -38,6 +41,7 @@ interface Appointment {
   doctorEmail: string;
   doctorName: string;
   profilePicture: string;
+  prescriptionStatus : Boolean;
   amount: number;
   paymentStatus: string;
   appointmentTime: string;
@@ -79,6 +83,9 @@ const DoctorAppointmentDashboard = () => {
     navigate(`/doctor/prescription/${appointmentId}`);
   };
 
+  const handlePrescription = (appointmentId : string) => {
+    navigate(`/doctor/viewPrescription/${appointmentId}`);
+  };
 
 
   useEffect(() => {
@@ -365,10 +372,25 @@ const DoctorAppointmentDashboard = () => {
                          
                         </div>
                       ) : appointment.status === "completed" ? (
+                       <>
+
                         <Button className={`${getStatusColor(appointment.status)} text-white`}>
                           <CircleCheck className="w-6 h-6 m-1" />
                           Completed
                         </Button>
+
+
+                          {appointment.prescriptionStatus && (
+                            <Button
+                              onClick={() => handlePrescription(appointment?._id)}
+                              className={`bg-red-600 text-white ml-2`}
+                            >
+                              Prescription
+                            </Button>
+                          )}
+                       </>
+
+
                       ): appointment.status === "cancelled" ? (
                         <Button
                           className={`${getStatusColor(appointment.status)} text-white`}

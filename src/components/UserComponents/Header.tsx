@@ -14,7 +14,7 @@ import { setUser, clearUserDetails } from "../../redux/slices/userSlice";
 
 const navigation = [
   { name: 'Home', href: '/', id: 'home', icon: Home },
-  { name: "Profile", href: "user/profile/my-account", id: "profile", icon: UserPen },
+  { name: "Profile", href: "/user/profile/my-account", id: "profile", icon: UserPen },
   { name: 'Doctors', href: '/user/doctor_list', id: 'doctors', icon: Users },
   { name: 'Appointments', href: '/user/appointments', id: 'appointments', icon: Calendar },
   { name: 'About Us', href: '/user/about', id: 'about', icon: Info },
@@ -168,12 +168,23 @@ export default function Header() {
                       </button>
 
                       <div className="space-y-4 mt-2">
+
+                      <a href="/" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
+                          <div className="bg-gray-700 p-2 rounded-lg">
+                            <ListTodo size={20} className="text-yellow-400" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Home</div>
+                            <div className="text-sm text-gray-400">Explore the features</div>
+                          </div>
+                        </a>
+
                         <a href="/user/profile/my-account" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
                           <div className="bg-gray-700 p-2 rounded-lg">
                             <DollarSign size={20} className="text-cyan-400" />
                           </div>
                           <div>
-                            <div className="font-medium">My Profile</div>
+                            <div className="font-medium">Profile</div>
                             <div className="text-sm text-gray-400">Account Settings</div>
                           </div>
                         </a>
@@ -188,15 +199,7 @@ export default function Header() {
                           </div>
                         </a>
 
-                        <a href="#tasks" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-gray-200">
-                          <div className="bg-gray-700 p-2 rounded-lg">
-                            <ListTodo size={20} className="text-yellow-400" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Membership</div>
-                            <div className="text-sm text-gray-400">Add up to five members</div>
-                          </div>
-                        </a>
+                        
                       </div>
 
                       <button
