@@ -192,9 +192,7 @@ const LoginPage = () => {
                   </div>
 
                   {/* Google Login */}
-                  <GoogleOAuthProvider
-                    clientId="820976220458-vffcl6e1rc5t6urg4hasroqjovhufpac.apps.googleusercontent.com"
-                  >
+                  <GoogleOAuthProvider clientId="820976220458-vffcl6e1rc5t6urg4hasroqjovhufpac.apps.googleusercontent.com">
                     <div>
                       <GoogleLogin
                         onSuccess={googleSubmit}
