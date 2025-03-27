@@ -2,6 +2,9 @@ import { useNavigate } from "react-router-dom";
 
 const DoctorCard = ({ doctor, position }: any) => {
   const navigate = useNavigate();
+
+
+
   if (!doctor) return null;
 
   return (

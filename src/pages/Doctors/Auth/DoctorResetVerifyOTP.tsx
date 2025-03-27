@@ -8,7 +8,7 @@ import { verifyResetOtp , forgotResendOtp } from '../../../api/auth/DoctorAuthen
 const DoctorResetVerificationOTP = () => {
   
   const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
-  const [counter, setCounter] = useState<number>(10);
+  const [counter, setCounter] = useState<number>(30);
   const [resendAtive,setResendActive]=useState(false)
  
 
